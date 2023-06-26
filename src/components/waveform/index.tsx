@@ -7,17 +7,17 @@ import {
   setPeaksConfig,
   overviewOptionsConfig,
   zoomviewOptionsConfig,
-} from "@/app/lib/waveform-config";
+} from "../../lib/waveform-config";
 import ClipGrid from "./components/ClipGrid";
-import { testSegments, testSegmentsSmall } from "@/app/data/segmentData";
-import { AudioDataProps, TestSegmentProps } from "@/app/types";
+import { testSegments, testSegmentsSmall } from "../../data/segmentData";
+import { AudioDataProps, TestSegmentProps } from "../../types";
 import {
   deleteAllSegments,
   createAllSegments,
   handleAddSegment,
   clickToAddSegment,
   editClipStartEndPoints,
-} from "@/app/lib/waveform-utils";
+} from "../../lib/waveform-utils";
 import ClipGridHeader from "./components/ClipGridHeader";
 
 export default function WaveForm() {

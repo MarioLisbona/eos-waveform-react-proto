@@ -1,4 +1,4 @@
-import { TestSegmentProps } from "@/app/types";
+import { TestSegmentProps } from "../../../types";
 import { PeaksInstance } from "peaks.js";
 import Timecode from "react-timecode";
 import {
@@ -16,10 +16,8 @@ import {
   deleteSingleSegment,
   createSingleSegment,
   handleFileNameChange,
-  handleStartTimeChange,
-  handleEndTimeChange,
   handlePlayheadSeek,
-} from "@/app/lib/waveform-utils";
+} from "../../../lib/waveform-utils";
 
 export default function ClipGrid({
   segments,
