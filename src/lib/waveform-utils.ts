@@ -1,7 +1,7 @@
 import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 import WaveformViewClickEvent from "peaks.js";
 import { TestSegmentProps } from "../types";
-import { ChangeEvent, MouseEvent } from "react";
+import { ChangeEvent } from "react";
 import {
   createNewSegmentObject,
   findGap,
@@ -118,7 +118,7 @@ export const handleAddSegment = (
     //find a gap greater or equal to 10 seconds between existing clip segments
     const tenSecondGapIdx = findGap(segments, 10);
 
-    if (tenSecondGapIdx != -1) {
+    if (tenSecondGapIdx !== -1) {
       //create a new 8 second segment between 2 segments with a large enough gap
       const newSegment = createNewSegmentObject(
         segments,
@@ -141,13 +141,13 @@ export const handleAddSegment = (
 
       //move the playhead to the start of the new segment
       myPeaks.player.seek(newSegment.startTime);
-    } else if (tenSecondGapIdx == -1) {
+    } else if (tenSecondGapIdx === -1) {
       alert("No 10 second gaps, finding a 5 second gap...");
 
       //find a gap greater or equal to 5 seconds between existing clip segments
       const fiveSecondGapIdx = findGap(segments, 5);
 
-      if (fiveSecondGapIdx != -1) {
+      if (fiveSecondGapIdx !== -1) {
         //create a new 4 second segment between 2 segments with a large enough gap
         const newSegment = createNewSegmentObject(
           segments,
@@ -170,7 +170,7 @@ export const handleAddSegment = (
 
         //move the playhead to the start of the new segment
         myPeaks.player.seek(newSegment.startTime);
-      } else if (fiveSecondGapIdx == -1) {
+      } else if (fiveSecondGapIdx === -1) {
         alert(
           "There are no gaps available for a new clip. You will need to delete one"
         );
@@ -224,7 +224,7 @@ export const clickToAddSegment = (
 
   //if the return value is not -1 a gap has been found
   //create a new segment
-  if (gapIdx != -1) {
+  if (gapIdx !== -1) {
     const newSegment = {
       id: segments.length.toString(),
       fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
@@ -278,7 +278,7 @@ export const handleFileNameChange = (
         fileName: evt.target.value,
         labelText: evt.target.value,
         formErrors: {
-          fileNameError: evt.target.value == "" ? true : false,
+          fileNameError: evt.target.value === "" ? true : false,
           startTimeError: false,
           endTimeError: false,
           isCreated: false,
@@ -440,7 +440,7 @@ export const deleteSingleSegment = (
 
   //filter segments to create a new array with all segments that dont match id
   const upatedSegments = segments.filter((seg) => {
-    return seg.id != segmentToDelete!.id;
+    return seg.id !== segmentToDelete!.id;
   });
 
   //update the date of segments with the new array
