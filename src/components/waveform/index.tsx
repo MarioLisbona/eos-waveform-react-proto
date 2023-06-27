@@ -190,7 +190,7 @@ export default function WaveForm() {
           </Button>
         </Flex>
       </Flex>
-      {segments.length != 0 ? <ClipGridHeader /> : "There are no clips loaded"}
+      {segments.length !== 0 ? <ClipGridHeader /> : "There are no clips loaded"}
       {segments.length > 0 && (
         <ClipGrid
           segments={segments}
