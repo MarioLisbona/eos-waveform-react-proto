@@ -196,9 +196,9 @@ export const clickToAddSegment = (
   myPeaks: PeaksInstance,
   event: WaveformViewMouseEvent
 ) => {
-  console.log("inside clickToAddSegment", event);
+  // console.log("inside clickToAddSegment", event);
   //create playhead and upper and lower boundaries based on playhead position
-  const playheadPosition = event.time;
+  const playheadPosition = myPeaks.player.getCurrentTime();
   const segUpperBound = playheadPosition + 8;
   const segLowerBound = playheadPosition;
   const mediaEndTime = myPeaks.player.getDuration();
