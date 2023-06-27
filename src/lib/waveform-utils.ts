@@ -278,7 +278,7 @@ export const handleFileNameChange = (
         fileName: evt.target.value,
         labelText: evt.target.value,
         formErrors: {
-          fileNameError: evt.target.value == "" ? true : false,
+          fileNameError: evt.target.value === "" ? true : false,
           startTimeError: false,
           endTimeError: false,
           isCreated: false,
