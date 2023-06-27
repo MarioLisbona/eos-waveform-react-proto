@@ -1,7 +1,7 @@
 import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 import WaveformViewClickEvent from "peaks.js";
 import { TestSegmentProps } from "../types";
-import { ChangeEvent, MouseEvent } from "react";
+import { ChangeEvent } from "react";
 import {
   createNewSegmentObject,
   findGap,
