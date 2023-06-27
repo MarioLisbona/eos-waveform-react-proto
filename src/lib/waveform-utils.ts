@@ -224,7 +224,7 @@ export const clickToAddSegment = (
 
   //if the return value is not -1 a gap has been found
   //create a new segment
-  if (gapIdx != -1) {
+  if (gapIdx !== -1) {
     const newSegment = {
       id: segments.length.toString(),
       fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
