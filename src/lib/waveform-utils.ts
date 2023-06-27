@@ -1,5 +1,5 @@
 import { PeaksInstance, SegmentDragEvent } from "peaks.js";
-import WaveformViewClickEvent from "peaks.js";
+import WaveformViewMouseEvent from "peaks.js";
 import { TestSegmentProps } from "../types";
 import { ChangeEvent } from "react";
 import {
@@ -194,11 +194,11 @@ export const clickToAddSegment = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
   myPeaks: PeaksInstance,
-  evt: WaveformViewClickEvent
+  event: WaveformViewMouseEvent
 ) => {
-  console.log("inside clickToAddSegment", evt);
+  console.log("inside clickToAddSegment", event);
   //create playhead and upper and lower boundaries based on playhead position
-  const playheadPosition = evt.time;
+  const playheadPosition = event.time;
   const segUpperBound = playheadPosition + 8;
   const segLowerBound = playheadPosition;
   const mediaEndTime = myPeaks.player.getDuration();

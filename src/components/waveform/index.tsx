@@ -2,7 +2,7 @@ import { Flex, Button, Text } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
 import Peaks, { PeaksInstance, PeaksOptions, SegmentDragEvent } from "peaks.js";
-import WaveformViewClickEvent from "peaks.js";
+import WaveformViewMouseEvent from "peaks.js";
 import {
   setPeaksConfig,
   overviewOptionsConfig,
@@ -123,8 +123,8 @@ export default function WaveForm() {
   };
 
   //Adds a new segment to the zoomview on double clicked
-  const handleZoomviewDblClick = (evt: WaveformViewClickEvent) => {
-    clickToAddSegment(segments, setSegments, myPeaks!, evt);
+  const handleZoomviewDblClick = (event: WaveformViewMouseEvent) => {
+    clickToAddSegment(segments, setSegments, myPeaks!, event);
   };
   //////////////////////////////////////////////////////////////////////
 
