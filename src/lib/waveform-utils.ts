@@ -196,6 +196,7 @@ export const clickToAddSegment = (
   myPeaks: PeaksInstance,
   evt: WaveformViewClickEvent
 ) => {
+  console.log("inside clickToAddSegment", evt);
   //create playhead and upper and lower boundaries based on playhead position
   const playheadPosition = evt.time;
   const segUpperBound = playheadPosition + 8;
