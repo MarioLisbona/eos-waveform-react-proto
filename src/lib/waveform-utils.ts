@@ -440,7 +440,7 @@ export const deleteSingleSegment = (
 
   //filter segments to create a new array with all segments that dont match id
   const upatedSegments = segments.filter((seg) => {
-    return seg.id != segmentToDelete!.id;
+    return seg.id !== segmentToDelete!.id;
   });
 
   //update the date of segments with the new array
