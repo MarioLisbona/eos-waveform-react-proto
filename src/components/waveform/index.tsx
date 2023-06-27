@@ -124,7 +124,7 @@ export default function WaveForm() {
 
   //Adds a new segment to the zoomview on double clicked
   const handleZoomviewDblClick = (event: WaveformViewMouseEvent) => {
-    clickToAddSegment(segments, setSegments, myPeaks!, event);
+    clickToAddSegment(segments, setSegments, myPeaks!);
   };
   //////////////////////////////////////////////////////////////////////
 

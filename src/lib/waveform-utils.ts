@@ -193,10 +193,8 @@ export const handleAddSegment = (
 export const clickToAddSegment = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
-  myPeaks: PeaksInstance,
-  event: WaveformViewMouseEvent
+  myPeaks: PeaksInstance
 ) => {
-  // console.log("inside clickToAddSegment", event);
   //create playhead and upper and lower boundaries based on playhead position
   const playheadPosition = myPeaks.player.getCurrentTime();
   const segUpperBound = playheadPosition + 8;
