@@ -118,7 +118,7 @@ export const handleAddSegment = (
     //find a gap greater or equal to 10 seconds between existing clip segments
     const tenSecondGapIdx = findGap(segments, 10);
 
-    if (tenSecondGapIdx != -1) {
+    if (tenSecondGapIdx !== -1) {
       //create a new 8 second segment between 2 segments with a large enough gap
       const newSegment = createNewSegmentObject(
         segments,
@@ -141,13 +141,13 @@ export const handleAddSegment = (
 
       //move the playhead to the start of the new segment
       myPeaks.player.seek(newSegment.startTime);
-    } else if (tenSecondGapIdx == -1) {
+    } else if (tenSecondGapIdx === -1) {
       alert("No 10 second gaps, finding a 5 second gap...");
 
       //find a gap greater or equal to 5 seconds between existing clip segments
       const fiveSecondGapIdx = findGap(segments, 5);
 
-      if (fiveSecondGapIdx != -1) {
+      if (fiveSecondGapIdx !== -1) {
         //create a new 4 second segment between 2 segments with a large enough gap
         const newSegment = createNewSegmentObject(
           segments,
@@ -170,7 +170,7 @@ export const handleAddSegment = (
 
         //move the playhead to the start of the new segment
         myPeaks.player.seek(newSegment.startTime);
-      } else if (fiveSecondGapIdx == -1) {
+      } else if (fiveSecondGapIdx === -1) {
         alert(
           "There are no gaps available for a new clip. You will need to delete one"
         );
