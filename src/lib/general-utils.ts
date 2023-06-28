@@ -46,8 +46,6 @@ export const createNewSegmentObject = (
       },
     };
   } else if (secondClip) {
-    console.log("inside createNewSegmentObject", segments[0].startTime);
-
     return {
       id: segments.length.toString(),
       fileName: "Tail",
