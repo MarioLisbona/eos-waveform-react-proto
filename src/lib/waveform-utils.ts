@@ -196,6 +196,7 @@ export const clickToAddSegment = (
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
   myPeaks: PeaksInstance
 ) => {
+  console.log("inside clickToAddSegment", segments);
   //create playhead and upper and lower boundaries based on playhead position
   const playheadPosition = myPeaks.player.getCurrentTime();
   const segUpperBound = playheadPosition + 8;
