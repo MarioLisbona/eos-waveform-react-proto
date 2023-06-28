@@ -44,13 +44,11 @@ export const editClipStartEndPoints = (
 ) => {
   const newSegState = segments.map((seg) => {
     if (seg.id === evt.segment.id && evt.startMarker) {
-      console.log("moved start marker");
       return {
         ...seg,
         startTime: evt.segment.startTime,
       };
     } else if (seg.id === evt.segment.id && !evt.startMarker) {
-      console.log("moved end marker");
       return {
         ...seg,
         endTime: evt.segment.endTime,
@@ -93,7 +91,7 @@ export const handleAddSegment = (
       undefined,
       undefined
     );
-    console.log("no clips - creating first clip", { newSegment });
+
     //update the segments state
     setSegments([newSegment]);
 
@@ -108,7 +106,7 @@ export const handleAddSegment = (
       undefined,
       undefined
     );
-    console.log("1 clip - creating second clip", { newSegment });
+
     //update the segments state
     setSegments([...segments, newSegment]);
 
