@@ -1,14 +1,15 @@
-import { Flex, Button, Text } from "@chakra-ui/react";
+import { Flex, Button } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
 import Peaks, { PeaksInstance, PeaksOptions, SegmentDragEvent } from "peaks.js";
-import WaveformViewMouseEvent from "peaks.js";
 import {
   setPeaksConfig,
   overviewOptionsConfig,
   zoomviewOptionsConfig,
 } from "../../lib/waveform-config";
 import ClipGrid from "./components/ClipGrid";
+//testSegments, testSegmentsSmall alernate on use depending on dataset being used
+// eslint-disable-next-line
 import { testSegments, testSegmentsSmall } from "../../data/segmentData";
 import { AudioDataProps, TestSegmentProps } from "../../types";
 import {
