@@ -135,6 +135,8 @@ export default function WaveForm() {
   //
   //
   useEffect(() => {
+    console.log("inside useEffect", segments);
+
     // //sort the data in chronological order by startTime
     segments.sort((a, b) => a.startTime - b.startTime);
 

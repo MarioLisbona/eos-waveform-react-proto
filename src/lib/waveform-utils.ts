@@ -81,6 +81,7 @@ export const handleAddSegment = (
   const firstClip = segments.length === 0;
   const secondClip = segments.length === 1;
   const mediaLength = myPeaks.player.getDuration()!;
+  const playheadPosition = myPeaks.player.getCurrentTime();
 
   if (firstClip) {
     const newSegment = createNewSegmentObject(
@@ -89,7 +90,8 @@ export const handleAddSegment = (
       secondClip,
       mediaLength,
       undefined,
-      undefined
+      undefined,
+      playheadPosition
     );
 
     //update the segments state
@@ -104,7 +106,8 @@ export const handleAddSegment = (
       secondClip,
       mediaLength,
       undefined,
-      undefined
+      undefined,
+      playheadPosition
     );
 
     //update the segments state

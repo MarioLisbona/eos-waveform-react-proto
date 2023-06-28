@@ -26,14 +26,15 @@ export const createNewSegmentObject = (
   secondClip: boolean,
   mediaLength: number,
   gapIdx?: number,
-  clipLength?: number
+  clipLength?: number,
+  playheadPosition?: number
 ) => {
   if (firstClip) {
     return {
       id: segments.length.toString(),
-      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
-      startTime: 0,
-      endTime: mediaLength * 0.03,
+      fileName: "Top",
+      startTime: playheadPosition!,
+      endTime: playheadPosition! + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
       labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
@@ -45,11 +46,13 @@ export const createNewSegmentObject = (
       },
     };
   } else if (secondClip) {
+    console.log("inside createNewSegmentObject", segments[0].startTime);
+
     return {
       id: segments.length.toString(),
-      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
-      startTime: mediaLength * 0.97,
-      endTime: mediaLength,
+      fileName: "Tail",
+      startTime: playheadPosition!,
+      endTime: playheadPosition! + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
       labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
