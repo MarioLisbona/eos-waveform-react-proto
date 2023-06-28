@@ -11,7 +11,8 @@ import {
 //
 //
 //              Playhead seeks to the stat time of the clip
-//              when a clip element is clicked in the list
+//              or end of the clip depending on wheher the
+//              sart time or end time are clicked
 //
 //
 export const handlePlayheadSeek = (
