@@ -44,13 +44,11 @@ export const editClipStartEndPoints = (
 ) => {
   const newSegState = segments.map((seg) => {
     if (seg.id === evt.segment.id && evt.startMarker) {
-      console.log("moved start marker");
       return {
         ...seg,
         startTime: evt.segment.startTime,
       };
     } else if (seg.id === evt.segment.id && !evt.startMarker) {
-      console.log("moved end marker");
       return {
         ...seg,
         endTime: evt.segment.endTime,
@@ -83,6 +81,7 @@ export const handleAddSegment = (
   const firstClip = segments.length === 0;
   const secondClip = segments.length === 1;
   const mediaLength = myPeaks.player.getDuration()!;
+  const playheadPosition = myPeaks.player.getCurrentTime();
 
   if (firstClip) {
     const newSegment = createNewSegmentObject(
@@ -91,9 +90,10 @@ export const handleAddSegment = (
       secondClip,
       mediaLength,
       undefined,
-      undefined
+      undefined,
+      playheadPosition
     );
-    console.log("no clips - creating first clip", { newSegment });
+
     //update the segments state
     setSegments([newSegment]);
 
@@ -106,9 +106,10 @@ export const handleAddSegment = (
       secondClip,
       mediaLength,
       undefined,
-      undefined
+      undefined,
+      playheadPosition
     );
-    console.log("1 clip - creating second clip", { newSegment });
+
     //update the segments state
     setSegments([...segments, newSegment]);
 
