@@ -1,14 +1,15 @@
-import { Flex, Button, Text } from "@chakra-ui/react";
+import { Flex, Button } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
 import Peaks, { PeaksInstance, PeaksOptions, SegmentDragEvent } from "peaks.js";
-import WaveformViewMouseEvent from "peaks.js";
 import {
   setPeaksConfig,
   overviewOptionsConfig,
   zoomviewOptionsConfig,
 } from "../../lib/waveform-config";
 import ClipGrid from "./components/ClipGrid";
+//testSegments, testSegmentsSmall alernate on use depending on dataset being used
+// eslint-disable-next-line
 import { testSegments, testSegmentsSmall } from "../../data/segmentData";
 import { AudioDataProps, TestSegmentProps } from "../../types";
 import {
@@ -135,19 +136,25 @@ export default function WaveForm() {
   //
   //
   useEffect(() => {
-    console.log("inside useEffect", segments);
-
     // //sort the data in chronological order by startTime
     segments.sort((a, b) => a.startTime - b.startTime);
 
     //remove all peaks segments then add with new segments state - avoids duplicates
     myPeaks?.segments.removeAll();
     myPeaks?.segments.add(segments);
+  }, [myPeaks, segments]);
 
+  useEffect(() => {
     //event handlers
     myPeaks?.on("segments.dragend", handleClipDragEnd);
     myPeaks?.on("zoomview.dblclick", handleZoomviewDblClick);
-  }, [myPeaks, segments]);
+
+    return () => {
+      //cleanup
+      myPeaks?.off("segments.dragend", handleClipDragEnd);
+      myPeaks?.off("zoomview.dblclick", handleZoomviewDblClick);
+    };
+  }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick]);
 
   return (
     <>
