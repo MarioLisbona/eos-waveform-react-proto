@@ -226,7 +226,6 @@ export const handleAddSegment = (
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
   } else {
-    console.log({ invalidPlayheadPosition, validGapLength });
     invalidPlayheadPosition ? setClipOverlap(false) : setClipOverlap(true);
     onOpen();
   }
