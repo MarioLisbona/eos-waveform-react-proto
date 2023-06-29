@@ -166,7 +166,12 @@ export const handleAddSegment = (
       },
     };
 
-    console.log({ newSegment });
+    const updatedSegments = [...segments, newSegment];
+    //update the segments state
+    setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
+
+    //move the playhead to the start of the new segment
+    myPeaks.player.seek(newSegment.startTime);
   } else {
     console.log("Invalid position");
   }
