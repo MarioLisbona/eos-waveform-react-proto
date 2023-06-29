@@ -112,8 +112,6 @@ export const handleAddSegment = (
     // return seg; //---> returning seg here to resolving linting error breaks error checking
   });
 
-  console.log({ validGapLength });
-
   //First clip (Top) being created in an empty timeline
   if (firstClip) {
     const newSegment = {
@@ -172,8 +170,6 @@ export const handleAddSegment = (
     // playheadPosition + mediaLength * 0.03 <
     //   segments[segments.length - 1].startTime
   ) {
-    console.log("adding new clips at the playhead position", playheadPosition);
-
     const newSegment = {
       id: segments.length.toString(),
       fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
