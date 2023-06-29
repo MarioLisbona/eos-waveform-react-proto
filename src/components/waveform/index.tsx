@@ -116,6 +116,7 @@ export default function WaveForm() {
         return;
       }
     });
+    // eslint-disable-next-line
   }, []);
 
   //call initPeaks on initial mount of WaveForm component
@@ -123,7 +124,7 @@ export default function WaveForm() {
     if (initPeaks) {
       initPeaks();
     }
-  }, []);
+  }, [initPeaks]);
   //////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////////////////
@@ -134,11 +135,13 @@ export default function WaveForm() {
   //
   //sets the new start time for a segment if the start point is dragged
   //sets the new end time for a segment if the end point is dragged
+  // eslint-disable-next-line
   const handleClipDragEnd = (evt: SegmentDragEvent) => {
     editClipStartEndPoints(evt, segments, setSegments);
   };
 
   //Adds a new segment to the zoomview on double clicked
+  // eslint-disable-next-line
   const handleZoomviewDblClick = () => {
     handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
   };
