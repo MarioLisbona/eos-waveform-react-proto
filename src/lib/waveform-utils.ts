@@ -369,7 +369,6 @@ export const createAllSegments = (
 //
 //
 export const createSingleSegment = (
-  peaks: PeaksInstance | undefined,
   id: string,
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>

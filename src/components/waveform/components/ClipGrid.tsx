@@ -131,7 +131,7 @@ export default function ClipGrid({
                 <Button
                   variant={"waveformOutlined"}
                   onClick={() =>
-                    createSingleSegment(myPeaks, seg.id!, segments, setSegments)
+                    createSingleSegment(seg.id!, segments, setSegments)
                   }
                 >
                   {seg.formErrors.isCreated ? "Edit" : "Create"}
