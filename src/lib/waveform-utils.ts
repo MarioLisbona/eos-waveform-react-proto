@@ -1,11 +1,7 @@
 import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 import { TestSegmentProps } from "../types";
 import { ChangeEvent } from "react";
-import {
-  createNewSegmentObject,
-  findGap,
-  insertNewSegment,
-} from "./general-utils";
+import { insertNewSegment } from "./general-utils";
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -83,100 +79,109 @@ export const handleAddSegment = (
   const mediaLength = myPeaks.player.getDuration()!;
   const playheadPosition = myPeaks.player.getCurrentTime();
 
+  //function to return true if the timecode is between the start and end of a clip
+  const timecodeIsBetweenClip = (
+    timecode: number,
+    start: number,
+    end: number
+  ) => {
+    return (timecode - start) * (timecode - end) <= 0;
+  };
+  //map over the segment and call playheadIsBetween
+  //if any element is true, the playhead is between the start and end of an existing clip
+  const invalidPlayheadPosition = segments
+    .map((seg) => {
+      return timecodeIsBetweenClip(
+        playheadPosition,
+        seg.startTime,
+        seg.endTime
+      );
+    })
+    .includes(true);
+
+  //First clip (Top) being created in an empty timeline
   if (firstClip) {
-    const newSegment = createNewSegmentObject(
-      segments,
-      firstClip,
-      secondClip,
-      mediaLength,
-      undefined,
-      undefined,
-      playheadPosition
-    );
+    const newSegment = {
+      id: segments.length.toString(),
+      fileName: "Top",
+      startTime: playheadPosition!,
+      endTime: playheadPosition! + mediaLength * 0.03,
+      editable: true,
+      color: "#1E1541",
+      labelText: "Top",
+      formErrors: {
+        fileNameError: false,
+        startTimeError: false,
+        endTimeError: false,
+        isCreated: false,
+      },
+    };
 
     //update the segments state
     setSegments([newSegment]);
 
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
-  } else if (secondClip) {
-    const newSegment = createNewSegmentObject(
-      segments,
-      firstClip,
-      secondClip,
-      mediaLength,
-      undefined,
-      undefined,
-      playheadPosition
-    );
+  } else if (
+    secondClip &&
+    !invalidPlayheadPosition &&
+    playheadPosition > segments[0].startTime
+  ) {
+    //Seconde Clip (Tail) being created only if playhead is not between start and end of existing clip
+    //and playhead is not before first (Top) clip
+    const newSegment = {
+      id: segments.length.toString(),
+      fileName: "Tail",
+      startTime: playheadPosition!,
+      endTime: playheadPosition! + mediaLength * 0.03,
+      editable: true,
+      color: "#1E1541",
+      labelText: "Tail",
+      formErrors: {
+        fileNameError: false,
+        startTimeError: false,
+        endTimeError: false,
+        isCreated: false,
+      },
+    };
 
     //update the segments state
     setSegments([...segments, newSegment]);
 
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
+  } else if (
+    !invalidPlayheadPosition &&
+    playheadPosition > segments[0].startTime &&
+    playheadPosition + mediaLength * 0.03 <
+      segments[segments.length - 1].startTime
+  ) {
+    console.log("adding new clips at the playhead position", playheadPosition);
+
+    const newSegment = {
+      id: segments.length.toString(),
+      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
+      startTime: playheadPosition,
+      endTime: playheadPosition + mediaLength * 0.03,
+      editable: true,
+      color: "#1E1541",
+      labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
+      formErrors: {
+        fileNameError: false,
+        startTimeError: false,
+        endTimeError: false,
+        isCreated: false,
+      },
+    };
+
+    //add new segment to the segments array, sort it by sart time and update segments state
+    const updatedSegments = [...segments, newSegment];
+    setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
+
+    //move the playhead to the start of the new segment
+    myPeaks.player.seek(newSegment.startTime);
   } else {
-    //find a gap greater or equal to 10 seconds between existing clip segments
-    const tenSecondGapIdx = findGap(segments, 10);
-
-    if (tenSecondGapIdx !== -1) {
-      //create a new 8 second segment between 2 segments with a large enough gap
-      const newSegment = createNewSegmentObject(
-        segments,
-        firstClip,
-        secondClip,
-        mediaLength,
-        tenSecondGapIdx,
-        8
-      );
-
-      //slice the new segment into the existing segments array at the correct index
-      const updatedSegments = insertNewSegment(
-        segments,
-        tenSecondGapIdx,
-        newSegment
-      );
-
-      //update the segments state
-      setSegments(updatedSegments);
-
-      //move the playhead to the start of the new segment
-      myPeaks.player.seek(newSegment.startTime);
-    } else if (tenSecondGapIdx === -1) {
-      alert("No 10 second gaps, finding a 5 second gap...");
-
-      //find a gap greater or equal to 5 seconds between existing clip segments
-      const fiveSecondGapIdx = findGap(segments, 5);
-
-      if (fiveSecondGapIdx !== -1) {
-        //create a new 4 second segment between 2 segments with a large enough gap
-        const newSegment = createNewSegmentObject(
-          segments,
-          firstClip,
-          secondClip,
-          mediaLength,
-          fiveSecondGapIdx,
-          4
-        );
-
-        //slice the new segment into the existing segments array at the correct index
-        const updatedSegments = insertNewSegment(
-          segments,
-          fiveSecondGapIdx,
-          newSegment
-        );
-
-        //update the segments state
-        setSegments(updatedSegments);
-
-        //move the playhead to the start of the new segment
-        myPeaks.player.seek(newSegment.startTime);
-      } else if (fiveSecondGapIdx === -1) {
-        alert(
-          "There are no gaps available for a new clip. You will need to delete one"
-        );
-      }
-    }
+    alert("Invalid playhead position");
   }
 };
 //////////////////////////////////////////////////////////////////////
