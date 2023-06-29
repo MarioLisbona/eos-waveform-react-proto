@@ -63,12 +63,6 @@ export default function ClipGrid({
               </FormControl>
             </GridItem>
             <GridItem colStart={3} colEnd={5}>
-              {/* <Input
-                value={seg.startTime}
-                onChange={(evt) =>
-                  handleStartTimeChange(seg.id!, evt, segments, setSegments)
-                }
-              ></Input> */}
               <Tooltip
                 hasArrow
                 placement="left"
@@ -93,18 +87,6 @@ export default function ClipGrid({
               </Tooltip>
             </GridItem>
             <GridItem colStart={5} colEnd={7}>
-              {/* <Input
-                value={seg.endTime}
-                onChange={(evt) =>
-                  handleEndTimeChange(
-                    seg.id!,
-                    evt,
-                    segments,
-                    setSegments,
-                    myPeaks
-                  )
-                }
-              ></Input> */}
               <Tooltip
                 hasArrow
                 placement="left"
