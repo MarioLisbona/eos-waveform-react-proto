@@ -187,7 +187,7 @@ export default function WaveForm() {
           <Button
             variant={"waveformBlue"}
             me={"1rem"}
-            onClick={() => createAllSegments(myPeaks, setSegments, segments)}
+            onClick={() => createAllSegments(setSegments, segments)}
           >
             Create All
           </Button>

@@ -336,7 +336,6 @@ export const deleteAllSegments = (
 // console logs the segments after all edits
 //set segments to empty array and destroy peaks instance to free resources
 export const createAllSegments = (
-  peaks: PeaksInstance | undefined,
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
   segments: TestSegmentProps[]
 ) => {
