@@ -72,7 +72,8 @@ export const handleAddSegment = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
   myPeaks: PeaksInstance,
-  onOpen: () => void
+  onOpen: () => void,
+  setClipOverlap: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const firstClip = segments.length === 0;
   const secondClip = segments.length === 1;
@@ -194,6 +195,8 @@ export const handleAddSegment = (
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
   } else {
+    console.log({ invalidPlayheadPosition, validGapLength });
+    invalidPlayheadPosition ? setClipOverlap(false) : setClipOverlap(true);
     onOpen();
   }
 };

@@ -70,6 +70,7 @@ export default function WaveForm() {
   const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
   const [segments, setSegments] =
     useState<TestSegmentProps[]>(testSegmentsSmall);
+  const [clipOverlap, setClipOverlap] = useState<boolean>(false);
 
   // create function to create instance of peaks
   // useCallback means this will only render a single instance of peaks
@@ -140,7 +141,7 @@ export default function WaveForm() {
   //Adds a new segment to the zoomview on double clicked
   const handleZoomviewDblClick = () => {
     console.log("handleZoomviewDblClick", { isOpen });
-    handleAddSegment(segments, setSegments, myPeaks!, onOpen);
+    handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
   };
   //////////////////////////////////////////////////////////////////////
 
@@ -173,7 +174,6 @@ export default function WaveForm() {
     };
   }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick]);
 
-  const overlap = true;
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -183,12 +183,11 @@ export default function WaveForm() {
           <ModalCloseButton />
           <ModalBody>
             <Text textStyle={"smContext"}></Text>
-            {overlap
-              ? `Clips must be greater than ${(
+            {clipOverlap
+              ? `There is not enough room for your clip. Please choose a gap larger than ${(
                   myPeaks?.player.getDuration()! * 0.03
                 ).toFixed(1)} seconds`
-              : "Clips must not overlap"}
-            {/* 'Please choose a gap greater than {(myPeaks?.player.getDuration()! * 0.03).toFixed(1)} seconds */}
+              : "A clip already exists at that position, clips cannot overlap. Please choose an empty gap on the timeline"}
           </ModalBody>
 
           <ModalFooter>
@@ -219,7 +218,13 @@ export default function WaveForm() {
           <Button
             variant={"waveformBlue"}
             onClick={() =>
-              handleAddSegment(segments, setSegments, myPeaks!, onOpen)
+              handleAddSegment(
+                segments,
+                setSegments,
+                myPeaks!,
+                onOpen,
+                setClipOverlap
+              )
             }
           >
             Add Segment
