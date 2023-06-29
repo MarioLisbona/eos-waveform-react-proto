@@ -148,11 +148,13 @@ export default function WaveForm() {
     //event handlers
     myPeaks?.on("segments.dragend", handleClipDragEnd);
     myPeaks?.on("zoomview.dblclick", handleZoomviewDblClick);
+    myPeaks?.on("overview.dblclick", handleZoomviewDblClick);
 
     return () => {
       //cleanup
       myPeaks?.off("segments.dragend", handleClipDragEnd);
       myPeaks?.off("zoomview.dblclick", handleZoomviewDblClick);
+      myPeaks?.off("overview.dblclick", handleZoomviewDblClick);
     };
   }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick]);
 
