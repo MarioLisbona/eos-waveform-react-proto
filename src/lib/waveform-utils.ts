@@ -71,7 +71,8 @@ export const editClipStartEndPoints = (
 export const handleAddSegment = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
-  myPeaks: PeaksInstance
+  myPeaks: PeaksInstance,
+  onOpen: () => void
 ) => {
   const firstClip = segments.length === 0;
   const secondClip = segments.length === 1;
@@ -193,7 +194,7 @@ export const handleAddSegment = (
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
   } else {
-    alert("Invalid playhead position");
+    onOpen();
   }
 };
 //////////////////////////////////////////////////////////////////////

@@ -1,4 +1,16 @@
-import { Flex, Button } from "@chakra-ui/react";
+import {
+  Flex,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Text,
+} from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
 import Peaks, { PeaksInstance, PeaksOptions, SegmentDragEvent } from "peaks.js";
@@ -21,6 +33,8 @@ import {
 import ClipGridHeader from "./components/ClipGridHeader";
 
 export default function WaveForm() {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   //////////////////////////////////////////////////////////////////////
   //
   //
@@ -125,7 +139,8 @@ export default function WaveForm() {
 
   //Adds a new segment to the zoomview on double clicked
   const handleZoomviewDblClick = () => {
-    handleAddSegment(segments, setSegments, myPeaks!);
+    console.log("handleZoomviewDblClick", { isOpen });
+    handleAddSegment(segments, setSegments, myPeaks!, onOpen);
   };
   //////////////////////////////////////////////////////////////////////
 
@@ -160,6 +175,23 @@ export default function WaveForm() {
 
   return (
     <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text textStyle={"context"}>Invalid playhead position</Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="ghost">Secondary Action</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Flex
         justify={"center"}
         align={"center"}
@@ -180,7 +212,9 @@ export default function WaveForm() {
         <Flex>
           <Button
             variant={"waveformBlue"}
-            onClick={() => handleAddSegment(segments, setSegments, myPeaks!)}
+            onClick={() =>
+              handleAddSegment(segments, setSegments, myPeaks!, onOpen)
+            }
           >
             Add Segment
           </Button>
