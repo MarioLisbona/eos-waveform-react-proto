@@ -116,6 +116,7 @@ export default function WaveForm() {
         return;
       }
     });
+    // eslint-disable-next-line
   }, []);
 
   //call initPeaks on initial mount of WaveForm component
