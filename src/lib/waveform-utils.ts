@@ -326,7 +326,13 @@ export const deleteAllSegments = (
   peaks.segments.removeAll();
   setSegments([]);
 };
+//////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////
+//
+//             Create all segments
+//
+//
 // console logs the segments after all edits
 //set segments to empty array and destroy peaks instance to free resources
 export const createAllSegments = (
@@ -334,7 +340,25 @@ export const createAllSegments = (
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
   segments: TestSegmentProps[]
 ) => {
-  console.log("Exporting clip data and destroying Peaks instance", segments);
+  const updatedSegments = segments.map((seg) => {
+    return {
+      ...seg,
+      formErrors: {
+        fileNameError: seg.formErrors.fileNameError,
+        startTimeError: false,
+        endTimeError: false,
+        isCreated: true,
+      },
+      editable: false,
+      color: "#384115",
+    };
+  });
+
+  setSegments(updatedSegments);
+  console.log(
+    "Exporting clip data and destroying Peaks instance",
+    updatedSegments
+  );
   // setSegments([]);
   // peaks?.destroy();
 };
