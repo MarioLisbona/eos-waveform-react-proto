@@ -78,6 +78,7 @@ export const handleAddSegment = (
   const secondClip = segments.length === 1;
   const mediaLength = myPeaks.player.getDuration()!;
   const playheadPosition = myPeaks.player.getCurrentTime();
+  const clipUpperBound = playheadPosition + mediaLength * 0.03;
 
   //function to return true if the timecode is between the start and end of a clip
   const timecodeIsBetweenClip = (
@@ -99,13 +100,28 @@ export const handleAddSegment = (
     })
     .includes(true);
 
+  // Check the gaps between segments[1] and segments[n-2] to see if they are
+  //large enough to contain the new clip length
+  const validGapLength = segments.findIndex((seg, idx, arr) => {
+    if (idx + 1 < arr.length) {
+      return (
+        arr[idx + 1].startTime > clipUpperBound &&
+        arr[idx].endTime < playheadPosition
+      );
+    }
+    // console.log("returning seg at end of findIndex", idx);
+    // return seg; //---> returning seg here to resolving linting error breaks error checking
+  });
+
+  console.log({ validGapLength });
+
   //First clip (Top) being created in an empty timeline
   if (firstClip) {
     const newSegment = {
       id: segments.length.toString(),
       fileName: "Top",
-      startTime: playheadPosition!,
-      endTime: playheadPosition! + mediaLength * 0.03,
+      startTime: playheadPosition,
+      endTime: playheadPosition + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
       labelText: "Top",
@@ -132,8 +148,8 @@ export const handleAddSegment = (
     const newSegment = {
       id: segments.length.toString(),
       fileName: "Tail",
-      startTime: playheadPosition!,
-      endTime: playheadPosition! + mediaLength * 0.03,
+      startTime: playheadPosition,
+      endTime: playheadPosition + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
       labelText: "Tail",
@@ -152,9 +168,10 @@ export const handleAddSegment = (
     myPeaks.player.seek(newSegment.startTime);
   } else if (
     !invalidPlayheadPosition &&
-    playheadPosition > segments[0].startTime &&
-    playheadPosition + mediaLength * 0.03 <
-      segments[segments.length - 1].startTime
+    validGapLength !== -1
+    // playheadPosition > segments[0].startTime &&
+    // playheadPosition + mediaLength * 0.03 <
+    //   segments[segments.length - 1].startTime
   ) {
     console.log("adding new clips at the playhead position", playheadPosition);
 
