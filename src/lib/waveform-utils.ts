@@ -1,11 +1,7 @@
 import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 import { TestSegmentProps } from "../types";
 import { ChangeEvent } from "react";
-import {
-  createNewSegmentObject,
-  findGap,
-  insertNewSegment,
-} from "./general-utils";
+import { insertNewSegment } from "./general-utils";
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -105,15 +101,21 @@ export const handleAddSegment = (
 
   //First clip (Top) being created in an empty timeline
   if (firstClip) {
-    const newSegment = createNewSegmentObject(
-      segments,
-      firstClip,
-      secondClip,
-      mediaLength,
-      undefined,
-      undefined,
-      playheadPosition
-    );
+    const newSegment = {
+      id: segments.length.toString(),
+      fileName: "Top",
+      startTime: playheadPosition!,
+      endTime: playheadPosition! + mediaLength * 0.03,
+      editable: true,
+      color: "#1E1541",
+      labelText: "Top",
+      formErrors: {
+        fileNameError: false,
+        startTimeError: false,
+        endTimeError: false,
+        isCreated: false,
+      },
+    };
 
     //update the segments state
     setSegments([newSegment]);
@@ -127,15 +129,21 @@ export const handleAddSegment = (
   ) {
     //Seconde Clip (Tail) being created only if playhead is not between start and end of existing clip
     //and playhead is not before first (Top) clip
-    const newSegment = createNewSegmentObject(
-      segments,
-      firstClip,
-      secondClip,
-      mediaLength,
-      undefined,
-      undefined,
-      playheadPosition
-    );
+    const newSegment = {
+      id: segments.length.toString(),
+      fileName: "Tail",
+      startTime: playheadPosition!,
+      endTime: playheadPosition! + mediaLength * 0.03,
+      editable: true,
+      color: "#1E1541",
+      labelText: "Tail",
+      formErrors: {
+        fileNameError: false,
+        startTimeError: false,
+        endTimeError: false,
+        isCreated: false,
+      },
+    };
 
     //update the segments state
     setSegments([...segments, newSegment]);
@@ -166,78 +174,15 @@ export const handleAddSegment = (
       },
     };
 
+    //add new segment to the segments array, sort it by sart time and update segments state
     const updatedSegments = [...segments, newSegment];
-    //update the segments state
     setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
 
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
   } else {
-    console.log("Invalid position");
+    alert("Invalid playhead position");
   }
-
-  // //find a gap greater or equal to 10 seconds between existing clip segments
-  // const tenSecondGapIdx = findGap(segments, 10);
-
-  // if (tenSecondGapIdx !== -1) {
-  //   //create a new 8 second segment between 2 segments with a large enough gap
-  //   const newSegment = createNewSegmentObject(
-  //     segments,
-  //     firstClip,
-  //     secondClip,
-  //     mediaLength,
-  //     tenSecondGapIdx,
-  //     8
-  //   );
-
-  //   //slice the new segment into the existing segments array at the correct index
-  //   const updatedSegments = insertNewSegment(
-  //     segments,
-  //     tenSecondGapIdx,
-  //     newSegment
-  //   );
-
-  //   //update the segments state
-  //   setSegments(updatedSegments);
-
-  //   //move the playhead to the start of the new segment
-  //   myPeaks.player.seek(newSegment.startTime);
-  // }
-  // else if (tenSecondGapIdx === -1) {
-  //   alert("No 10 second gaps, finding a 5 second gap...");
-
-  //   //find a gap greater or equal to 5 seconds between existing clip segments
-  //   const fiveSecondGapIdx = findGap(segments, 5);
-
-  //   if (fiveSecondGapIdx !== -1) {
-  //     //create a new 4 second segment between 2 segments with a large enough gap
-  //     const newSegment = createNewSegmentObject(
-  //       segments,
-  //       firstClip,
-  //       secondClip,
-  //       mediaLength,
-  //       fiveSecondGapIdx,
-  //       4
-  //     );
-
-  //     //slice the new segment into the existing segments array at the correct index
-  //     const updatedSegments = insertNewSegment(
-  //       segments,
-  //       fiveSecondGapIdx,
-  //       newSegment
-  //     );
-
-  //     //update the segments state
-  //     setSegments(updatedSegments);
-
-  //     //move the playhead to the start of the new segment
-  //     myPeaks.player.seek(newSegment.startTime);
-  //   } else if (fiveSecondGapIdx === -1) {
-  //     alert(
-  //       "There are no gaps available for a new clip. You will need to delete one"
-  //     );
-  //   }
-  // }
 };
 //////////////////////////////////////////////////////////////////////
 
