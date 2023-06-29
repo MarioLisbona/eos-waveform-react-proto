@@ -16,7 +16,6 @@ import {
   deleteAllSegments,
   createAllSegments,
   handleAddSegment,
-  clickToAddSegment,
   editClipStartEndPoints,
 } from "../../lib/waveform-utils";
 import ClipGridHeader from "./components/ClipGridHeader";

@@ -1,7 +1,6 @@
 import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 import { TestSegmentProps } from "../types";
 import { ChangeEvent } from "react";
-import { insertNewSegment } from "./general-utils";
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -199,77 +198,6 @@ export const handleAddSegment = (
     myPeaks.player.seek(newSegment.startTime);
   } else {
     alert("Invalid playhead position");
-  }
-};
-//////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////
-//
-//             Create new segment on double click
-//
-//             Handles a adding a new segment when the zoomview window
-//             is double clicked. A new 8 second clip will be created
-//             where the user has double clicked. The double click location
-//             will be the center point of the new 8 second segment
-//
-//
-export const clickToAddSegment = (
-  segments: TestSegmentProps[],
-  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
-  myPeaks: PeaksInstance
-) => {
-  console.log("inside clickToAddSegment", segments);
-  //create playhead and upper and lower boundaries based on playhead position
-  const playheadPosition = myPeaks.player.getCurrentTime();
-  const segUpperBound = playheadPosition + 8;
-  const segLowerBound = playheadPosition;
-  const mediaEndTime = myPeaks.player.getDuration();
-
-  //asses whether the upper and lower boundaries of the playhead fit in the gap between clips
-  //clip idx is returned
-  const gapIdx = segments.findIndex((seg, idx, arr) => {
-    if (idx === 0) {
-      return playheadPosition > 0 && segUpperBound < arr[idx].startTime;
-    }
-    if (idx === arr.length - 1) {
-      return (
-        playheadPosition > arr[idx].endTime && segUpperBound < mediaEndTime
-      );
-    }
-    if (idx + 1 < arr.length) {
-      return (
-        arr[idx + 1].startTime > segUpperBound &&
-        arr[idx].endTime < segLowerBound
-      );
-    }
-  });
-
-  //if the return value is not -1 a gap has been found
-  //create a new segment
-  if (gapIdx !== -1) {
-    const newSegment = {
-      id: segments.length.toString(),
-      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
-      startTime: playheadPosition,
-      endTime: playheadPosition + 8,
-      editable: true,
-      color: "#1E1541",
-      labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
-      formErrors: {
-        fileNameError: false,
-        startTimeError: false,
-        endTimeError: false,
-        isCreated: false,
-      },
-    };
-    //slice the new segment into the existing segments array at the correct index
-    const updatedSegments = insertNewSegment(segments, gapIdx, newSegment);
-
-    //update the segments
-    setSegments(updatedSegments);
-
-    //move the playhead to the start of the new segment
-    myPeaks.player.seek(newSegment.startTime);
   }
 };
 //////////////////////////////////////////////////////////////////////
