@@ -83,6 +83,21 @@ export const handleAddSegment = (
   const mediaLength = myPeaks.player.getDuration()!;
   const playheadPosition = myPeaks.player.getCurrentTime();
 
+  //function to return true if the playhead postition is between the start and endtime of a clip
+  const playheadIsBetween = (playhead: number, start: number, end: number) => {
+    return (playhead - start) * (playhead - end) <= 0;
+  };
+  //map over the segment and call playheadIsBetween
+  //if any element is true, the playhead is between the start and end of an existing clip
+  const invalidPlayheadPosition = segments
+    .map((seg) => {
+      return playheadIsBetween(playheadPosition, seg.startTime, seg.endTime);
+    })
+    .includes(true);
+
+  console.log({ invalidPlayheadPosition });
+
+  //First clip (Top) being created in an empty timeline
   if (firstClip) {
     const newSegment = createNewSegmentObject(
       segments,
@@ -99,7 +114,13 @@ export const handleAddSegment = (
 
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
-  } else if (secondClip) {
+  } else if (
+    secondClip &&
+    !invalidPlayheadPosition &&
+    playheadPosition > segments[0].startTime
+  ) {
+    //Seconde Clip (Tail) being created only if playhead is not between start and end of existing clip
+    //and playhead is not before first (Top) clip
     const newSegment = createNewSegmentObject(
       segments,
       firstClip,
