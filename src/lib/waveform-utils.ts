@@ -144,9 +144,29 @@ export const handleAddSegment = (
     myPeaks.player.seek(newSegment.startTime);
   } else if (
     !invalidPlayheadPosition &&
-    playheadPosition > segments[0].startTime
+    playheadPosition > segments[0].startTime &&
+    playheadPosition + mediaLength * 0.03 <
+      segments[segments.length - 1].startTime
   ) {
     console.log("adding new clips at the playhead position", playheadPosition);
+
+    const newSegment = {
+      id: segments.length.toString(),
+      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
+      startTime: playheadPosition,
+      endTime: playheadPosition + mediaLength * 0.03,
+      editable: true,
+      color: "#1E1541",
+      labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
+      formErrors: {
+        fileNameError: false,
+        startTimeError: false,
+        endTimeError: false,
+        isCreated: false,
+      },
+    };
+
+    console.log({ newSegment });
   } else {
     console.log("Invalid position");
   }
