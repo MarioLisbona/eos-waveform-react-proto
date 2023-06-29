@@ -1,4 +1,16 @@
-import { Flex, Button } from "@chakra-ui/react";
+import {
+  Flex,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Text,
+} from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
 import Peaks, { PeaksInstance, PeaksOptions, SegmentDragEvent } from "peaks.js";
@@ -21,6 +33,8 @@ import {
 import ClipGridHeader from "./components/ClipGridHeader";
 
 export default function WaveForm() {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   //////////////////////////////////////////////////////////////////////
   //
   //
@@ -56,6 +70,7 @@ export default function WaveForm() {
   const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
   const [segments, setSegments] =
     useState<TestSegmentProps[]>(testSegmentsSmall);
+  const [clipOverlap, setClipOverlap] = useState<boolean>(false);
 
   // create function to create instance of peaks
   // useCallback means this will only render a single instance of peaks
@@ -125,7 +140,7 @@ export default function WaveForm() {
 
   //Adds a new segment to the zoomview on double clicked
   const handleZoomviewDblClick = () => {
-    handleAddSegment(segments, setSegments, myPeaks!);
+    handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
   };
   //////////////////////////////////////////////////////////////////////
 
@@ -160,6 +175,27 @@ export default function WaveForm() {
 
   return (
     <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Unable to Add Segment</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text textStyle={"smContext"}></Text>
+            {clipOverlap
+              ? `There is not enough room for your clip. Please choose a gap larger than ${(
+                  myPeaks?.player.getDuration()! * 0.03
+                ).toFixed(1)} seconds`
+              : "A clip already exists at that position, clips cannot overlap. Please choose an empty gap on the timeline"}
+          </ModalBody>
+
+          <ModalFooter>
+            <Button variant={"brandPrimaryMobileNav"} mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Flex
         justify={"center"}
         align={"center"}
@@ -180,7 +216,15 @@ export default function WaveForm() {
         <Flex>
           <Button
             variant={"waveformBlue"}
-            onClick={() => handleAddSegment(segments, setSegments, myPeaks!)}
+            onClick={() =>
+              handleAddSegment(
+                segments,
+                setSegments,
+                myPeaks!,
+                onOpen,
+                setClipOverlap
+              )
+            }
           >
             Add Segment
           </Button>

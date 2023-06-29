@@ -71,7 +71,9 @@ export const editClipStartEndPoints = (
 export const handleAddSegment = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
-  myPeaks: PeaksInstance
+  myPeaks: PeaksInstance,
+  onOpen: () => void,
+  setClipOverlap: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const firstClip = segments.length === 0;
   const secondClip = segments.length === 1;
@@ -164,6 +166,37 @@ export const handleAddSegment = (
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
   } else if (
+    secondClip &&
+    !invalidPlayheadPosition &&
+    playheadPosition < segments[0].startTime
+  ) {
+    //swapping Top and tail clips if second clip added is before original Top clip
+    segments[0].fileName = "Tail";
+    segments[0].labelText = "Tail";
+
+    const newSegment = {
+      id: segments.length.toString(),
+      fileName: "Top",
+      startTime: playheadPosition,
+      endTime: playheadPosition + mediaLength * 0.03,
+      editable: true,
+      color: "#1E1541",
+      labelText: "Top",
+      formErrors: {
+        fileNameError: false,
+        startTimeError: false,
+        endTimeError: false,
+        isCreated: false,
+      },
+    };
+
+    //add new segment to the segments array, sort it by start time and update segments state
+    const updatedSegments = [...segments, newSegment];
+    setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
+
+    //move the playhead to the start of the new segment
+    myPeaks.player.seek(newSegment.startTime);
+  } else if (
     !invalidPlayheadPosition &&
     validGapLength !== -1
     // playheadPosition > segments[0].startTime &&
@@ -186,14 +219,15 @@ export const handleAddSegment = (
       },
     };
 
-    //add new segment to the segments array, sort it by sart time and update segments state
+    //add new segment to the segments array, sort it by start time and update segments state
     const updatedSegments = [...segments, newSegment];
     setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
 
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
   } else {
-    alert("Invalid playhead position");
+    invalidPlayheadPosition ? setClipOverlap(false) : setClipOverlap(true);
+    onOpen();
   }
 };
 //////////////////////////////////////////////////////////////////////
