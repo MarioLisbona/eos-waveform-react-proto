@@ -144,6 +144,7 @@ export const handleAddSegment = (
 
   // Check the gaps between segments[1] and segments[n-2] to see if they are
   //large enough to contain the new clip length
+  // eslint-disable-next-line
   const validGapLength = segments.findIndex((seg, idx, arr) => {
     if (idx + 1 < arr.length) {
       return (
