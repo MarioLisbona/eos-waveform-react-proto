@@ -37,16 +37,57 @@ export const editClipStartEndPoints = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
 ) => {
+  //id for the current clip being edited
+  const segmentId = evt.segment.id;
+  const startMarker = evt.startMarker;
+
+  //function to return true if the timecode is between the start and end of a clip
+  const timecodeIsBetweenClip = (
+    timecode: number,
+    start: number,
+    end: number
+  ) => {
+    return (timecode - start) * (timecode - end) <= 0;
+  };
+
   const newSegState = segments.map((seg) => {
-    if (seg.id === evt.segment.id && evt.startMarker) {
+    if (seg.id === segmentId && startMarker) {
+      //map over the segments array, except for current clip index and call timecodeIsBetweenClip
+      //returns true if any element contains the timecode for the new start time
+      const invalidStartTimePositions = segments
+        .map((seg) => {
+          if (seg.id !== segmentId)
+            return timecodeIsBetweenClip(
+              evt.segment.startTime,
+              seg.startTime,
+              seg.endTime
+            );
+          return seg;
+        })
+        .includes(true);
       return {
         ...seg,
-        startTime: evt.segment.startTime,
+        startTime: invalidStartTimePositions
+          ? seg.startTime
+          : evt.segment.startTime,
       };
-    } else if (seg.id === evt.segment.id && !evt.startMarker) {
+    } else if (seg.id === segmentId && !startMarker) {
+      //map over the segments array, except for current clip index and call timecodeIsBetweenClip
+      //returns true if any element contains the timecode for the new start time
+      const invalidStartTimePositions = segments
+        .map((seg) => {
+          if (seg.id !== segmentId)
+            return timecodeIsBetweenClip(
+              evt.segment.endTime,
+              seg.startTime,
+              seg.endTime
+            );
+          return seg;
+        })
+        .includes(true);
       return {
         ...seg,
-        endTime: evt.segment.endTime,
+        endTime: invalidStartTimePositions ? seg.endTime : evt.segment.endTime,
       };
     }
     // otherwise return the segment unchanged
@@ -103,6 +144,7 @@ export const handleAddSegment = (
 
   // Check the gaps between segments[1] and segments[n-2] to see if they are
   //large enough to contain the new clip length
+  // eslint-disable-next-line
   const validGapLength = segments.findIndex((seg, idx, arr) => {
     if (idx + 1 < arr.length) {
       return (
@@ -275,77 +317,6 @@ export const handleFileNameChange = (
 
 //////////////////////////////////////////////////////////////////////
 //
-//             handles start time error checking
-//
-//             start time needs to be greater than previous segments end time
-//
-//             !!This needs some more work!!
-//
-//
-export const handleStartTimeChange = (
-  id: string,
-  evt: ChangeEvent<HTMLInputElement>,
-  segments: TestSegmentProps[],
-  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
-) => {
-  //used for two way bind of start time input element to correct segment in segments
-  const newSegState = segments.map((seg) => {
-    if (seg.id === id) {
-      return {
-        ...seg,
-        startTime:
-          parseInt(evt.target.value) < seg.endTime!
-            ? parseInt(evt.target.value)
-            : 0,
-      };
-    }
-    //otherwise return the segment unchanged
-    return seg;
-  });
-  //use the updated segment to update the segments state
-  setSegments(newSegState);
-};
-//////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////
-//
-//             handles end time error checking
-//
-//             end time needs to be less than next segments start time
-//
-//             !!This needs some more work!!
-//
-//
-export const handleEndTimeChange = (
-  id: string,
-  evt: ChangeEvent<HTMLInputElement>,
-  segments: TestSegmentProps[],
-  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
-  myPeaks: PeaksInstance
-) => {
-  //used for two way bind of end time input element to correct segment in segments
-  const newSegState = segments.map((seg, idx: number) => {
-    if (seg.id === id) {
-      return {
-        ...seg,
-        endTime:
-          parseInt(evt.target.value) > seg.startTime &&
-          parseInt(evt.target.value) < segments[idx + 1].startTime
-            ? parseInt(evt.target.value)
-            : myPeaks.player.getDuration()!,
-      };
-    }
-
-    //otherwise return the segment unchanged
-    return seg;
-  });
-  //use the updated segment to update the segments state
-  setSegments(newSegState);
-};
-//////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////
-//
 //             Delete all segments
 //
 //
@@ -455,3 +426,74 @@ export const deleteSingleSegment = (
 //
 //
 //
+
+//////////////////////////////////////////////////////////////////////
+//
+//             handles start time error checking
+//
+//             start time needs to be greater than previous segments end time
+//
+//             !!This needs some more work!!
+//
+//
+// export const handleStartTimeChange = (
+//   id: string,
+//   evt: ChangeEvent<HTMLInputElement>,
+//   segments: TestSegmentProps[],
+//   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
+// ) => {
+//   //used for two way bind of start time input element to correct segment in segments
+//   const newSegState = segments.map((seg) => {
+//     if (seg.id === id) {
+//       return {
+//         ...seg,
+//         startTime:
+//           parseInt(evt.target.value) < seg.endTime!
+//             ? parseInt(evt.target.value)
+//             : 0,
+//       };
+//     }
+//     //otherwise return the segment unchanged
+//     return seg;
+//   });
+//   //use the updated segment to update the segments state
+//   setSegments(newSegState);
+// };
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+//
+//             handles end time error checking
+//
+//             end time needs to be less than next segments start time
+//
+//             !!This needs some more work!!
+//
+//
+// export const handleEndTimeChange = (
+//   id: string,
+//   evt: ChangeEvent<HTMLInputElement>,
+//   segments: TestSegmentProps[],
+//   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
+//   myPeaks: PeaksInstance
+// ) => {
+//   //used for two way bind of end time input element to correct segment in segments
+//   const newSegState = segments.map((seg, idx: number) => {
+//     if (seg.id === id) {
+//       return {
+//         ...seg,
+//         endTime:
+//           parseInt(evt.target.value) > seg.startTime &&
+//           parseInt(evt.target.value) < segments[idx + 1].startTime
+//             ? parseInt(evt.target.value)
+//             : myPeaks.player.getDuration()!,
+//       };
+//     }
+
+//     //otherwise return the segment unchanged
+//     return seg;
+//   });
+//   //use the updated segment to update the segments state
+//   setSegments(newSegState);
+// };
+//////////////////////////////////////////////////////////////////////
