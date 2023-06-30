@@ -282,29 +282,29 @@ export const handleFileNameChange = (
 //             !!This needs some more work!!
 //
 //
-export const handleStartTimeChange = (
-  id: string,
-  evt: ChangeEvent<HTMLInputElement>,
-  segments: TestSegmentProps[],
-  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
-) => {
-  //used for two way bind of start time input element to correct segment in segments
-  const newSegState = segments.map((seg) => {
-    if (seg.id === id) {
-      return {
-        ...seg,
-        startTime:
-          parseInt(evt.target.value) < seg.endTime!
-            ? parseInt(evt.target.value)
-            : 0,
-      };
-    }
-    //otherwise return the segment unchanged
-    return seg;
-  });
-  //use the updated segment to update the segments state
-  setSegments(newSegState);
-};
+// export const handleStartTimeChange = (
+//   id: string,
+//   evt: ChangeEvent<HTMLInputElement>,
+//   segments: TestSegmentProps[],
+//   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
+// ) => {
+//   //used for two way bind of start time input element to correct segment in segments
+//   const newSegState = segments.map((seg) => {
+//     if (seg.id === id) {
+//       return {
+//         ...seg,
+//         startTime:
+//           parseInt(evt.target.value) < seg.endTime!
+//             ? parseInt(evt.target.value)
+//             : 0,
+//       };
+//     }
+//     //otherwise return the segment unchanged
+//     return seg;
+//   });
+//   //use the updated segment to update the segments state
+//   setSegments(newSegState);
+// };
 //////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////
@@ -316,32 +316,32 @@ export const handleStartTimeChange = (
 //             !!This needs some more work!!
 //
 //
-export const handleEndTimeChange = (
-  id: string,
-  evt: ChangeEvent<HTMLInputElement>,
-  segments: TestSegmentProps[],
-  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
-  myPeaks: PeaksInstance
-) => {
-  //used for two way bind of end time input element to correct segment in segments
-  const newSegState = segments.map((seg, idx: number) => {
-    if (seg.id === id) {
-      return {
-        ...seg,
-        endTime:
-          parseInt(evt.target.value) > seg.startTime &&
-          parseInt(evt.target.value) < segments[idx + 1].startTime
-            ? parseInt(evt.target.value)
-            : myPeaks.player.getDuration()!,
-      };
-    }
+// export const handleEndTimeChange = (
+//   id: string,
+//   evt: ChangeEvent<HTMLInputElement>,
+//   segments: TestSegmentProps[],
+//   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
+//   myPeaks: PeaksInstance
+// ) => {
+//   //used for two way bind of end time input element to correct segment in segments
+//   const newSegState = segments.map((seg, idx: number) => {
+//     if (seg.id === id) {
+//       return {
+//         ...seg,
+//         endTime:
+//           parseInt(evt.target.value) > seg.startTime &&
+//           parseInt(evt.target.value) < segments[idx + 1].startTime
+//             ? parseInt(evt.target.value)
+//             : myPeaks.player.getDuration()!,
+//       };
+//     }
 
-    //otherwise return the segment unchanged
-    return seg;
-  });
-  //use the updated segment to update the segments state
-  setSegments(newSegState);
-};
+//     //otherwise return the segment unchanged
+//     return seg;
+//   });
+//   //use the updated segment to update the segments state
+//   setSegments(newSegState);
+// };
 //////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////
