@@ -49,22 +49,21 @@ export const editClipStartEndPoints = (
     return (timecode - start) * (timecode - end) <= 0;
   };
 
-  //map over the segments array, except for current clip index and call timecodeIsBetweenClip
-  //returns true if any element contains the timecode for the new start time
-  const invalidStartTimePositions = segments
-    .map((seg) => {
-      if (seg.id !== segmentId)
-        return timecodeIsBetweenClip(
-          evt.segment.startTime,
-          seg.startTime,
-          seg.endTime
-        );
-      return seg;
-    })
-    .includes(true);
-
   const newSegState = segments.map((seg) => {
     if (seg.id === evt.segment.id && evt.startMarker) {
+      //map over the segments array, except for current clip index and call timecodeIsBetweenClip
+      //returns true if any element contains the timecode for the new start time
+      const invalidStartTimePositions = segments
+        .map((seg) => {
+          if (seg.id !== segmentId)
+            return timecodeIsBetweenClip(
+              evt.segment.startTime,
+              seg.startTime,
+              seg.endTime
+            );
+          return seg;
+        })
+        .includes(true);
       return {
         ...seg,
         startTime: invalidStartTimePositions
@@ -72,9 +71,22 @@ export const editClipStartEndPoints = (
           : evt.segment.startTime,
       };
     } else if (seg.id === evt.segment.id && !evt.startMarker) {
+      //map over the segments array, except for current clip index and call timecodeIsBetweenClip
+      //returns true if any element contains the timecode for the new start time
+      const invalidStartTimePositions = segments
+        .map((seg) => {
+          if (seg.id !== segmentId)
+            return timecodeIsBetweenClip(
+              evt.segment.endTime,
+              seg.startTime,
+              seg.endTime
+            );
+          return seg;
+        })
+        .includes(true);
       return {
         ...seg,
-        endTime: evt.segment.endTime,
+        endTime: invalidStartTimePositions ? seg.endTime : evt.segment.endTime,
       };
     }
     // otherwise return the segment unchanged
