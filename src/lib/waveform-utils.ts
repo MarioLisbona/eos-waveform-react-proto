@@ -39,6 +39,7 @@ export const editClipStartEndPoints = (
 ) => {
   //id for the current clip being edited
   const segmentId = evt.segment.id;
+  const startMarker = evt.startMarker;
 
   //function to return true if the timecode is between the start and end of a clip
   const timecodeIsBetweenClip = (
@@ -50,7 +51,7 @@ export const editClipStartEndPoints = (
   };
 
   const newSegState = segments.map((seg) => {
-    if (seg.id === segmentId && evt.startMarker) {
+    if (seg.id === segmentId && startMarker) {
       //map over the segments array, except for current clip index and call timecodeIsBetweenClip
       //returns true if any element contains the timecode for the new start time
       const invalidStartTimePositions = segments
@@ -70,7 +71,7 @@ export const editClipStartEndPoints = (
           ? seg.startTime
           : evt.segment.startTime,
       };
-    } else if (seg.id === segmentId && !evt.startMarker) {
+    } else if (seg.id === segmentId && !startMarker) {
       //map over the segments array, except for current clip index and call timecodeIsBetweenClip
       //returns true if any element contains the timecode for the new start time
       const invalidStartTimePositions = segments
