@@ -67,9 +67,11 @@ export const editClipStartEndPoints = (
         .includes(true);
       return {
         ...segment,
-        startTime: invalidStartTimePositions
-          ? segment.startTime
-          : evt.segment.startTime,
+        startTime:
+          invalidStartTimePositions ||
+          evt.segment.startTime < arr[idx - 1].startTime
+            ? segment.startTime
+            : evt.segment.startTime,
       };
     } else if (segment.id === segmentId && !startMarker) {
       //map over the segments array, except for current clip index and call timecodeIsBetweenClip
