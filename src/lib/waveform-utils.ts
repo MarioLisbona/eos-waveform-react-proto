@@ -2,6 +2,15 @@ import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 import { TestSegmentProps } from "../types";
 import { ChangeEvent } from "react";
 
+//function to return true if the timecode is between the start and end of a clip
+export const timecodeIsBetweenClip = (
+  timecode: number,
+  start: number,
+  end: number
+) => {
+  return (timecode - start) * (timecode - end) <= 0;
+};
+
 //////////////////////////////////////////////////////////////////////
 //
 //
@@ -23,6 +32,67 @@ export const handlePlayheadSeek = (
     : myPeaks.player.seek(selectedSegment!.endTime);
 };
 //////////////////////////////////////////////////////////////////////
+
+export const editClipStartPoint = (
+  evt: SegmentDragEvent,
+  segments: TestSegmentProps[],
+  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
+) => {
+  console.log("editing clip start point");
+  //id for the current clip being edited
+  const segmentId = evt.segment.id;
+
+  const newSegState = segments.map((segment, idx, arr) => {
+    if (segment.id === segmentId) {
+      //map over the segments array, except for current clip index and call timecodeIsBetweenClip
+      //returns true if any element contains the timecode for the new start time
+      const invalidStartTimePositions = segments
+        .map((seg) => {
+          if (seg.id !== segmentId)
+            return timecodeIsBetweenClip(
+              evt.segment.startTime,
+              seg.startTime,
+              seg.endTime
+            );
+          return seg;
+        })
+        .includes(true);
+
+      //error checking for Top clip
+      if (idx === 0) {
+        console.log("moving first clip start time to: ", segment.startTime);
+        return {
+          ...segment,
+          startTime:
+            invalidStartTimePositions || evt.segment.startTime < 0
+              ? segment.startTime
+              : evt.segment.startTime,
+        };
+      } else {
+        return {
+          ...segment,
+          startTime:
+            invalidStartTimePositions ||
+            evt.segment.startTime < arr[idx - 1].startTime
+              ? segment.startTime
+              : evt.segment.startTime,
+        };
+      }
+    }
+    // otherwise return the segment unchanged
+    return segment;
+  });
+  //use the updated segment to update the segments state
+  setSegments(newSegState);
+};
+
+export const editClipEndPoint = (
+  evt: SegmentDragEvent,
+  segments: TestSegmentProps[],
+  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
+) => {
+  console.log("editing clip end point");
+};
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -65,34 +135,62 @@ export const editClipStartEndPoints = (
           return seg;
         })
         .includes(true);
-      return {
-        ...segment,
-        startTime:
-          invalidStartTimePositions ||
-          evt.segment.startTime < arr[idx - 1].startTime
-            ? segment.startTime
-            : evt.segment.startTime,
-      };
-    } else if (segment.id === segmentId && !startMarker) {
-      //map over the segments array, except for current clip index and call timecodeIsBetweenClip
-      //returns true if any element contains the timecode for the new start time
-      const invalidStartTimePositions = segments
-        .map((seg) => {
-          if (seg.id !== segmentId)
-            return timecodeIsBetweenClip(
-              evt.segment.endTime,
-              seg.startTime,
-              seg.endTime
-            );
-          return seg;
-        })
-        .includes(true);
-      return {
-        ...segment,
-        endTime: invalidStartTimePositions
-          ? segment.endTime
-          : evt.segment.endTime,
-      };
+
+      //error checking for Top clip
+      if (idx === 0) {
+        console.log("moving first clip start time to: ", segment.startTime);
+        return {
+          ...segment,
+          startTime:
+            invalidStartTimePositions || evt.segment.startTime < 0
+              ? segment.startTime
+              : evt.segment.startTime,
+        };
+      } else {
+        return {
+          ...segment,
+          startTime:
+            invalidStartTimePositions ||
+            evt.segment.startTime < arr[idx - 1].startTime
+              ? segment.startTime
+              : evt.segment.startTime,
+        };
+      }
+      // } else if (segment.id === segmentId && !startMarker) {
+      //   //map over the segments array, except for current clip index and call timecodeIsBetweenClip
+      //   //returns true if any element contains the timecode for the new start time
+      //   const invalidStartTimePositions = segments
+      //     .map((seg) => {
+      //       if (seg.id !== segmentId)
+      //         return timecodeIsBetweenClip(
+      //           evt.segment.endTime,
+      //           seg.startTime,
+      //           seg.endTime
+      //         );
+      //       return seg;
+      //     })
+      //     .includes(true);
+
+      //   if (idx === segments.length - 1) {
+      //     console.log("moving las clips end point");
+      //     return {
+      //       ...segment,
+      //       endTime:
+      //         evt.segment.endTime < segment.startTime
+      //           ? segment.endTime
+      //           : evt.segment.endTime,
+      //     };
+      //   } else {
+      //     return {
+      //       ...segment,
+      //       endTime:
+      //         evt.segment.endTime < segment.startTime ||
+      //         invalidStartTimePositions ||
+      //         evt.segment.endTime > arr[idx + 1].endTime
+      //           ? segment.endTime
+      //           : evt.segment.endTime,
+      //     };
+      //   }
     }
     // otherwise return the segment unchanged
     return segment;

@@ -29,6 +29,8 @@ import {
   createAllSegments,
   handleAddSegment,
   editClipStartEndPoints,
+  editClipStartPoint,
+  editClipEndPoint,
 } from "../../lib/waveform-utils";
 import ClipGridHeader from "./components/ClipGridHeader";
 
@@ -137,7 +139,10 @@ export default function WaveForm() {
   //sets the new end time for a segment if the end point is dragged
   // eslint-disable-next-line
   const handleClipDragEnd = (evt: SegmentDragEvent) => {
-    editClipStartEndPoints(evt, segments, setSegments);
+    // editClipStartEndPoints(evt, segments, setSegments);
+    evt.startMarker
+      ? editClipStartPoint(evt, segments, setSegments)
+      : editClipEndPoint(evt, segments, setSegments);
   };
 
   //Adds a new segment to the zoomview on double clicked
