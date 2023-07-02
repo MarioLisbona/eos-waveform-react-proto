@@ -50,8 +50,8 @@ export const editClipStartEndPoints = (
     return (timecode - start) * (timecode - end) <= 0;
   };
 
-  const newSegState = segments.map((seg) => {
-    if (seg.id === segmentId && startMarker) {
+  const newSegState = segments.map((segment, idx, arr) => {
+    if (segment.id === segmentId && startMarker) {
       //map over the segments array, except for current clip index and call timecodeIsBetweenClip
       //returns true if any element contains the timecode for the new start time
       const invalidStartTimePositions = segments
@@ -66,12 +66,12 @@ export const editClipStartEndPoints = (
         })
         .includes(true);
       return {
-        ...seg,
+        ...segment,
         startTime: invalidStartTimePositions
-          ? seg.startTime
+          ? segment.startTime
           : evt.segment.startTime,
       };
-    } else if (seg.id === segmentId && !startMarker) {
+    } else if (segment.id === segmentId && !startMarker) {
       //map over the segments array, except for current clip index and call timecodeIsBetweenClip
       //returns true if any element contains the timecode for the new start time
       const invalidStartTimePositions = segments
@@ -86,12 +86,14 @@ export const editClipStartEndPoints = (
         })
         .includes(true);
       return {
-        ...seg,
-        endTime: invalidStartTimePositions ? seg.endTime : evt.segment.endTime,
+        ...segment,
+        endTime: invalidStartTimePositions
+          ? segment.endTime
+          : evt.segment.endTime,
       };
     }
     // otherwise return the segment unchanged
-    return seg;
+    return segment;
   });
   //use the updated segment to update the segments state
   setSegments(newSegState);
