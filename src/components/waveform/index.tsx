@@ -140,7 +140,8 @@ export default function WaveForm() {
   const handleClipDragEnd = (evt: SegmentDragEvent) => {
     evt.startMarker
       ? editClipStartPoint(evt, segments, setSegments)
-      : editClipEndPoint(evt, segments, setSegments);
+      : // : editClipEndPoint(evt, segments, setSegments);
+        console.log("no editing endpoint yet");
   };
 
   //Adds a new segment to the zoomview on double clicked
@@ -163,6 +164,7 @@ export default function WaveForm() {
     //remove all peaks segments then add with new segments state - avoids duplicates
     myPeaks?.segments.removeAll();
     myPeaks?.segments.add(segments);
+    console.log("updating segments");
   }, [myPeaks, segments]);
 
   useEffect(() => {

@@ -61,19 +61,19 @@ export const editClipStartPoint = (
       //error checking for Top clip
       if (idx === 0) {
         console.log("moving first clip start time to: ", segment.startTime);
-        return {
-          ...segment,
-          startTime:
-            invalidStartTimePositions || evt.segment.startTime < 0
-              ? segment.startTime
-              : evt.segment.startTime,
-        };
+        // return {
+        //   ...segment,
+        //   startTime:
+        //     invalidStartTimePositions || evt.segment.startTime < 0
+        //       ? segment.startTime
+        //       : evt.segment.startTime,
+        // };
       } else {
         return {
           ...segment,
           startTime:
-            invalidStartTimePositions ||
-            evt.segment.startTime < arr[idx - 1].startTime
+            evt.segment.startTime < arr[idx - 1].endTime ||
+            evt.segment.startTime > segment.endTime - 0.05
               ? segment.startTime
               : evt.segment.startTime,
         };
