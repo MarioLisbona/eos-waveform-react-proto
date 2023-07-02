@@ -92,6 +92,50 @@ export const editClipEndPoint = (
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
 ) => {
   console.log("editing clip end point");
+  //id for the current clip being edited
+  const segmentId = evt.segment.id;
+
+  const newSegState = segments.map((segment, idx, arr) => {
+    if (segment.id === segmentId) {
+      //map over the segments array, except for current clip index and call timecodeIsBetweenClip
+      //returns true if any element contains the timecode for the new start time
+      const invalidStartTimePositions = segments
+        .map((seg) => {
+          if (seg.id !== segmentId)
+            return timecodeIsBetweenClip(
+              evt.segment.startTime,
+              seg.startTime,
+              seg.endTime
+            );
+          return seg;
+        })
+        .includes(true);
+
+      //error checking for Tail clip
+      if (idx === segments.length - 1) {
+        return {
+          ...segment,
+          endTime:
+            evt.segment.endTime < segment.startTime
+              ? segment.endTime
+              : evt.segment.endTime,
+        };
+      } else {
+        return {
+          ...segment,
+          endTime:
+            evt.segment.endTime < segment.startTime ||
+            evt.segment.endTime > arr[idx + 1].startTime
+              ? segment.endTime
+              : evt.segment.endTime,
+        };
+      }
+    }
+    // otherwise return the segment unchanged
+    return segment;
+  });
+  //use the updated segment to update the segments state
+  setSegments(newSegState);
 };
 
 //////////////////////////////////////////////////////////////////////
