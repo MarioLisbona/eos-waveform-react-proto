@@ -58,7 +58,7 @@ export const editClipStartPoint = (
         })
         .includes(true);
 
-      //error checking for Top clip
+      //error checking for Top clip else all other clips
       if (idx === 0) {
         console.log("moving first clip start time to: ", segment.startTime);
         return {
@@ -111,12 +111,17 @@ export const editClipEndPoint = (
         })
         .includes(true);
 
-      //error checking for Tail clip
+      //error checking for Tail clip else all other clips
       if (idx === segments.length - 1) {
+        console.log(
+          "editing last clip endtime: PH and clip start time",
+          evt.segment.endTime,
+          segment.startTime
+        );
         return {
           ...segment,
           endTime:
-            evt.segment.endTime < segment.startTime
+            evt.segment.endTime < segment.startTime + 0.05
               ? segment.endTime
               : evt.segment.endTime,
         };
@@ -124,8 +129,8 @@ export const editClipEndPoint = (
         return {
           ...segment,
           endTime:
-            evt.segment.endTime < segment.startTime ||
-            evt.segment.endTime > arr[idx + 1].startTime
+            evt.segment.endTime > arr[idx + 1].startTime ||
+            evt.segment.endTime < segment.startTime + 0.05
               ? segment.endTime
               : evt.segment.endTime,
         };
