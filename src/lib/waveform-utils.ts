@@ -33,6 +33,14 @@ export const handlePlayheadSeek = (
 };
 //////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////
+//
+//             Edit segment start points
+//
+//             Handles a clip start point being dragged
+//             to a new position on the zoomview window
+//
+//
 export const editClipStartPoint = (
   evt: SegmentDragEvent,
   segments: TestSegmentProps[],
@@ -44,20 +52,6 @@ export const editClipStartPoint = (
 
   const newSegState = segments.map((segment, idx, arr) => {
     if (segment.id === segmentId) {
-      //map over the segments array, except for current clip index and call timecodeIsBetweenClip
-      //returns true if any element contains the timecode for the new start time
-      const invalidStartTimePositions = segments
-        .map((seg) => {
-          if (seg.id !== segmentId)
-            return timecodeIsBetweenClip(
-              evt.segment.startTime,
-              seg.startTime,
-              seg.endTime
-            );
-          return seg;
-        })
-        .includes(true);
-
       //error checking for Top clip else all other clips
       if (idx === 0) {
         console.log("moving first clip start time to: ", segment.startTime);
@@ -85,6 +79,16 @@ export const editClipStartPoint = (
   //use the updated segment to update the segments state
   setSegments(newSegState);
 };
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+//
+//             Edit segment end points
+//
+//             Handles a clip end point being dragged
+//             to a new position on the zoomview window
+//
+//
 
 export const editClipEndPoint = (
   evt: SegmentDragEvent,
@@ -97,20 +101,6 @@ export const editClipEndPoint = (
 
   const newSegState = segments.map((segment, idx, arr) => {
     if (segment.id === segmentId) {
-      //map over the segments array, except for current clip index and call timecodeIsBetweenClip
-      //returns true if any element contains the timecode for the new start time
-      const invalidStartTimePositions = segments
-        .map((seg) => {
-          if (seg.id !== segmentId)
-            return timecodeIsBetweenClip(
-              evt.segment.startTime,
-              seg.startTime,
-              seg.endTime
-            );
-          return seg;
-        })
-        .includes(true);
-
       //error checking for Tail clip else all other clips
       if (idx === segments.length - 1) {
         console.log(
@@ -142,16 +132,6 @@ export const editClipEndPoint = (
   //use the updated segment to update the segments state
   setSegments(newSegState);
 };
-
-//////////////////////////////////////////////////////////////////////
-//
-//             Edit segment start and end points
-//
-//             Handles a clip start or end point being dragged
-//             to a new position on the zoomview window
-//
-//
-
 //////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////
