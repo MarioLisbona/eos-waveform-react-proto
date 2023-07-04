@@ -55,7 +55,10 @@ export const createTopTail = (
     const updatedSegment = segments.map((seg) => {
       return {
         ...seg,
-        endTime: playheadPosition,
+        endTime:
+          playheadPosition < seg.startTime + 0.05
+            ? seg.endTime
+            : playheadPosition,
       };
     });
 
