@@ -154,7 +154,8 @@ export default function WaveForm() {
   //Adds a new segment to the zoomview on double clicked
   // eslint-disable-next-line
   const handleZoomviewDblClick = () => {
-    handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
+    segments.length > 1 &&
+      handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
   };
 
   const handleOverviewClick = (evt: WaveformViewMouseEvent) => {
