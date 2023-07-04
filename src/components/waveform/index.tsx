@@ -147,6 +147,7 @@ export default function WaveForm() {
       handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
   };
 
+  // eslint-disable-next-line
   const handleOverviewClick = (evt: WaveformViewMouseEvent) => {
     createTopTail(
       evt.time,
