@@ -186,7 +186,7 @@ export default function WaveForm() {
       myPeaks?.off("overview.dblclick", handleZoomviewDblClick);
       myPeaks?.off("overview.click", handleOverviewClick);
     };
-  }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick]);
+  }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick, handleOverviewClick]);
 
   return (
     <>
