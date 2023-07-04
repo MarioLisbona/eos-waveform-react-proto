@@ -374,7 +374,8 @@ export const deleteAllSegments = (
 //set segments to empty array and destroy peaks instance to free resources
 export const createAllSegments = (
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
-  segments: TestSegmentProps[]
+  segments: TestSegmentProps[],
+  setAllClipsCreated: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const updatedSegments = segments.map((seg) => {
     return {
@@ -391,6 +392,7 @@ export const createAllSegments = (
   });
 
   setSegments(updatedSegments);
+  setAllClipsCreated(true);
   console.log(
     "Exporting clip data and destroying Peaks instance",
     updatedSegments
