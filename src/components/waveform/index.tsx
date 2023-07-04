@@ -1,16 +1,4 @@
-import {
-  Flex,
-  Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Button, useDisclosure } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
 import Peaks, {
@@ -38,6 +26,7 @@ import {
   createTopTail,
 } from "../../lib/waveform-utils";
 import ClipGridHeader from "./components/ClipGridHeader";
+import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
 
 export default function WaveForm() {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -201,7 +190,7 @@ export default function WaveForm() {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      {/* <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Unable to Add Segment</ModalHeader>
@@ -221,7 +210,13 @@ export default function WaveForm() {
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal> */}
+      <InvalidTCPositionModal
+        isOpen={isOpen}
+        onClose={onClose}
+        clipOverlap={clipOverlap}
+        myPeaks={myPeaks!}
+      />
       <Flex
         justify={"center"}
         align={"center"}
