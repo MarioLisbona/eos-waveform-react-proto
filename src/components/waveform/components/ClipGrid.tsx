@@ -104,7 +104,7 @@ export default function ClipGrid({
                   border={"1px solid lightgray"}
                   align={"center"}
                 >
-                  <Timecode format="HH:mm:ss.SSS" time={seg.endTime * 1000} />
+                  <Timecode format="HH:mm:ss" time={seg.endTime * 1000} />
                 </Flex>
               </Tooltip>
             </GridItem>
