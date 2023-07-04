@@ -18,12 +18,49 @@ export const timecodeIsBetweenClip = (
 //
 //
 export const createTopTail = (
-  playheadPos: number,
+  playheadPosition: number,
+  mediaLength: number,
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
 ) => {
-  console.log("playhyead position", playheadPos);
-  console.log("segments length", segments.length);
+  const topTailSegment = {
+    id: "Top-n-Tail-Segment",
+    fileName: "Top-n-Tail-Segment",
+    startTime: 0,
+    endTime: mediaLength,
+    editable: true,
+    color: "#1E1541",
+    labelText: "Top-n-Tail-Segment",
+    formErrors: {
+      fileNameError: false,
+      startTimeError: false,
+      endTimeError: false,
+      isCreated: false,
+    },
+  };
+
+  // if (segments.length === 0) {
+  //   topTailSegment.startTime = playheadPosition;
+  // } else if (segments.length === 1) {
+  //   console.log("sarttime", topTailSegment.startTime);
+  //   topTailSegment.endTime = playheadPosition;
+  // }
+
+  if (segments.length === 0) {
+    topTailSegment.startTime = playheadPosition;
+    setSegments([topTailSegment]);
+  }
+
+  if (segments.length === 1) {
+    const updatedSegment = segments.map((seg) => {
+      return {
+        ...seg,
+        endTime: playheadPosition,
+      };
+    });
+
+    setSegments(updatedSegment);
+  }
 };
 //////////////////////////////////////////////////////////////////////
 

@@ -159,7 +159,12 @@ export default function WaveForm() {
   };
 
   const handleOverviewClick = (evt: WaveformViewMouseEvent) => {
-    createTopTail(evt.time, segments, setSegments);
+    createTopTail(
+      evt.time,
+      myPeaks?.player.getDuration()!,
+      segments,
+      setSegments
+    );
   };
   //////////////////////////////////////////////////////////////////////
 
@@ -176,7 +181,6 @@ export default function WaveForm() {
     //remove all peaks segments then add with new segments state - avoids duplicates
     myPeaks?.segments.removeAll();
     myPeaks?.segments.add(segments);
-    console.log("updating segments");
   }, [myPeaks, segments]);
 
   useEffect(() => {
