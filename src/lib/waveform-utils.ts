@@ -14,6 +14,22 @@ export const timecodeIsBetweenClip = (
 //////////////////////////////////////////////////////////////////////
 //
 //
+//              Create Top and Tail on empty timeline
+//
+//
+export const createTopTail = (
+  playheadPos: number,
+  segments: TestSegmentProps[],
+  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
+) => {
+  console.log("playhyead position", playheadPos);
+  console.log("segments length", segments.length);
+};
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+//
+//
 //              Playhead seeks to the stat time of the clip
 //              or end of the clip depending on wheher the
 //              sart time or end time are clicked

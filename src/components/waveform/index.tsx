@@ -13,7 +13,12 @@ import {
 } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
-import Peaks, { PeaksInstance, PeaksOptions, SegmentDragEvent } from "peaks.js";
+import Peaks, {
+  PeaksInstance,
+  PeaksOptions,
+  SegmentDragEvent,
+  WaveformViewMouseEvent,
+} from "peaks.js";
 import {
   setPeaksConfig,
   overviewOptionsConfig,
@@ -30,6 +35,7 @@ import {
   handleAddSegment,
   editClipStartPoint,
   editClipEndPoint,
+  createTopTail,
 } from "../../lib/waveform-utils";
 import ClipGridHeader from "./components/ClipGridHeader";
 
@@ -150,6 +156,10 @@ export default function WaveForm() {
   const handleZoomviewDblClick = () => {
     handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
   };
+
+  const handleOverviewClick = (evt: WaveformViewMouseEvent) => {
+    createTopTail(evt.time, segments, setSegments);
+  };
   //////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////////////////
@@ -173,12 +183,14 @@ export default function WaveForm() {
     myPeaks?.on("segments.dragend", handleClipDragEnd);
     myPeaks?.on("zoomview.dblclick", handleZoomviewDblClick);
     myPeaks?.on("overview.dblclick", handleZoomviewDblClick);
+    myPeaks?.on("overview.click", handleOverviewClick);
 
     return () => {
       //cleanup
       myPeaks?.off("segments.dragend", handleClipDragEnd);
       myPeaks?.off("zoomview.dblclick", handleZoomviewDblClick);
       myPeaks?.off("overview.dblclick", handleZoomviewDblClick);
+      myPeaks?.off("overview.click", handleOverviewClick);
     };
   }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick]);
 
