@@ -166,6 +166,7 @@ export const handleAddSegment = (
   ) => {
     return (timecode - start) * (timecode - end) <= 0;
   };
+
   //map over the segment and call playheadIsBetween
   //if any element is true, the playhead is between the start and end of an existing clip
   const invalidPlayheadPosition = segments
@@ -192,21 +193,45 @@ export const handleAddSegment = (
     // return seg; //---> returning seg here to resolving linting error breaks error checking
   });
 
-  if (
-    !invalidPlayheadPosition &&
-    validGapLength !== -1
-    // playheadPosition > segments[0].startTime &&
-    // playheadPosition + mediaLength * 0.03 <
-    //   segments[segments.length - 1].startTime
-  ) {
+  if (firstClip) {
     const newSegment = {
       id: segments.length.toString(),
-      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
+      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
       startTime: playheadPosition,
       endTime: playheadPosition + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
-      labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
+      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
+      formErrors: {
+        fileNameError: false,
+        startTimeError: false,
+        endTimeError: false,
+        isCreated: false,
+      },
+    };
+    //update the segments state
+    setSegments([newSegment]);
+    //move the playhead to the start of the new segment
+    myPeaks.player.seek(newSegment.startTime);
+  } else if (
+    secondClip &&
+    !invalidPlayheadPosition &&
+    !timecodeIsBetweenClip(
+      clipUpperBound,
+      segments[0].startTime,
+      segments[0].endTime
+    )
+  ) {
+    //Seconde Clip (Tail) being created only if playhead is not between start and end of existing clip
+    //and playhead is not before first (Top) clip
+    const newSegment = {
+      id: segments.length.toString(),
+      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
+      startTime: playheadPosition,
+      endTime: playheadPosition + mediaLength * 0.03,
+      editable: true,
+      color: "#1E1541",
+      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
         startTimeError: false,
@@ -215,16 +240,46 @@ export const handleAddSegment = (
       },
     };
 
-    //add new segment to the segments array, sort it by start time and update segments state
     const updatedSegments = [...segments, newSegment];
+    //update the segments state
     setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
-
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
-  } else {
-    invalidPlayheadPosition ? setClipOverlap(false) : setClipOverlap(true);
-    onOpen();
   }
+
+  // if (
+  //   !invalidPlayheadPosition &&
+  //   validGapLength !== -1
+  //   // playheadPosition > segments[0].startTime &&
+  //   // playheadPosition + mediaLength * 0.03 <
+  //   //   segments[segments.length - 1].startTime
+  // ) {
+  //   const newSegment = {
+  //     id: segments.length.toString(),
+  //     fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
+  //     startTime: playheadPosition,
+  //     endTime: playheadPosition + mediaLength * 0.03,
+  //     editable: true,
+  //     color: "#1E1541",
+  //     labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
+  //     formErrors: {
+  //       fileNameError: false,
+  //       startTimeError: false,
+  //       endTimeError: false,
+  //       isCreated: false,
+  //     },
+  //   };
+
+  //   //add new segment to the segments array, sort it by start time and update segments state
+  //   const updatedSegments = [...segments, newSegment];
+  //   setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
+
+  //   //move the playhead to the start of the new segment
+  //   myPeaks.player.seek(newSegment.startTime);
+  // } else {
+  //   invalidPlayheadPosition ? setClipOverlap(false) : setClipOverlap(true);
+  //   onOpen();
+  // }
 };
 //////////////////////////////////////////////////////////////////////
 
