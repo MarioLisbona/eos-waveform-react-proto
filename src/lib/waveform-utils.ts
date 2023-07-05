@@ -280,34 +280,9 @@ export const handleAddSegment = (
   } else if (
     !invalidPlayheadPosition &&
     validGapLength === -1 &&
-    startClipValidGapLength
+    (startClipValidGapLength || endClipValidGapLength)
   ) {
     console.log("clicking before first clip, there is enough gap");
-    const newSegment = {
-      id: segments.length.toString(),
-      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
-      startTime: playheadPosition,
-      endTime: playheadPosition + mediaLength * 0.03,
-      editable: true,
-      color: "#1E1541",
-      labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
-      formErrors: {
-        fileNameError: false,
-        startTimeError: false,
-        endTimeError: false,
-        isCreated: false,
-      },
-    };
-
-    //add new segment to the segments array, sort it by start time and update segments state
-    const updatedSegments = [...segments, newSegment];
-    setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
-  } else if (
-    !invalidPlayheadPosition &&
-    validGapLength === -1 &&
-    endClipValidGapLength
-  ) {
-    console.log("clicking after last clip, there is enough gap");
     const newSegment = {
       id: segments.length.toString(),
       fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
