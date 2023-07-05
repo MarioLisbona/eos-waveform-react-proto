@@ -494,6 +494,9 @@ export const createSingleSegment = (
     //otherwise return the segment unchanged
     return seg;
   });
+
+  //logging the clip
+  console.log("Clip Created - ", newSegState);
   //use the updated segment to update the segments state
   setSegments(newSegState);
 };
