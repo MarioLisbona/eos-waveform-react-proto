@@ -157,6 +157,7 @@ export const handleAddSegment = (
   const mediaLength = myPeaks.player.getDuration()!;
   const playheadPosition = myPeaks.player.getCurrentTime();
   const clipUpperBound = playheadPosition + mediaLength * 0.03;
+  const timelineUpperBound = mediaLength - 1;
 
   //function to return true if the timecode is between the start and end of a clip
   const timecodeIsBetweenClip = (
@@ -193,7 +194,7 @@ export const handleAddSegment = (
     // return seg; //---> returning seg here to resolving linting error breaks error checking
   });
 
-  if (firstClip) {
+  if (firstClip && clipUpperBound < timelineUpperBound) {
     const newSegment = {
       id: segments.length.toString(),
       fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
@@ -215,6 +216,7 @@ export const handleAddSegment = (
     myPeaks.player.seek(newSegment.startTime);
   } else if (
     secondClip &&
+    clipUpperBound < timelineUpperBound &&
     !invalidPlayheadPosition &&
     !timecodeIsBetweenClip(
       clipUpperBound,
