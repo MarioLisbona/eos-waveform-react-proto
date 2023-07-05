@@ -194,6 +194,8 @@ export const handleAddSegment = (
     // return seg; //---> returning seg here to resolving linting error breaks error checking
   });
 
+  const startClipValidGapLength = clipUpperBound < segments[0].startTime;
+
   //create first clip on empty timeline
   if (firstClip && clipUpperBound < timelineUpperBound) {
     const newSegment = {
@@ -272,6 +274,31 @@ export const handleAddSegment = (
 
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
+  } else if (
+    !invalidPlayheadPosition &&
+    validGapLength === -1 &&
+    startClipValidGapLength
+  ) {
+    console.log("clicking before first clip, there is enough gap");
+    const newSegment = {
+      id: segments.length.toString(),
+      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
+      startTime: playheadPosition,
+      endTime: playheadPosition + mediaLength * 0.03,
+      editable: true,
+      color: "#1E1541",
+      labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
+      formErrors: {
+        fileNameError: false,
+        startTimeError: false,
+        endTimeError: false,
+        isCreated: false,
+      },
+    };
+
+    //add new segment to the segments array, sort it by start time and update segments state
+    const updatedSegments = [...segments, newSegment];
+    setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
   } else {
     invalidPlayheadPosition ? setClipOverlap(false) : setClipOverlap(true);
     onOpen();
