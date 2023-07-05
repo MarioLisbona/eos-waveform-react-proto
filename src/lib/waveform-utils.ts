@@ -39,19 +39,12 @@ export const createTopTail = (
     },
   };
 
-  // if (segments.length === 0) {
-  //   topTailSegment.startTime = playheadPosition;
-  // } else if (segments.length === 1) {
-  //   console.log("sarttime", topTailSegment.startTime);
-  //   topTailSegment.endTime = playheadPosition;
-  // }
-
   if (segments.length === 0) {
     topTailSegment.startTime = playheadPosition;
     setSegments([topTailSegment]);
   }
 
-  if (segments.length === 1) {
+  if (segments.length === 1 && playheadPosition > segments[0].startTime) {
     const updatedSegment = segments.map((seg) => {
       return {
         ...seg,
@@ -63,6 +56,11 @@ export const createTopTail = (
     });
 
     setSegments(updatedSegment);
+  } else if (
+    segments.length === 1 &&
+    playheadPosition < segments[0].startTime
+  ) {
+    alert("end time needs to be greater than start time");
   }
 };
 //////////////////////////////////////////////////////////////////////
