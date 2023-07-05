@@ -157,6 +157,7 @@ export const handleAddSegment = (
   const mediaLength = myPeaks.player.getDuration()!;
   const playheadPosition = myPeaks.player.getCurrentTime();
   const clipUpperBound = playheadPosition + mediaLength * 0.03;
+  const timelineUpperBound = mediaLength - 1;
 
   //function to return true if the timecode is between the start and end of a clip
   const timecodeIsBetweenClip = (
@@ -166,6 +167,7 @@ export const handleAddSegment = (
   ) => {
     return (timecode - start) * (timecode - end) <= 0;
   };
+
   //map over the segment and call playheadIsBetween
   //if any element is true, the playhead is between the start and end of an existing clip
   const invalidPlayheadPosition = segments
@@ -192,16 +194,31 @@ export const handleAddSegment = (
     // return seg; //---> returning seg here to resolving linting error breaks error checking
   });
 
-  //First clip (Top) being created in an empty timeline
-  if (firstClip) {
+  const startClipValidGapLength = () => {
+    if (segments.length > 0) {
+      return clipUpperBound < segments[0]?.startTime;
+    }
+  };
+
+  const endClipValidGapLength = () => {
+    if (segments.length > 0) {
+      return (
+        clipUpperBound < timelineUpperBound &&
+        playheadPosition > segments[segments?.length - 1].startTime
+      );
+    }
+  };
+
+  //create first clip on empty timeline
+  if (firstClip && clipUpperBound < timelineUpperBound) {
     const newSegment = {
       id: segments.length.toString(),
-      fileName: "Top",
+      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
       startTime: playheadPosition,
       endTime: playheadPosition + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
-      labelText: "Top",
+      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
         startTimeError: false,
@@ -209,27 +226,31 @@ export const handleAddSegment = (
         isCreated: false,
       },
     };
-
     //update the segments state
     setSegments([newSegment]);
-
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
   } else if (
+    //create first clip on empty timeline
     secondClip &&
+    clipUpperBound < timelineUpperBound &&
     !invalidPlayheadPosition &&
-    playheadPosition > segments[0].startTime
+    !timecodeIsBetweenClip(
+      clipUpperBound,
+      segments[0].startTime,
+      segments[0].endTime
+    )
   ) {
     //Seconde Clip (Tail) being created only if playhead is not between start and end of existing clip
     //and playhead is not before first (Top) clip
     const newSegment = {
       id: segments.length.toString(),
-      fileName: "Tail",
+      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
       startTime: playheadPosition,
       endTime: playheadPosition + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
-      labelText: "Tail",
+      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
         startTimeError: false,
@@ -238,28 +259,20 @@ export const handleAddSegment = (
       },
     };
 
+    const updatedSegments = [...segments, newSegment];
     //update the segments state
-    setSegments([...segments, newSegment]);
-
+    setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
-  } else if (
-    secondClip &&
-    !invalidPlayheadPosition &&
-    playheadPosition < segments[0].startTime
-  ) {
-    //swapping Top and tail clips if second clip added is before original Top clip
-    segments[0].fileName = "Tail";
-    segments[0].labelText = "Tail";
-
+  } else if (!invalidPlayheadPosition && validGapLength !== -1) {
     const newSegment = {
       id: segments.length.toString(),
-      fileName: "Top",
+      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
       startTime: playheadPosition,
       endTime: playheadPosition + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
-      labelText: "Top",
+      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
         startTimeError: false,
@@ -276,19 +289,18 @@ export const handleAddSegment = (
     myPeaks.player.seek(newSegment.startTime);
   } else if (
     !invalidPlayheadPosition &&
-    validGapLength !== -1
-    // playheadPosition > segments[0].startTime &&
-    // playheadPosition + mediaLength * 0.03 <
-    //   segments[segments.length - 1].startTime
+    validGapLength === -1 &&
+    (startClipValidGapLength() || endClipValidGapLength())
   ) {
+    console.log("clicking before first clip, there is enough gap");
     const newSegment = {
       id: segments.length.toString(),
-      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
+      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
       startTime: playheadPosition,
       endTime: playheadPosition + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
-      labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
+      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
         startTimeError: false,
@@ -300,9 +312,6 @@ export const handleAddSegment = (
     //add new segment to the segments array, sort it by start time and update segments state
     const updatedSegments = [...segments, newSegment];
     setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
-
-    //move the playhead to the start of the new segment
-    myPeaks.player.seek(newSegment.startTime);
   } else {
     invalidPlayheadPosition ? setClipOverlap(false) : setClipOverlap(true);
     onOpen();
