@@ -64,8 +64,7 @@ export default function WaveForm() {
 
   // state for peaks instance
   const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
-  const [segments, setSegments] =
-    useState<TestSegmentProps[]>(testSegmentsSmall);
+  const [segments, setSegments] = useState<TestSegmentProps[]>([]);
   const [clipOverlap, setClipOverlap] = useState<boolean>(false);
   const [allClipsCreated, setAllClipsCreated] = useState<boolean>(false);
 
@@ -143,7 +142,7 @@ export default function WaveForm() {
   //Adds a new segment to the zoomview on double clicked
   // eslint-disable-next-line
   const handleZoomviewDblClick = () => {
-    segments.length > 1 &&
+    segments.length >= 1 &&
       handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
   };
 
