@@ -194,6 +194,7 @@ export const handleAddSegment = (
     // return seg; //---> returning seg here to resolving linting error breaks error checking
   });
 
+  //create first clip on empty timeline
   if (firstClip && clipUpperBound < timelineUpperBound) {
     const newSegment = {
       id: segments.length.toString(),
@@ -215,6 +216,7 @@ export const handleAddSegment = (
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
   } else if (
+    //create first clip on empty timeline
     secondClip &&
     clipUpperBound < timelineUpperBound &&
     !invalidPlayheadPosition &&
