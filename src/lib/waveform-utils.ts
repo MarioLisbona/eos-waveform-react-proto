@@ -267,12 +267,12 @@ export const handleAddSegment = (
   } else if (!invalidPlayheadPosition && validGapLength !== -1) {
     const newSegment = {
       id: segments.length.toString(),
-      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
+      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
       startTime: playheadPosition,
       endTime: playheadPosition + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
-      labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
+      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
         startTimeError: false,
@@ -295,12 +295,12 @@ export const handleAddSegment = (
     console.log("clicking before first clip, there is enough gap");
     const newSegment = {
       id: segments.length.toString(),
-      fileName: `clip-${parseInt(segments.length.toString()) + 1}`,
+      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
       startTime: playheadPosition,
       endTime: playheadPosition + mediaLength * 0.03,
       editable: true,
       color: "#1E1541",
-      labelText: `clip-${parseInt(segments.length.toString()) + 1}`,
+      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
         startTimeError: false,
