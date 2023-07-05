@@ -194,10 +194,11 @@ export const handleAddSegment = (
     // return seg; //---> returning seg here to resolving linting error breaks error checking
   });
 
-  const startClipValidGapLength = clipUpperBound < segments[0].startTime;
-  const endClipValidGapLength =
-    clipUpperBound < timelineUpperBound &&
-    playheadPosition > segments[segments.length - 1].startTime;
+  const startClipValidGapLength = () => {
+    if (segments.length > 0) {
+      return clipUpperBound < segments[0]?.startTime;
+    }
+  };
 
   //create first clip on empty timeline
   if (firstClip && clipUpperBound < timelineUpperBound) {
@@ -280,7 +281,7 @@ export const handleAddSegment = (
   } else if (
     !invalidPlayheadPosition &&
     validGapLength === -1 &&
-    (startClipValidGapLength || endClipValidGapLength)
+    startClipValidGapLength()
   ) {
     console.log("clicking before first clip, there is enough gap");
     const newSegment = {
