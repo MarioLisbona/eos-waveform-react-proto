@@ -200,6 +200,15 @@ export const handleAddSegment = (
     }
   };
 
+  const endClipValidGapLength = () => {
+    if (segments.length > 0) {
+      return (
+        clipUpperBound < timelineUpperBound &&
+        playheadPosition > segments[segments?.length - 1].startTime
+      );
+    }
+  };
+
   //create first clip on empty timeline
   if (firstClip && clipUpperBound < timelineUpperBound) {
     const newSegment = {
@@ -281,7 +290,7 @@ export const handleAddSegment = (
   } else if (
     !invalidPlayheadPosition &&
     validGapLength === -1 &&
-    startClipValidGapLength()
+    (startClipValidGapLength() || endClipValidGapLength())
   ) {
     console.log("clicking before first clip, there is enough gap");
     const newSegment = {
