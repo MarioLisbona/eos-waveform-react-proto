@@ -66,7 +66,6 @@ export default function WaveForm() {
   const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
   const [segments, setSegments] = useState<TestSegmentProps[]>([]);
   const [clipOverlap, setClipOverlap] = useState<boolean>(false);
-  const [allClipsCreated, setAllClipsCreated] = useState<boolean>(false);
 
   // create function to create instance of peaks
   // useCallback means this will only render a single instance of peaks
@@ -239,12 +238,9 @@ export default function WaveForm() {
         </Flex>
         <Flex>
           <Button
-            isDisabled={allClipsCreated}
             variant={"waveformBlue"}
             me={"1rem"}
-            onClick={() =>
-              createAllSegments(setSegments, segments, setAllClipsCreated)
-            }
+            onClick={() => createAllSegments(setSegments, segments)}
           >
             Create All
           </Button>
