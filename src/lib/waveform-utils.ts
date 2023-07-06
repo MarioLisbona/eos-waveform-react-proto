@@ -34,8 +34,6 @@ export const createTopTail = (
     labelText: "Top-n-Tail-Segment",
     formErrors: {
       fileNameError: false,
-      startTimeError: false,
-      endTimeError: false,
       isCreated: false,
     },
   };
@@ -269,8 +267,6 @@ export const handleAddSegment = (
       labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
-        startTimeError: false,
-        endTimeError: false,
         isCreated: false,
       },
     };
@@ -301,8 +297,6 @@ export const handleAddSegment = (
       labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
-        startTimeError: false,
-        endTimeError: false,
         isCreated: false,
       },
     };
@@ -323,8 +317,6 @@ export const handleAddSegment = (
       labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
-        startTimeError: false,
-        endTimeError: false,
         isCreated: false,
       },
     };
@@ -350,8 +342,6 @@ export const handleAddSegment = (
       labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
       formErrors: {
         fileNameError: false,
-        startTimeError: false,
-        endTimeError: false,
         isCreated: false,
       },
     };
@@ -393,8 +383,6 @@ export const handleFileNameChange = (
         labelText: evt.target.value,
         formErrors: {
           fileNameError: evt.target.value === "" ? true : false,
-          startTimeError: false,
-          endTimeError: false,
           isCreated: false,
         },
       };
@@ -437,8 +425,6 @@ export const createAllSegments = (
       ...seg,
       formErrors: {
         fileNameError: seg.formErrors.fileNameError,
-        startTimeError: false,
-        endTimeError: false,
         isCreated: true,
       },
       editable: false,
@@ -472,8 +458,6 @@ export const createSingleSegment = (
         ...seg,
         formErrors: {
           fileNameError: seg.formErrors.fileNameError,
-          startTimeError: false,
-          endTimeError: false,
           isCreated: seg.formErrors.isCreated ? false : true,
         },
         editable: seg.editable ? false : true,

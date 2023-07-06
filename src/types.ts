@@ -19,8 +19,6 @@ export type TestSegmentProps = {
 
 export type FormErrorsProps = {
   fileNameError: boolean;
-  startTimeError: boolean;
-  endTimeError: boolean;
   isCreated: boolean;
 };
 
