@@ -1,6 +1,7 @@
 import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 import { TestSegmentProps } from "../types";
 import { ChangeEvent } from "react";
+import { createNewSegment } from "./general-utils";
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -254,19 +255,11 @@ export const handleAddSegment = (
 
   //create first clip on empty timeline
   if (firstClip && clipUpperBound < timelineUpperBound) {
-    const newSegment = {
-      id: segments.length.toString(),
-      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
-      startTime: playheadPosition,
-      endTime: playheadPosition + mediaLength * 0.03,
-      editable: true,
-      color: "#1E1541",
-      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
-      formErrors: {
-        fileNameError: false,
-        isCreated: false,
-      },
-    };
+    const newSegment = createNewSegment(
+      segments,
+      playheadPosition,
+      mediaLength
+    );
     //update the segments state
     setSegments([newSegment]);
     //move the playhead to the start of the new segment
@@ -283,19 +276,11 @@ export const handleAddSegment = (
       segments[0].endTime
     )
   ) {
-    const newSegment = {
-      id: segments.length.toString(),
-      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
-      startTime: playheadPosition,
-      endTime: playheadPosition + mediaLength * 0.03,
-      editable: true,
-      color: "#1E1541",
-      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
-      formErrors: {
-        fileNameError: false,
-        isCreated: false,
-      },
-    };
+    const newSegment = createNewSegment(
+      segments,
+      playheadPosition,
+      mediaLength
+    );
 
     const updatedSegments = [...segments, newSegment];
     //update the segments state
@@ -306,19 +291,11 @@ export const handleAddSegment = (
     //create clips from number 3 and up if playhead is not between start and end of first clip or upperbound
     //doesnt fall within existing clips
   } else if (!invalidPlayheadPosition && validGapLength !== -1) {
-    const newSegment = {
-      id: segments.length.toString(),
-      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
-      startTime: playheadPosition,
-      endTime: playheadPosition + mediaLength * 0.03,
-      editable: true,
-      color: "#1E1541",
-      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
-      formErrors: {
-        fileNameError: false,
-        isCreated: false,
-      },
-    };
+    const newSegment = createNewSegment(
+      segments,
+      playheadPosition,
+      mediaLength
+    );
 
     //add new segment to the segments array, sort it by start time and update segments state
     const updatedSegments = [...segments, newSegment];
@@ -334,19 +311,11 @@ export const handleAddSegment = (
     validGapLength === -1 &&
     (startClipValidGapLength() || endClipValidGapLength())
   ) {
-    const newSegment = {
-      id: segments.length.toString(),
-      fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
-      startTime: playheadPosition,
-      endTime: playheadPosition + mediaLength * 0.03,
-      editable: true,
-      color: "#1E1541",
-      labelText: `Segment-${parseInt(segments.length.toString()) + 1}`,
-      formErrors: {
-        fileNameError: false,
-        isCreated: false,
-      },
-    };
+    const newSegment = createNewSegment(
+      segments,
+      playheadPosition,
+      mediaLength
+    );
 
     //add new segment to the segments array, sort it by start time and update segments state
     const updatedSegments = [...segments, newSegment];
