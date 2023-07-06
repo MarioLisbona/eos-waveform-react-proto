@@ -77,8 +77,11 @@ export default function WaveForm() {
 
   // state for peaks instance
   const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
-  const [segments, setSegments] = useState<TestSegmentProps[]>([]);
+  const [segments, setSegments] =
+    useState<TestSegmentProps[]>(testSegmentsSmall);
   const [clipOverlap, setClipOverlap] = useState<boolean>(false);
+  const [invalidFilenamePresent, setInvalidFilenamePresent] =
+    useState<boolean>(true);
 
   // create function to create instance of peaks
   // useCallback means this will only render a single instance of peaks
@@ -194,6 +197,11 @@ export default function WaveForm() {
     // //sort the data in chronological order by startTime
     segments.sort((a, b) => a.startTime - b.startTime);
 
+    //searches segments array and returns true if any filename field is empty
+    const invalidFilenamePresent =
+      segments.find((segments) => segments.fileName === "") !== undefined;
+    setInvalidFilenamePresent(invalidFilenamePresent);
+
     //remove all peaks segments then add with new segments state - avoids duplicates
     myPeaks?.segments.removeAll();
     myPeaks?.segments.add(segments);
@@ -263,6 +271,7 @@ export default function WaveForm() {
         </Flex>
         <Flex>
           <Button
+            isDisabled={invalidFilenamePresent}
             variant={"waveformBlue"}
             me={"1rem"}
             onClick={() => createAllSegments(setSegments, segments)}
