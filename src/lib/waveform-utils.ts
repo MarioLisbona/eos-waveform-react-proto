@@ -484,10 +484,12 @@ export const createSingleSegment = (
     return seg;
   });
 
-  //logging the clip
-  console.log("Clip Created - ", newSegState);
   //use the updated segment to update the segments state
   setSegments(newSegState);
+
+  const createdClip = newSegState.find((segment) => segment.id === id);
+  //logging the clip
+  console.log("Clip Created - ", createdClip);
 };
 //////////////////////////////////////////////////////////////////////
 
