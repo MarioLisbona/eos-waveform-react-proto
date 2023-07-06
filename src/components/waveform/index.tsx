@@ -275,7 +275,7 @@ export default function WaveForm() {
         </Flex>
         <Flex>
           <Button
-            isDisabled={invalidFilenamePresent}
+            isDisabled={invalidFilenamePresent || segments.length < 1}
             variant={"waveformBlue"}
             me={"1rem"}
             onClick={() => createAllSegments(setSegments, segments)}
@@ -283,6 +283,7 @@ export default function WaveForm() {
             Create All
           </Button>
           <Button
+            isDisabled={segments.length < 1}
             variant={"waveformBlue"}
             onClick={() => deleteAllSegments(myPeaks!, setSegments)}
           >
