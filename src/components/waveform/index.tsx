@@ -148,12 +148,21 @@ export default function WaveForm() {
 
   // eslint-disable-next-line
   const handleOverviewClick = (evt: WaveformViewMouseEvent) => {
-    createTopTail(
-      evt.time,
-      myPeaks?.player.getDuration()!,
-      segments,
-      setSegments
-    );
+    //This conditional disables the single click the top and tail clip is created but
+    //will still allow it to be called one more time to create an updated ent time
+    //This means the double click to create clip can be placed anywhere on the overview timeline
+    //after first clip is created
+    if (
+      segments.length < 1 ||
+      myPeaks?.player.getDuration()! === segments[0].endTime
+    ) {
+      createTopTail(
+        evt.time,
+        myPeaks?.player.getDuration()!,
+        segments,
+        setSegments
+      );
+    }
   };
   //////////////////////////////////////////////////////////////////////
 
