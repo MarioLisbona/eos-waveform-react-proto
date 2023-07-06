@@ -11,30 +11,25 @@ import {
 } from "@chakra-ui/react";
 import { PeaksInstance } from "peaks.js";
 
-export default function InvalidTCPositionModal({
+export default function InvalidTopTailEndTimeModal({
   isOpen,
   onClose,
-  clipOverlap,
   myPeaks,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  clipOverlap: boolean;
   myPeaks: PeaksInstance;
 }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Unable to Add Segment</ModalHeader>
+        <ModalHeader>Invalid Top and Tail End time</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text textStyle={"smContext"}></Text>
-          {clipOverlap
-            ? `There is not enough room for your clip. Please choose a gap larger than ${(
-                myPeaks.player.getDuration()! * 0.03
-              ).toFixed(1)} seconds.`
-            : "A clip already exists at that position, clips cannot overlap. Please choose an empty gap on the timeline."}
+          <Text textStyle={"smContext"}>
+            Clip End Time cannot be before the Start Time.
+          </Text>
         </ModalBody>
 
         <ModalFooter>
