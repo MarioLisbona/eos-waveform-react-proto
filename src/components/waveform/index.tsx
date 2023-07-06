@@ -1,19 +1,12 @@
-import {
-  Flex,
-  Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Button, useDisclosure } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
-import Peaks, { PeaksInstance, PeaksOptions, SegmentDragEvent } from "peaks.js";
+import Peaks, {
+  PeaksInstance,
+  PeaksOptions,
+  SegmentDragEvent,
+  WaveformViewMouseEvent,
+} from "peaks.js";
 import {
   setPeaksConfig,
   overviewOptionsConfig,
@@ -30,8 +23,10 @@ import {
   handleAddSegment,
   editClipStartPoint,
   editClipEndPoint,
+  createTopTail,
 } from "../../lib/waveform-utils";
 import ClipGridHeader from "./components/ClipGridHeader";
+import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
 
 export default function WaveForm() {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -69,8 +64,7 @@ export default function WaveForm() {
 
   // state for peaks instance
   const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
-  const [segments, setSegments] =
-    useState<TestSegmentProps[]>(testSegmentsSmall);
+  const [segments, setSegments] = useState<TestSegmentProps[]>([]);
   const [clipOverlap, setClipOverlap] = useState<boolean>(false);
   const [allClipsCreated, setAllClipsCreated] = useState<boolean>(false);
 
@@ -142,13 +136,32 @@ export default function WaveForm() {
     evt.startMarker
       ? editClipStartPoint(evt, segments, setSegments)
       : editClipEndPoint(evt, segments, setSegments);
-    // console.log("no editing endpoint yet");
   };
 
   //Adds a new segment to the zoomview on double clicked
   // eslint-disable-next-line
   const handleZoomviewDblClick = () => {
-    handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
+    segments.length >= 1 &&
+      handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
+  };
+
+  // eslint-disable-next-line
+  const handleOverviewClick = (evt: WaveformViewMouseEvent) => {
+    //This conditional disables the single click the top and tail clip is created but
+    //will still allow it to be called one more time to create an updated ent time
+    //This means the double click to create clip can be placed anywhere on the overview timeline
+    //after first clip is created
+    if (
+      segments.length < 1 ||
+      myPeaks?.player.getDuration()! === segments[0].endTime
+    ) {
+      createTopTail(
+        evt.time,
+        myPeaks?.player.getDuration()!,
+        segments,
+        setSegments
+      );
+    }
   };
   //////////////////////////////////////////////////////////////////////
 
@@ -165,7 +178,6 @@ export default function WaveForm() {
     //remove all peaks segments then add with new segments state - avoids duplicates
     myPeaks?.segments.removeAll();
     myPeaks?.segments.add(segments);
-    console.log("updating segments");
   }, [myPeaks, segments]);
 
   useEffect(() => {
@@ -173,38 +185,25 @@ export default function WaveForm() {
     myPeaks?.on("segments.dragend", handleClipDragEnd);
     myPeaks?.on("zoomview.dblclick", handleZoomviewDblClick);
     myPeaks?.on("overview.dblclick", handleZoomviewDblClick);
+    myPeaks?.on("overview.click", handleOverviewClick);
 
     return () => {
       //cleanup
       myPeaks?.off("segments.dragend", handleClipDragEnd);
       myPeaks?.off("zoomview.dblclick", handleZoomviewDblClick);
       myPeaks?.off("overview.dblclick", handleZoomviewDblClick);
+      myPeaks?.off("overview.click", handleOverviewClick);
     };
-  }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick]);
+  }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick, handleOverviewClick]);
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Unable to Add Segment</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text textStyle={"smContext"}></Text>
-            {clipOverlap
-              ? `There is not enough room for your clip. Please choose a gap larger than ${(
-                  myPeaks?.player.getDuration()! * 0.03
-                ).toFixed(1)} seconds`
-              : "A clip already exists at that position, clips cannot overlap. Please choose an empty gap on the timeline"}
-          </ModalBody>
-
-          <ModalFooter>
-            <Button variant={"brandPrimaryMobileNav"} mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <InvalidTCPositionModal
+        isOpen={isOpen}
+        onClose={onClose}
+        clipOverlap={clipOverlap}
+        myPeaks={myPeaks!}
+      />
       <Flex
         justify={"center"}
         align={"center"}

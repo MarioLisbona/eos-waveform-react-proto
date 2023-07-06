@@ -14,6 +14,60 @@ export const timecodeIsBetweenClip = (
 //////////////////////////////////////////////////////////////////////
 //
 //
+//              Create Top and Tail on empty timeline
+//
+//
+export const createTopTail = (
+  playheadPosition: number,
+  mediaLength: number,
+  segments: TestSegmentProps[],
+  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
+) => {
+  const topTailSegment = {
+    id: "Top-n-Tail-Segment",
+    fileName: "Top-n-Tail-Segment",
+    startTime: 0,
+    endTime: mediaLength,
+    editable: true,
+    color: "#1E1541",
+    labelText: "Top-n-Tail-Segment",
+    formErrors: {
+      fileNameError: false,
+      startTimeError: false,
+      endTimeError: false,
+      isCreated: false,
+    },
+  };
+
+  if (segments.length === 0) {
+    topTailSegment.startTime = playheadPosition;
+    setSegments([topTailSegment]);
+  }
+
+  if (segments.length === 1 && playheadPosition > segments[0].startTime) {
+    const updatedSegment = segments.map((seg) => {
+      return {
+        ...seg,
+        endTime:
+          playheadPosition < seg.startTime + 0.05
+            ? seg.endTime
+            : playheadPosition,
+      };
+    });
+
+    setSegments(updatedSegment);
+  } else if (
+    segments.length === 1 &&
+    playheadPosition < segments[0].startTime
+  ) {
+    alert("end time needs to be greater than start time");
+  }
+};
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+//
+//
 //              Playhead seeks to the stat time of the clip
 //              or end of the clip depending on wheher the
 //              sart time or end time are clicked
@@ -46,7 +100,6 @@ export const editClipStartPoint = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
 ) => {
-  console.log("editing clip start point");
   //id for the current clip being edited
   const segmentId = evt.segment.id;
 
@@ -54,7 +107,6 @@ export const editClipStartPoint = (
     if (segment.id === segmentId) {
       //error checking for Top clip else all other clips
       if (idx === 0) {
-        console.log("moving first clip start time to: ", segment.startTime);
         return {
           ...segment,
           startTime:
@@ -95,7 +147,6 @@ export const editClipEndPoint = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
 ) => {
-  console.log("editing clip end point");
   //id for the current clip being edited
   const segmentId = evt.segment.id;
 
@@ -103,11 +154,6 @@ export const editClipEndPoint = (
     if (segment.id === segmentId) {
       //error checking for Tail clip else all other clips
       if (idx === segments.length - 1) {
-        console.log(
-          "editing last clip endtime: PH and clip start time",
-          evt.segment.endTime,
-          segment.startTime
-        );
         return {
           ...segment,
           endTime:
@@ -292,7 +338,6 @@ export const handleAddSegment = (
     validGapLength === -1 &&
     (startClipValidGapLength() || endClipValidGapLength())
   ) {
-    console.log("clicking before first clip, there is enough gap");
     const newSegment = {
       id: segments.length.toString(),
       fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
@@ -438,8 +483,13 @@ export const createSingleSegment = (
     //otherwise return the segment unchanged
     return seg;
   });
+
   //use the updated segment to update the segments state
   setSegments(newSegState);
+
+  const createdClip = newSegState.find((segment) => segment.id === id);
+  //logging the clip
+  console.log("Clip Created - ", createdClip);
 };
 //////////////////////////////////////////////////////////////////////
 
