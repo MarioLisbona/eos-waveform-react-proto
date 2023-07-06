@@ -311,6 +311,7 @@ export const handleAddSegment = (
     setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
+
     //create clips from number 3 and up if playhead is not between start and end of first clip or upperbound
     //doesnt fall within existing clips
   } else if (!invalidPlayheadPosition && validGapLength !== -1) {
