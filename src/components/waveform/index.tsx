@@ -13,7 +13,7 @@ import {
   zoomviewOptionsConfig,
 } from "../../lib/waveform-config";
 import ClipGrid from "./components/ClipGrid";
-//testSegments, testSegmentsSmall alernate on use depending on dataset being used
+//testSegments, testSegmentsSmall alternate on use depending on dataset being used
 // eslint-disable-next-line
 import { testSegments, testSegmentsSmall } from "../../data/segmentData";
 import { AudioDataProps, TestSegmentProps } from "../../types";
@@ -79,7 +79,10 @@ export default function WaveForm() {
   const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
   const [segments, setSegments] =
     useState<TestSegmentProps[]>(testSegmentsSmall);
+
+  //boolean state used for conditional modal message for invalid position to create clip
   const [clipOverlap, setClipOverlap] = useState<boolean>(false);
+  //boolean state used to disable Create All button if an empty file name is present
   const [invalidFilenamePresent, setInvalidFilenamePresent] =
     useState<boolean>(true);
 
@@ -198,11 +201,12 @@ export default function WaveForm() {
     segments.sort((a, b) => a.startTime - b.startTime);
 
     //searches segments array and returns true if any filename field is empty
+    //update state for invalidFilenamePresent
     const invalidFilenamePresent =
       segments.find((segments) => segments.fileName === "") !== undefined;
     setInvalidFilenamePresent(invalidFilenamePresent);
 
-    //remove all peaks segments then add with new segments state - avoids duplicates
+    //remove all peaks segments then add with new segments state to avoids duplicates
     myPeaks?.segments.removeAll();
     myPeaks?.segments.add(segments);
   }, [myPeaks, segments]);
@@ -225,12 +229,14 @@ export default function WaveForm() {
 
   return (
     <>
+      {/* Moodal to display when clip creation location is invalid */}
       <InvalidTCPositionModal
         isOpen={isInvalidTCPModalOpen}
         onClose={onInvalidTCPModalClose}
         clipOverlap={clipOverlap}
         myPeaks={myPeaks!}
       />
+      {/* Moodal to display when Top and Tail end time is set before start time */}
       <InvalidTopTailEndTimeModal
         isOpen={isInvalidTopTailModalOpen}
         onClose={onInvalidTopTailModalClose}
@@ -244,9 +250,7 @@ export default function WaveForm() {
         p={"1rem"}
       >
         <ZoomviewContainer ref={zoomviewWaveformRef}></ZoomviewContainer>
-
         <OverviewContainer ref={overviewWaveformRef}></OverviewContainer>
-
         <audio ref={audioElementRef} hidden>
           <source src={data.audioUrl} type={data.audioContentType} />
           Your browser does not support the audio element.

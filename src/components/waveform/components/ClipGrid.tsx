@@ -29,7 +29,9 @@ export default function ClipGrid({
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>;
 }) {
   return (
+    //create an overflow scrollable box to contain clip information
     <Box display="block" overflowY="scroll" maxH={"35vh"}>
+      {/* Map over the elements in the segments array and create a grid item for each clip */}
       {segments.length > 0 &&
         segments.map((seg, idx) => (
           <Grid

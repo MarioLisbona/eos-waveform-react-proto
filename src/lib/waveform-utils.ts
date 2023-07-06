@@ -14,7 +14,7 @@ export const timecodeIsBetweenClip = (
 //////////////////////////////////////////////////////////////////////
 //
 //
-//              Create Top and Tail on empty timeline
+//              Create Top and Tail clip on empty timeline
 //
 //
 export const createTopTail = (
@@ -38,12 +38,16 @@ export const createTopTail = (
     },
   };
 
+  //segments array is empty, first click becomes the start time
   if (segments.length === 0) {
     topTailSegment.startTime = playheadPosition;
     setSegments([topTailSegment]);
   }
 
+  //segments array contains Top and Tail clip and playhead is at a valid position
   if (segments.length === 1 && playheadPosition > segments[0].startTime) {
+    //set the end time for the Top and Tail clip
+    //must be greater than 0.05 after start time
     const updatedSegment = segments.map((seg) => {
       return {
         ...seg,
@@ -53,13 +57,14 @@ export const createTopTail = (
             : playheadPosition,
       };
     });
-
+    //update the segments state
     setSegments(updatedSegment);
+
+    //playhead for end time is before start time, open modal
   } else if (
     segments.length === 1 &&
     playheadPosition < segments[0].startTime
   ) {
-    // alert("end time needs to be greater than start time");
     onInvalidTopTailModalOpen();
   }
 };
@@ -79,7 +84,7 @@ export const handlePlayheadSeek = (
   segments: TestSegmentProps[],
   seekStart?: boolean
 ) => {
-  //find selected segment and move playhead to that segments start time
+  //find selected segment and move playhead to that segments start time or end time
   const selectedSegment = segments.find((seg) => seg.id === id);
   seekStart
     ? myPeaks.player.seek(selectedSegment!.startTime)
@@ -185,10 +190,7 @@ export const editClipEndPoint = (
 //             Add Segment Button
 //
 //             Handles a adding a new segment when the Add Segment
-//             button is clicked. A search is implemented and a 8 second
-//             clip is created where the first 10 second gap is found.
-//             If there are no 10 second gaps, a 4 second clip is created
-//             if a 5 second gap is found.
+//             button is clicked and the zoomview or overview timelines are double clicked
 //
 //
 export const handleAddSegment = (
@@ -226,7 +228,7 @@ export const handleAddSegment = (
     })
     .includes(true);
 
-  // Check the gaps between segments[1] and segments[n-2] to see if they are
+  // Check the gaps between first and last clips to see if they are
   //large enough to contain the new clip length
   // eslint-disable-next-line
   const validGapLength = segments.findIndex((seg, idx, arr) => {
@@ -240,12 +242,16 @@ export const handleAddSegment = (
     // return seg; //---> returning seg here to resolving linting error breaks error checking
   });
 
+  //function to return true if a clip is being created with enough space, prior to the current first clip
+  //this needed to be in a function to allow conditional checking of the segments[0] element
   const startClipValidGapLength = () => {
     if (segments.length > 0) {
       return clipUpperBound < segments[0]?.startTime;
     }
   };
 
+  //function to return true if a clip is being created with enough space, after to the current last clip
+  //this needed to be in a function to allow conditional checking of the segments[0] element
   const endClipValidGapLength = () => {
     if (segments.length > 0) {
       return (
@@ -275,7 +281,8 @@ export const handleAddSegment = (
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
   } else if (
-    //create first clip on empty timeline
+    //Second Clip being created only if playhead is not between start and end of first clip or upperbound
+    //doesnt fall within clip 1
     secondClip &&
     clipUpperBound < timelineUpperBound &&
     !invalidPlayheadPosition &&
@@ -285,8 +292,6 @@ export const handleAddSegment = (
       segments[0].endTime
     )
   ) {
-    //Seconde Clip (Tail) being created only if playhead is not between start and end of existing clip
-    //and playhead is not before first (Top) clip
     const newSegment = {
       id: segments.length.toString(),
       fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
@@ -306,6 +311,8 @@ export const handleAddSegment = (
     setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
+    //create clips from number 3 and up if playhead is not between start and end of first clip or upperbound
+    //doesnt fall within existing clips
   } else if (!invalidPlayheadPosition && validGapLength !== -1) {
     const newSegment = {
       id: segments.length.toString(),
@@ -327,6 +334,9 @@ export const handleAddSegment = (
 
     //move the playhead to the start of the new segment
     myPeaks.player.seek(newSegment.startTime);
+    //last conditional is for clips created before or after existing first/last clip
+    //validGapLength will always return -1 for clips added in these positions
+    //startClipValidGapLength and endClipValidGapLength calls will be true if valid location
   } else if (
     !invalidPlayheadPosition &&
     validGapLength === -1 &&
@@ -471,6 +481,7 @@ export const createSingleSegment = (
   //use the updated segment to update the segments state
   setSegments(newSegState);
 
+  //find update clip that was just created in segments array and log
   const createdClip = newSegState.find((segment) => segment.id === id);
   //logging the clip
   console.log("Clip Created - ", createdClip);
@@ -500,81 +511,4 @@ export const deleteSingleSegment = (
   //update the date of segments with the new array
   setSegments(upatedSegments);
 };
-//////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////
-//
-//
-//
-//
-
-//////////////////////////////////////////////////////////////////////
-//
-//             handles start time error checking
-//
-//             start time needs to be greater than previous segments end time
-//
-//             !!This needs some more work!!
-//
-//
-// export const handleStartTimeChange = (
-//   id: string,
-//   evt: ChangeEvent<HTMLInputElement>,
-//   segments: TestSegmentProps[],
-//   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
-// ) => {
-//   //used for two way bind of start time input element to correct segment in segments
-//   const newSegState = segments.map((seg) => {
-//     if (seg.id === id) {
-//       return {
-//         ...seg,
-//         startTime:
-//           parseInt(evt.target.value) < seg.endTime!
-//             ? parseInt(evt.target.value)
-//             : 0,
-//       };
-//     }
-//     //otherwise return the segment unchanged
-//     return seg;
-//   });
-//   //use the updated segment to update the segments state
-//   setSegments(newSegState);
-// };
-//////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////
-//
-//             handles end time error checking
-//
-//             end time needs to be less than next segments start time
-//
-//             !!This needs some more work!!
-//
-//
-// export const handleEndTimeChange = (
-//   id: string,
-//   evt: ChangeEvent<HTMLInputElement>,
-//   segments: TestSegmentProps[],
-//   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
-//   myPeaks: PeaksInstance
-// ) => {
-//   //used for two way bind of end time input element to correct segment in segments
-//   const newSegState = segments.map((seg, idx: number) => {
-//     if (seg.id === id) {
-//       return {
-//         ...seg,
-//         endTime:
-//           parseInt(evt.target.value) > seg.startTime &&
-//           parseInt(evt.target.value) < segments[idx + 1].startTime
-//             ? parseInt(evt.target.value)
-//             : myPeaks.player.getDuration()!,
-//       };
-//     }
-
-//     //otherwise return the segment unchanged
-//     return seg;
-//   });
-//   //use the updated segment to update the segments state
-//   setSegments(newSegState);
-// };
 //////////////////////////////////////////////////////////////////////
