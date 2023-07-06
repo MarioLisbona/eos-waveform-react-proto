@@ -11,7 +11,6 @@ export const testSegmentsSmall: TestSegmentProps[] = [
     labelText: "clip-5",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -25,7 +24,6 @@ export const testSegmentsSmall: TestSegmentProps[] = [
     labelText: "clip-3",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -39,7 +37,6 @@ export const testSegmentsSmall: TestSegmentProps[] = [
     labelText: "clip-6",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -53,7 +50,6 @@ export const testSegmentsSmall: TestSegmentProps[] = [
     labelText: "clip-4",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -67,7 +63,6 @@ export const testSegmentsSmall: TestSegmentProps[] = [
     labelText: "clip-1",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -81,7 +76,6 @@ export const testSegmentsSmall: TestSegmentProps[] = [
     labelText: "clip-2",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -98,7 +92,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-1",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -112,7 +105,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-2",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -126,7 +118,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-3",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -140,7 +131,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-4",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -154,7 +144,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-5",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -168,7 +157,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-6",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -182,7 +170,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-7",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -196,7 +183,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-8",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -210,7 +196,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-9",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -224,7 +209,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-10",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -238,7 +222,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-11",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
@@ -252,7 +235,6 @@ export const testSegments: TestSegmentProps[] = [
     labelText: "clip-12",
     formErrors: {
       fileNameError: false,
-      endTimeError: false,
       isCreated: false,
     },
   },
