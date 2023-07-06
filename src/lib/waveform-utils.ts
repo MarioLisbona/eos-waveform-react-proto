@@ -2,15 +2,6 @@ import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 import { TestSegmentProps } from "../types";
 import { ChangeEvent } from "react";
 
-//function to return true if the timecode is between the start and end of a clip
-export const timecodeIsBetweenClip = (
-  timecode: number,
-  start: number,
-  end: number
-) => {
-  return (timecode - start) * (timecode - end) <= 0;
-};
-
 //////////////////////////////////////////////////////////////////////
 //
 //
