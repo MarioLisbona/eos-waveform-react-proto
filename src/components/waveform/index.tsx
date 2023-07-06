@@ -27,12 +27,21 @@ import {
 } from "../../lib/waveform-utils";
 import ClipGridHeader from "./components/ClipGridHeader";
 import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
+import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
 export default function WaveForm() {
+  //booleans to open modal for invalid playhead positions when adding segments
   const {
     isOpen: isInvalidTCPModalOpen,
     onClose: onInvalidTCPModalClose,
     onOpen: onInvalidTCPModalOpen,
+  } = useDisclosure();
+
+  //booleans to open modal for invalid playhead position for adding endtime to Top and Tail clip
+  const {
+    isOpen: isInvalidTopTailModalOpen,
+    onClose: onInvalidTopTailModalClose,
+    onOpen: onInvalidTopTailModalOpen,
   } = useDisclosure();
 
   //////////////////////////////////////////////////////////////////////
@@ -168,7 +177,8 @@ export default function WaveForm() {
         evt.time,
         myPeaks?.player.getDuration()!,
         segments,
-        setSegments
+        setSegments,
+        onInvalidTopTailModalOpen
       );
     }
   };
@@ -211,6 +221,11 @@ export default function WaveForm() {
         isOpen={isInvalidTCPModalOpen}
         onClose={onInvalidTCPModalClose}
         clipOverlap={clipOverlap}
+        myPeaks={myPeaks!}
+      />
+      <InvalidTopTailEndTimeModal
+        isOpen={isInvalidTopTailModalOpen}
+        onClose={onInvalidTopTailModalClose}
         myPeaks={myPeaks!}
       />
       <Flex

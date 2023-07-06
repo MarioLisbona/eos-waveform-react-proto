@@ -33,8 +33,8 @@ export default function InvalidTCPositionModal({
           {clipOverlap
             ? `There is not enough room for your clip. Please choose a gap larger than ${(
                 myPeaks.player.getDuration()! * 0.03
-              ).toFixed(1)} seconds`
-            : "A clip already exists at that position, clips cannot overlap. Please choose an empty gap on the timeline"}
+              ).toFixed(1)} seconds.`
+            : "A clip already exists at that position, clips cannot overlap. Please choose an empty gap on the timeline."}
         </ModalBody>
 
         <ModalFooter>

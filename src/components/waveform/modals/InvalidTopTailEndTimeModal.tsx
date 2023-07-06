@@ -28,8 +28,7 @@ export default function InvalidTopTailEndTimeModal({
         <ModalCloseButton />
         <ModalBody>
           <Text textStyle={"smContext"}>
-            {`Clip End time cannot be before Start Time. Please choose a Top and
-            Tail End time after ${myPeaks.player.getCurrentTime().toFixed(1)}`}
+            Clip End Time cannot be before the Start Time.
           </Text>
         </ModalBody>
 

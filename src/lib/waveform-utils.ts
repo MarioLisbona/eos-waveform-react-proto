@@ -21,7 +21,8 @@ export const createTopTail = (
   playheadPosition: number,
   mediaLength: number,
   segments: TestSegmentProps[],
-  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
+  setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>,
+  onInvalidTopTailModalOpen: () => void
 ) => {
   const topTailSegment = {
     id: "Top-n-Tail-Segment",
@@ -60,7 +61,8 @@ export const createTopTail = (
     segments.length === 1 &&
     playheadPosition < segments[0].startTime
   ) {
-    alert("end time needs to be greater than start time");
+    // alert("end time needs to be greater than start time");
+    onInvalidTopTailModalOpen();
   }
 };
 //////////////////////////////////////////////////////////////////////
