@@ -262,8 +262,6 @@ export const handleAddSegment = (
     );
     //update the segments state
     setSegments([newSegment]);
-    //move the playhead to the start of the new segment
-    myPeaks.player.seek(newSegment.startTime);
   } else if (
     //Second Clip being created only if playhead is not between start and end of first clip or upperbound
     //doesnt fall within clip 1
@@ -285,8 +283,6 @@ export const handleAddSegment = (
     const updatedSegments = [...segments, newSegment];
     //update the segments state
     setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
-    //move the playhead to the start of the new segment
-    myPeaks.player.seek(newSegment.startTime);
 
     //create clips from number 3 and up if playhead is not between start and end of first clip or upperbound
     //doesnt fall within existing clips
@@ -301,8 +297,6 @@ export const handleAddSegment = (
     const updatedSegments = [...segments, newSegment];
     setSegments(updatedSegments.sort((a, b) => a.startTime - b.startTime));
 
-    //move the playhead to the start of the new segment
-    myPeaks.player.seek(newSegment.startTime);
     //last conditional is for clips created before or after existing first/last clip
     //validGapLength will always return -1 for clips added in these positions
     //startClipValidGapLength and endClipValidGapLength calls will be true if valid location
