@@ -111,7 +111,7 @@ export default function ClipGrid({
             <GridItem colStart={7} colEnd={9}>
               <Flex w={"100%"} justify={"flex-end"}>
                 <Button
-                  isDisabled={seg.formErrors.isCreated}
+                  isDisabled={seg.formErrors.isCreated || seg.fileName === ""}
                   variant={"waveformOutlined"}
                   onClick={() =>
                     createSingleSegment(seg.id!, segments, setSegments)
