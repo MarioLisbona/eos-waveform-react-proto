@@ -29,7 +29,11 @@ import ClipGridHeader from "./components/ClipGridHeader";
 import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
 
 export default function WaveForm() {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isInvalidTCPModalOpen,
+    onClose: onInvalidTCPModalClose,
+    onOpen: onInvalidTCPModalOpen,
+  } = useDisclosure();
 
   //////////////////////////////////////////////////////////////////////
   //
@@ -141,7 +145,13 @@ export default function WaveForm() {
   // eslint-disable-next-line
   const handleZoomviewDblClick = () => {
     segments.length >= 1 &&
-      handleAddSegment(segments, setSegments, myPeaks!, onOpen, setClipOverlap);
+      handleAddSegment(
+        segments,
+        setSegments,
+        myPeaks!,
+        onInvalidTCPModalOpen,
+        setClipOverlap
+      );
   };
 
   // eslint-disable-next-line
@@ -198,8 +208,8 @@ export default function WaveForm() {
   return (
     <>
       <InvalidTCPositionModal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isInvalidTCPModalOpen}
+        onClose={onInvalidTCPModalClose}
         clipOverlap={clipOverlap}
         myPeaks={myPeaks!}
       />
@@ -228,7 +238,7 @@ export default function WaveForm() {
                 segments,
                 setSegments,
                 myPeaks!,
-                onOpen,
+                onInvalidTCPModalOpen,
                 setClipOverlap
               )
             }
