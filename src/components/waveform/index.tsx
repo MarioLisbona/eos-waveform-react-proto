@@ -136,7 +136,6 @@ export default function WaveForm() {
     evt.startMarker
       ? editClipStartPoint(evt, segments, setSegments)
       : editClipEndPoint(evt, segments, setSegments);
-    // console.log("no editing endpoint yet");
   };
 
   //Adds a new segment to the zoomview on double clicked

@@ -100,7 +100,6 @@ export const editClipStartPoint = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
 ) => {
-  console.log("editing clip start point");
   //id for the current clip being edited
   const segmentId = evt.segment.id;
 
@@ -108,7 +107,6 @@ export const editClipStartPoint = (
     if (segment.id === segmentId) {
       //error checking for Top clip else all other clips
       if (idx === 0) {
-        console.log("moving first clip start time to: ", segment.startTime);
         return {
           ...segment,
           startTime:
@@ -149,7 +147,6 @@ export const editClipEndPoint = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
 ) => {
-  console.log("editing clip end point");
   //id for the current clip being edited
   const segmentId = evt.segment.id;
 
@@ -157,11 +154,6 @@ export const editClipEndPoint = (
     if (segment.id === segmentId) {
       //error checking for Tail clip else all other clips
       if (idx === segments.length - 1) {
-        console.log(
-          "editing last clip endtime: PH and clip start time",
-          evt.segment.endTime,
-          segment.startTime
-        );
         return {
           ...segment,
           endTime:
@@ -346,7 +338,6 @@ export const handleAddSegment = (
     validGapLength === -1 &&
     (startClipValidGapLength() || endClipValidGapLength())
   ) {
-    console.log("clicking before first clip, there is enough gap");
     const newSegment = {
       id: segments.length.toString(),
       fileName: `Segment-${parseInt(segments.length.toString()) + 1}`,
