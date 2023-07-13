@@ -15,7 +15,11 @@ import {
 import ClipGrid from "./components/ClipGrid";
 //testSegments, testSegmentsSmall alternate on use depending on dataset being used
 // eslint-disable-next-line
-import { testSegments, testSegmentsSmall } from "../../data/segmentData";
+import {
+  testSegments,
+  testSegmentsSmall,
+  audioData,
+} from "../../data/segmentData";
 import { AudioDataProps, TestSegmentProps } from "../../types";
 import {
   deleteAllSegments,
@@ -45,26 +49,6 @@ export default function WaveForm() {
     onClose: onInvalidTopTailModalClose,
     onOpen: onInvalidTopTailModalOpen,
   } = useDisclosure();
-
-  //////////////////////////////////////////////////////////////////////
-  //
-  //
-  //              Two audio files for testing
-  //
-  //
-  // const data: AudioDataProps = {
-  //   //------> use testSegments data to set segment state
-  //   audioUrl: "EOS-test.mp3",
-  //   audioContentType: "audio/mpeg",
-  //   waveformDataUrl: "EOS-test.dat",
-  // };
-  const data: AudioDataProps = {
-    //------> use testSegmentsSmall data set to set segment state
-    audioUrl: "instrumental.mp3",
-    audioContentType: "audio/mpeg",
-    waveformDataUrl: "instrumental.dat",
-  };
-  //////////////////////////////////////////////////////////////////////
 
   //create references to peaks.js containers
   const zoomviewWaveformRef = React.createRef<HTMLDivElement>();
@@ -207,7 +191,7 @@ export default function WaveForm() {
         <ZoomviewContainer ref={zoomviewWaveformRef}></ZoomviewContainer>
         <OverviewContainer ref={overviewWaveformRef}></OverviewContainer>
         <audio ref={audioElementRef} hidden>
-          <source src={data.audioUrl} type={data.audioContentType} />
+          <source src={audioData.audioUrl} type={audioData.audioContentType} />
           Your browser does not support the audio element.
         </audio>
       </Flex>
