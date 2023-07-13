@@ -34,7 +34,6 @@ import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
 import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
 import { usePeaksInstance } from "../../hooks/usePeaksInstance";
-import { useWaveFormEvents } from "../../hooks/useWaveFormEvents";
 
 export default function WaveForm() {
   //booleans to open modal for invalid playhead positions when adding segments
@@ -56,17 +55,17 @@ export default function WaveForm() {
   const overviewWaveformRef = React.createRef<HTMLDivElement>();
   const audioElementRef = React.createRef<HTMLAudioElement>();
 
-  //segments state
-  const [segments, setSegments] =
-    useState<TestSegmentProps[]>(testSegmentsSmall);
-  //boolean state used for conditional modal message for invalid position to create clip
   const [clipOverlap, setClipOverlap] = useState<boolean>(false);
-  //boolean state used to disable Create All button if an empty file name is present
-  const [invalidFilenamePresent, setInvalidFilenamePresent] =
-    useState<boolean>(true);
 
   //custom hook to initialise a peaks instance with reference to component elements
-  const { initPeaks, myPeaks } = usePeaksInstance(
+  const {
+    initPeaks,
+    myPeaks,
+    segments,
+    setSegments,
+    invalidFilenamePresent,
+    setInvalidFilenamePresent,
+  } = usePeaksInstance(
     zoomviewWaveformRef,
     overviewWaveformRef,
     audioElementRef
@@ -129,27 +128,6 @@ export default function WaveForm() {
     }
   };
   //////////////////////////////////////////////////////////////////////
-
-  //////////////////////////////////////////////////////////////////////
-  //
-  //
-  //         useEffect to handle updates to peaks and segments states
-  //
-  //
-  useEffect(() => {
-    // //sort the data in chronological order by startTime
-    segments.sort((a, b) => a.startTime - b.startTime);
-
-    //searches segments array and returns true if any filename field is empty
-    //update state for invalidFilenamePresent
-    const invalidFilenamePresent =
-      segments.find((segments) => segments.fileName === "") !== undefined;
-    setInvalidFilenamePresent(invalidFilenamePresent);
-
-    //remove all peaks segments then add with new segments state to avoids duplicates
-    myPeaks?.segments.removeAll();
-    myPeaks?.segments.add(segments);
-  }, [myPeaks, segments]);
 
   useEffect(() => {
     //event handlers

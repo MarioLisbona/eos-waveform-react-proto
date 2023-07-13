@@ -1,7 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Peaks, { PeaksInstance, PeaksOptions } from "peaks.js";
-import { AudioDataProps } from "../types";
-import { audioData } from "../data/segmentData";
+import { AudioDataProps, TestSegmentProps } from "../types";
+import { audioData, testSegmentsSmall } from "../data/segmentData";
 import {
   setPeaksConfig,
   overviewOptionsConfig,
@@ -15,6 +15,12 @@ export const usePeaksInstance = (
 ) => {
   // state for peaks instance
   const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
+  //segments state
+  const [segments, setSegments] =
+    useState<TestSegmentProps[]>(testSegmentsSmall);
+  //boolean state used to disable Create All button if an empty file name is present
+  const [invalidFilenamePresent, setInvalidFilenamePresent] =
+    useState<boolean>(true);
 
   // create function to create instance of peaks
   // useCallback means this will only render a single instance of peaks
@@ -63,5 +69,27 @@ export const usePeaksInstance = (
     // eslint-disable-next-line
   }, []);
 
-  return { initPeaks, myPeaks };
+  useEffect(() => {
+    // //sort the data in chronological order by startTime
+    segments.sort((a, b) => a.startTime - b.startTime);
+
+    //searches segments array and returns true if any filename field is empty
+    //update state for invalidFilenamePresent
+    const invalidFilenamePresent =
+      segments.find((segments) => segments.fileName === "") !== undefined;
+    setInvalidFilenamePresent(invalidFilenamePresent);
+
+    //remove all peaks segments then add with new segments state to avoids duplicates
+    myPeaks?.segments.removeAll();
+    myPeaks?.segments.add(segments);
+  }, [myPeaks, segments]);
+
+  return {
+    initPeaks,
+    myPeaks,
+    segments,
+    setSegments,
+    invalidFilenamePresent,
+    setInvalidFilenamePresent,
+  };
 };
