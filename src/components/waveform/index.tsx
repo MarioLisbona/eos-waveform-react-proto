@@ -258,6 +258,9 @@ export default function WaveForm() {
       </Flex>
       <Flex mb={"1rem"} px={"3rem"} w={"100%"} justify={"space-between"}>
         <Flex>
+          <Button variant={"waveformBlue"} me={"1rem"}>
+            Add Top-n-Tail
+          </Button>
           <Button
             variant={"waveformBlue"}
             onClick={() =>
