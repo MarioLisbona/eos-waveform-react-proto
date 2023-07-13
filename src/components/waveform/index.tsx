@@ -70,12 +70,12 @@ export default function WaveForm() {
     overviewWaveformRef,
     audioElementRef
   );
-  //call initPeaks on initial mount of WaveForm component
-  useEffect(() => {
-    if (initPeaks) {
-      initPeaks();
-    }
-  }, [initPeaks]);
+  // //call initPeaks on initial mount of WaveForm component
+  // useEffect(() => {
+  //   if (initPeaks) {
+  //     initPeaks();
+  //   }
+  // }, [initPeaks]);
 
   // const { handleClipDragEnd } = useWaveFormEvents();
   // handleClipDragEnd(evt, segments, setSegments);

@@ -69,6 +69,13 @@ export const usePeaksInstance = (
     // eslint-disable-next-line
   }, []);
 
+  //call initPeaks on initial mount of WaveForm component
+  useEffect(() => {
+    if (initPeaks) {
+      initPeaks();
+    }
+  }, [initPeaks]);
+
   useEffect(() => {
     // //sort the data in chronological order by startTime
     segments.sort((a, b) => a.startTime - b.startTime);
