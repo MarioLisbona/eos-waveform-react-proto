@@ -34,6 +34,7 @@ import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
 import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
 import { usePeaksInstance } from "../../hooks/usePeaksInstance";
+import { useWaveFormEvents } from "../../hooks/useWaveFormEvents";
 
 export default function WaveForm() {
   //booleans to open modal for invalid playhead positions when adding segments
@@ -76,6 +77,9 @@ export default function WaveForm() {
       initPeaks();
     }
   }, [initPeaks]);
+
+  // const { handleClipDragEnd } = useWaveFormEvents();
+  // handleClipDragEnd(evt, segments, setSegments);
 
   //////////////////////////////////////////////////////////////////////
   //
