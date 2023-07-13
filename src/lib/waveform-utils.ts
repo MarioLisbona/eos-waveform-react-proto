@@ -31,11 +31,7 @@ export const createGenericTopTail = (
     },
   };
 
-  if (segments.length === 0) {
-    setSegments([topTailSegment]);
-  } else {
-    alert("A top and tail clip already exists");
-  }
+  setSegments([topTailSegment]);
 };
 
 //////////////////////////////////////////////////////////////////////

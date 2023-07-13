@@ -217,14 +217,14 @@ export default function WaveForm() {
     myPeaks?.on("segments.dragend", handleClipDragEnd);
     myPeaks?.on("zoomview.dblclick", handleZoomviewDblClick);
     myPeaks?.on("overview.dblclick", handleZoomviewDblClick);
-    myPeaks?.on("overview.click", handleOverviewClick);
+    // myPeaks?.on("overview.click", handleOverviewClick);
 
     return () => {
       //cleanup
       myPeaks?.off("segments.dragend", handleClipDragEnd);
       myPeaks?.off("zoomview.dblclick", handleZoomviewDblClick);
       myPeaks?.off("overview.dblclick", handleZoomviewDblClick);
-      myPeaks?.off("overview.click", handleOverviewClick);
+      // myPeaks?.off("overview.click", handleOverviewClick);
     };
   }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick, handleOverviewClick]);
 
@@ -260,6 +260,7 @@ export default function WaveForm() {
       <Flex mb={"1rem"} px={"3rem"} w={"100%"} justify={"space-between"}>
         <Flex>
           <Button
+            isDisabled={segments.length > 0}
             onClick={() =>
               createGenericTopTail(myPeaks!, segments, setSegments)
             }
