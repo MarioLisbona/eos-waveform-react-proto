@@ -24,6 +24,7 @@ import {
   editClipStartPoint,
   editClipEndPoint,
   createTopTail,
+  createGenericTopTail,
 } from "../../lib/waveform-utils";
 import ClipGridHeader from "./components/ClipGridHeader";
 import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
@@ -258,7 +259,13 @@ export default function WaveForm() {
       </Flex>
       <Flex mb={"1rem"} px={"3rem"} w={"100%"} justify={"space-between"}>
         <Flex>
-          <Button variant={"waveformBlue"} me={"1rem"}>
+          <Button
+            onClick={() =>
+              createGenericTopTail(myPeaks!, segments, setSegments)
+            }
+            variant={"waveformBlue"}
+            me={"1rem"}
+          >
             Add Top-n-Tail
           </Button>
           <Button
