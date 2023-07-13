@@ -92,11 +92,9 @@ export const usePeaksInstance = (
   }, [myPeaks, segments]);
 
   return {
-    initPeaks,
     myPeaks,
     segments,
     setSegments,
     invalidFilenamePresent,
-    setInvalidFilenamePresent,
   };
 };

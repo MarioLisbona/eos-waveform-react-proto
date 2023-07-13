@@ -58,27 +58,8 @@ export default function WaveForm() {
   const [clipOverlap, setClipOverlap] = useState<boolean>(false);
 
   //custom hook to initialise a peaks instance with reference to component elements
-  const {
-    initPeaks,
-    myPeaks,
-    segments,
-    setSegments,
-    invalidFilenamePresent,
-    setInvalidFilenamePresent,
-  } = usePeaksInstance(
-    zoomviewWaveformRef,
-    overviewWaveformRef,
-    audioElementRef
-  );
-  // //call initPeaks on initial mount of WaveForm component
-  // useEffect(() => {
-  //   if (initPeaks) {
-  //     initPeaks();
-  //   }
-  // }, [initPeaks]);
-
-  // const { handleClipDragEnd } = useWaveFormEvents();
-  // handleClipDragEnd(evt, segments, setSegments);
+  const { myPeaks, segments, setSegments, invalidFilenamePresent } =
+    usePeaksInstance(zoomviewWaveformRef, overviewWaveformRef, audioElementRef);
 
   //////////////////////////////////////////////////////////////////////
   //
