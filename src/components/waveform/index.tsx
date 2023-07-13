@@ -29,6 +29,8 @@ import ClipGridHeader from "./components/ClipGridHeader";
 import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
 import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
+import { usePeaksInstance } from "../../hooks/usePeaksInstance";
+
 export default function WaveForm() {
   //booleans to open modal for invalid playhead positions when adding segments
   const {
@@ -64,19 +66,12 @@ export default function WaveForm() {
   };
   //////////////////////////////////////////////////////////////////////
 
-  //////////////////////////////////////////////////////////////////////
-  //
-  //
-  //               Initialising peaks
-  //
-  //
   //create references to peaks.js containers
   const zoomviewWaveformRef = React.createRef<HTMLDivElement>();
   const overviewWaveformRef = React.createRef<HTMLDivElement>();
   const audioElementRef = React.createRef<HTMLAudioElement>();
 
-  // state for peaks instance
-  const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
+  //segments state
   const [segments, setSegments] =
     useState<TestSegmentProps[]>(testSegmentsSmall);
 
@@ -86,52 +81,12 @@ export default function WaveForm() {
   const [invalidFilenamePresent, setInvalidFilenamePresent] =
     useState<boolean>(true);
 
-  // create function to create instance of peaks
-  // useCallback means this will only render a single instance of peaks
-  const initPeaks = useCallback(() => {
-    //setting options here by invoking setPeaksConfig()
-    const options: PeaksOptions = setPeaksConfig(
-      overviewWaveformRef,
-      zoomviewWaveformRef,
-      audioElementRef,
-      overviewOptionsConfig,
-      zoomviewOptionsConfig,
-      data.waveformDataUrl
-    );
-
-    //assigning the source for the audio element
-    audioElementRef.current!.src = data.audioUrl;
-
-    //If there is an existing peaks instance,
-    //call destroy method and set undefined for myPeaks
-    if (myPeaks) {
-      myPeaks.destroy();
-      setMyPeaks(undefined);
-    }
-
-    //create an instance of peaks
-    Peaks.init(options, (err, peaks) => {
-      if (err) {
-        console.error("Failed to initialize Peaks instance: " + err.message);
-        return;
-      }
-
-      //set instance of peaks to myPeaks state
-      setMyPeaks(peaks);
-
-      //set the amplitude scale for the zoomview  and overview container
-      const zoomview = peaks?.views.getView("zoomview");
-      const overview = peaks?.views.getView("overview");
-      zoomview?.setAmplitudeScale(0.8);
-      overview?.setAmplitudeScale(0.5);
-
-      //if there is no instance of peaks, return
-      if (!peaks) {
-        return;
-      }
-    });
-    // eslint-disable-next-line
-  }, []);
+  //custom hook to initialise a peaks instance with reference to component elements
+  const { initPeaks, myPeaks } = usePeaksInstance(
+    zoomviewWaveformRef,
+    overviewWaveformRef,
+    audioElementRef
+  );
 
   //call initPeaks on initial mount of WaveForm component
   useEffect(() => {
