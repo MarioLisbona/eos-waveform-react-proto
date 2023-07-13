@@ -58,7 +58,6 @@ export default function WaveForm() {
   //segments state
   const [segments, setSegments] =
     useState<TestSegmentProps[]>(testSegmentsSmall);
-
   //boolean state used for conditional modal message for invalid position to create clip
   const [clipOverlap, setClipOverlap] = useState<boolean>(false);
   //boolean state used to disable Create All button if an empty file name is present
@@ -71,14 +70,12 @@ export default function WaveForm() {
     overviewWaveformRef,
     audioElementRef
   );
-
   //call initPeaks on initial mount of WaveForm component
   useEffect(() => {
     if (initPeaks) {
       initPeaks();
     }
   }, [initPeaks]);
-  //////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////////////////
   //

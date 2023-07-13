@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import Peaks, { PeaksInstance, PeaksOptions } from "peaks.js";
 import { AudioDataProps } from "../types";
+import { audioData } from "../data/segmentData";
 import {
   setPeaksConfig,
   overviewOptionsConfig,
@@ -12,12 +13,6 @@ export const usePeaksInstance = (
   overviewWaveformRef: React.RefObject<HTMLDivElement>,
   audioElementRef: React.RefObject<HTMLAudioElement>
 ) => {
-  const data: AudioDataProps = {
-    //------> use testSegmentsSmall data set to set segment state
-    audioUrl: "instrumental.mp3",
-    audioContentType: "audio/mpeg",
-    waveformDataUrl: "instrumental.dat",
-  };
   // state for peaks instance
   const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
 
@@ -31,11 +26,11 @@ export const usePeaksInstance = (
       audioElementRef,
       overviewOptionsConfig,
       zoomviewOptionsConfig,
-      data.waveformDataUrl
+      audioData.waveformDataUrl
     );
 
     //assigning the source for the audio element
-    audioElementRef.current!.src = data.audioUrl;
+    audioElementRef.current!.src = audioData.audioUrl;
 
     //If there is an existing peaks instance,
     //call destroy method and set undefined for myPeaks
