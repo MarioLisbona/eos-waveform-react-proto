@@ -81,6 +81,7 @@ export default function WaveForm() {
     //will still allow it to be called one more time to create an updated ent time
     //This means the double click to create clip can be placed anywhere on the overview timeline
     //after first clip is created
+
     if (
       segments.length < 1 ||
       myPeaks?.player.getDuration()! === segments[0].endTime
