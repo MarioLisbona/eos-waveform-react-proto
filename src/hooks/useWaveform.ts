@@ -1,6 +1,6 @@
 import React from "react";
 import { TestSegmentProps } from "../types";
-import { PeaksInstance } from "peaks.js";
+import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 
 export const useWaveform = (
   myPeaks: PeaksInstance,
@@ -63,5 +63,47 @@ export const useWaveform = (
     }
   };
   //////////////////////////////////////////////////////////////////////
-  return { createTopTail };
+
+  //////////////////////////////////////////////////////////////////////
+  //
+  //             Edit segment start points
+  //
+  //             Handles a clip start point being dragged
+  //             to a new position on the zoomview window
+  //
+  //
+  const editClipStartPoint = (evt: SegmentDragEvent) => {
+    //id for the current clip being edited
+    const segmentId = evt.segment.id;
+
+    const newSegState = segments.map((segment, idx, arr) => {
+      if (segment.id === segmentId) {
+        //error checking for Top clip else all other clips
+        if (idx === 0) {
+          return {
+            ...segment,
+            startTime:
+              evt.segment.startTime > segment.endTime - 0.05
+                ? segment.startTime
+                : evt.segment.startTime,
+          };
+        } else {
+          return {
+            ...segment,
+            startTime:
+              evt.segment.startTime < arr[idx - 1].endTime ||
+              evt.segment.startTime > segment.endTime - 0.05
+                ? segment.startTime
+                : evt.segment.startTime,
+          };
+        }
+      }
+      // otherwise return the segment unchanged
+      return segment;
+    });
+    //use the updated segment to update the segments state
+    setSegments(newSegState);
+  };
+  //////////////////////////////////////////////////////////////////////
+  return { createTopTail, editClipStartPoint };
 };

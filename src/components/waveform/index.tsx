@@ -25,7 +25,7 @@ import {
   deleteAllSegments,
   createAllSegments,
   handleAddSegment,
-  editClipStartPoint,
+  // editClipStartPoint,
   editClipEndPoint,
   // createTopTail,
 } from "../../lib/waveform-utils";
@@ -62,7 +62,11 @@ export default function WaveForm() {
   const { myPeaks, segments, setSegments, invalidFilenamePresent } =
     usePeaksInstance(zoomviewWaveformRef, overviewWaveformRef, audioElementRef);
 
-  const { createTopTail } = useWaveform(myPeaks!, segments, setSegments);
+  const { createTopTail, editClipStartPoint } = useWaveform(
+    myPeaks!,
+    segments,
+    setSegments
+  );
 
   //////////////////////////////////////////////////////////////////////
   //
@@ -75,7 +79,7 @@ export default function WaveForm() {
   // eslint-disable-next-line
   const handleClipDragEnd = (evt: SegmentDragEvent) => {
     evt.startMarker
-      ? editClipStartPoint(evt, segments, setSegments)
+      ? editClipStartPoint(evt)
       : editClipEndPoint(evt, segments, setSegments);
   };
 
