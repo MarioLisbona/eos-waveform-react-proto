@@ -12,11 +12,6 @@ import {
   FormErrorMessage,
   Tooltip,
 } from "@chakra-ui/react";
-import // deleteSingleSegment,
-// createSingleSegment,
-// handleFileNameChange,
-// handlePlayheadSeek,
-"../../../lib/waveform-utils";
 import {
   HandlePlayheadSeekProps,
   CreateOrDeleteSingleSegmentProps,
@@ -24,8 +19,6 @@ import {
 
 export default function ClipGrid({
   segments,
-  // setSegments,
-  // myPeaks,
   handlePlayheadSeek,
   deleteSingleSegment,
   createSingleSegment,
