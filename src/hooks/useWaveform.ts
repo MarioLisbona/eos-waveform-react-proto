@@ -105,5 +105,49 @@ export const useWaveform = (
     setSegments(newSegState);
   };
   //////////////////////////////////////////////////////////////////////
-  return { createTopTail, editClipStartPoint };
+
+  //////////////////////////////////////////////////////////////////////
+  //
+  //             Edit segment end points
+  //
+  //             Handles a clip end point being dragged
+  //             to a new position on the zoomview window
+  //
+  //
+
+  const editClipEndPoint = (evt: SegmentDragEvent) => {
+    //id for the current clip being edited
+    const segmentId = evt.segment.id;
+
+    const newSegState = segments.map((segment, idx, arr) => {
+      if (segment.id === segmentId) {
+        //error checking for Tail clip else all other clips
+        if (idx === segments.length - 1) {
+          return {
+            ...segment,
+            endTime:
+              evt.segment.endTime < segment.startTime + 0.05
+                ? segment.endTime
+                : evt.segment.endTime,
+          };
+        } else {
+          return {
+            ...segment,
+            endTime:
+              evt.segment.endTime > arr[idx + 1].startTime ||
+              evt.segment.endTime < segment.startTime + 0.05
+                ? segment.endTime
+                : evt.segment.endTime,
+          };
+        }
+      }
+      // otherwise return the segment unchanged
+      return segment;
+    });
+    //use the updated segment to update the segments state
+    setSegments(newSegState);
+  };
+  //////////////////////////////////////////////////////////////////////
+
+  return { createTopTail, editClipStartPoint, editClipEndPoint };
 };
