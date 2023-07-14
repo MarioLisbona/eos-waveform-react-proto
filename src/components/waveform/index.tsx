@@ -13,6 +13,7 @@ import { usePeaksInstance } from "../../hooks/usePeaksInstance";
 import { useWaveform } from "../../hooks/useWaveform";
 import { useInvalidTCPModal } from "../../hooks/useInvalidTCPModal";
 import { useInvalidTTClipModal } from "../../hooks/useInvalidTTClipModal";
+import { useErrorModal } from "../../hooks/useErrorModal";
 
 export default function WaveForm() {
   //booleans to open modal for invalid playhead positions when adding segments
@@ -22,11 +23,11 @@ export default function WaveForm() {
   //   onOpen: onInvalidTCPModalOpen,
   // } = useDisclosure();
 
-  const {
-    isInvalidTCPModalOpen,
-    onInvalidTCPModalClose,
-    onInvalidTCPModalOpen,
-  } = useInvalidTCPModal();
+  // const {
+  //   isInvalidTCPModalOpen,
+  //   onInvalidTCPModalClose,
+  //   onInvalidTCPModalOpen,
+  // } = useInvalidTCPModal();
 
   //booleans to open modal for invalid playhead position for adding endtime to Top and Tail clip
   // const {
@@ -34,11 +35,19 @@ export default function WaveForm() {
   //   onClose: onInvalidTopTailModalClose,
   //   onOpen: onInvalidTopTailModalOpen,
   // } = useDisclosure();
+  // const {
+  //   isInvalidTopTailModalOpen,
+  //   onInvalidTopTailModalClose,
+  //   onInvalidTopTailModalOpen,
+  // } = useInvalidTTClipModal();
   const {
+    isInvalidTCPModalOpen,
+    onInvalidTCPModalClose,
+    onInvalidTCPModalOpen,
     isInvalidTopTailModalOpen,
     onInvalidTopTailModalClose,
     onInvalidTopTailModalOpen,
-  } = useInvalidTTClipModal();
+  } = useErrorModal();
 
   //create references to peaks.js containers
   const zoomviewWaveformRef = React.createRef<HTMLDivElement>();
