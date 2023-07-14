@@ -1,4 +1,4 @@
-import { Flex, Button, useDisclosure } from "@chakra-ui/react";
+import { Flex, Button } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
 import { SegmentDragEvent, WaveformViewMouseEvent } from "peaks.js";
@@ -11,21 +11,18 @@ import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
 import { usePeaksInstance } from "../../hooks/usePeaksInstance";
 import { useWaveform } from "../../hooks/useWaveform";
+import { useErrorModal } from "../../hooks/useErrorModal";
 
 export default function WaveForm() {
-  //booleans to open modal for invalid playhead positions when adding segments
+  //booleans for displaying Error modals
   const {
-    isOpen: isInvalidTCPModalOpen,
-    onClose: onInvalidTCPModalClose,
-    onOpen: onInvalidTCPModalOpen,
-  } = useDisclosure();
-
-  //booleans to open modal for invalid playhead position for adding endtime to Top and Tail clip
-  const {
-    isOpen: isInvalidTopTailModalOpen,
-    onClose: onInvalidTopTailModalClose,
-    onOpen: onInvalidTopTailModalOpen,
-  } = useDisclosure();
+    isInvalidTCPModalOpen,
+    onInvalidTCPModalClose,
+    onInvalidTCPModalOpen,
+    isInvalidTopTailModalOpen,
+    onInvalidTopTailModalClose,
+    onInvalidTopTailModalOpen,
+  } = useErrorModal();
 
   //create references to peaks.js containers
   const zoomviewWaveformRef = React.createRef<HTMLDivElement>();
