@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import Peaks, { PeaksInstance, PeaksOptions } from "peaks.js";
-import { AudioDataProps, TestSegmentProps } from "../types";
+import { TestSegmentProps } from "../types";
 import { audioData, testSegmentsSmall } from "../data/segmentData";
 import {
   setPeaksConfig,
