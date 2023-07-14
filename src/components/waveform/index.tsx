@@ -1,4 +1,4 @@
-import { Flex, Button, useDisclosure } from "@chakra-ui/react";
+import { Flex, Button } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
 import { SegmentDragEvent, WaveformViewMouseEvent } from "peaks.js";
@@ -11,8 +11,6 @@ import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
 import { usePeaksInstance } from "../../hooks/usePeaksInstance";
 import { useWaveform } from "../../hooks/useWaveform";
-import { useInvalidTCPModal } from "../../hooks/useInvalidTCPModal";
-import { useInvalidTTClipModal } from "../../hooks/useInvalidTTClipModal";
 import { useErrorModal } from "../../hooks/useErrorModal";
 
 export default function WaveForm() {
