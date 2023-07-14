@@ -11,6 +11,23 @@ export const useWaveform = (
   //////////////////////////////////////////////////////////////////////
   //
   //
+  //              Playhead seeks to the stat time of the clip
+  //              or end of the clip depending on wheher the
+  //              sart time or end time are clicked
+  //
+  //
+  const handlePlayheadSeek = (id: string | undefined, seekStart?: boolean) => {
+    //find selected segment and move playhead to that segments start time or end time
+    const selectedSegment = segments.find((seg) => seg.id === id);
+    seekStart
+      ? myPeaks.player.seek(selectedSegment!.startTime)
+      : myPeaks.player.seek(selectedSegment!.endTime);
+  };
+  //////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////
+  //
+  //
   //              Create Top and Tail clip on empty timeline
   //
   //
@@ -341,5 +358,6 @@ export const useWaveform = (
     handleAddSegment,
     deleteAllSegments,
     createAllSegments,
+    handlePlayheadSeek,
   };
 };

@@ -16,17 +16,20 @@ import {
   deleteSingleSegment,
   createSingleSegment,
   handleFileNameChange,
-  handlePlayheadSeek,
+  // handlePlayheadSeek,
 } from "../../../lib/waveform-utils";
+import { HandlePlayheadSeekProps } from "../../../types";
 
 export default function ClipGrid({
   segments,
   setSegments,
-  myPeaks,
+  // myPeaks,
+  handlePlayheadSeek,
 }: {
   segments: TestSegmentProps[];
-  myPeaks: PeaksInstance;
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>;
+  myPeaks: PeaksInstance;
+  handlePlayheadSeek: HandlePlayheadSeekProps;
 }) {
   return (
     //create an overflow scrollable box to contain clip information
@@ -51,9 +54,7 @@ export default function ClipGrid({
               <FormControl isInvalid={seg.formErrors.fileNameError}>
                 <Input
                   isDisabled={seg.formErrors.isCreated}
-                  onClick={() =>
-                    handlePlayheadSeek(seg.id, myPeaks, segments, true)
-                  }
+                  onClick={() => handlePlayheadSeek(seg.id, true)}
                   value={seg.fileName}
                   onChange={(evt) =>
                     handleFileNameChange(seg.id!, evt, segments, setSegments)
@@ -74,9 +75,7 @@ export default function ClipGrid({
                 bg="#191C43"
               >
                 <Flex
-                  onClick={() =>
-                    handlePlayheadSeek(seg.id, myPeaks, segments, true)
-                  }
+                  onClick={() => handlePlayheadSeek(seg.id, true)}
                   cursor={"pointer"}
                   ps={"1rem"}
                   borderRadius={"0.3rem"}
@@ -98,7 +97,7 @@ export default function ClipGrid({
                 bg="#191C43"
               >
                 <Flex
-                  onClick={() => handlePlayheadSeek(seg.id, myPeaks, segments)}
+                  onClick={() => handlePlayheadSeek(seg.id)}
                   cursor={"pointer"}
                   ps={"1rem"}
                   borderRadius={"0.3rem"}

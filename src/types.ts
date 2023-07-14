@@ -6,6 +6,11 @@ export type AudioDataProps = {
   waveformDataUrl: string;
 };
 
+export type HandlePlayheadSeekProps = (
+  id: string | undefined,
+  seekStart?: boolean | undefined
+) => void;
+
 export type TestSegmentProps = {
   id?: string;
   fileName: string;
