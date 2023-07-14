@@ -29,8 +29,6 @@ export default function WaveForm() {
   const overviewWaveformRef = React.createRef<HTMLDivElement>();
   const audioElementRef = React.createRef<HTMLAudioElement>();
 
-  const [clipOverlap, setClipOverlap] = useState<boolean>(false);
-
   //custom hook to initialise a peaks instance with reference to component elements
   const { myPeaks, segments, setSegments, invalidFilename } = usePeaksInstance(
     zoomviewWaveformRef,
@@ -50,6 +48,7 @@ export default function WaveForm() {
     deleteSingleSegment,
     createSingleSegment,
     handleFileNameChange,
+    clipOverlap,
   } = useWaveform(myPeaks!, segments, setSegments);
 
   //////////////////////////////////////////////////////////////////////
@@ -68,8 +67,7 @@ export default function WaveForm() {
   //Adds a new segment to the zoomview on double clicked
   // eslint-disable-next-line
   const handleZoomviewDblClick = () => {
-    segments.length >= 1 &&
-      handleAddSegment(onInvalidTCPModalOpen, setClipOverlap);
+    segments.length >= 1 && handleAddSegment(onInvalidTCPModalOpen);
   };
 
   // eslint-disable-next-line
@@ -137,9 +135,7 @@ export default function WaveForm() {
         <Flex>
           <Button
             variant={"waveformBlue"}
-            onClick={() =>
-              handleAddSegment(onInvalidTCPModalOpen, setClipOverlap)
-            }
+            onClick={() => handleAddSegment(onInvalidTCPModalOpen)}
           >
             Add Segment
           </Button>

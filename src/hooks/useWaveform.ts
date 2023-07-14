@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { TestSegmentProps } from "../types";
 import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 import { createNewSegment } from "../lib/general-utils";
@@ -8,6 +8,7 @@ export const useWaveform = (
   segments: TestSegmentProps[],
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>
 ) => {
+  const [clipOverlap, setClipOverlap] = useState<boolean>(false);
   //////////////////////////////////////////////////////////////////////
   //
   //
@@ -176,8 +177,8 @@ export const useWaveform = (
   //
   //
   const handleAddSegment = (
-    onOpen: () => void,
-    setClipOverlap: React.Dispatch<React.SetStateAction<boolean>>
+    onOpen: () => void
+    // setClipOverlap: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     const firstClip = segments.length === 0;
     const secondClip = segments.length === 1;
@@ -452,5 +453,6 @@ export const useWaveform = (
     deleteSingleSegment,
     createSingleSegment,
     handleFileNameChange,
+    clipOverlap,
   };
 };
