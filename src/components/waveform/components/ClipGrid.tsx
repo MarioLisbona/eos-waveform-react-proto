@@ -14,13 +14,13 @@ import {
 } from "@chakra-ui/react";
 import {
   // deleteSingleSegment,
-  createSingleSegment,
+  // createSingleSegment,
   handleFileNameChange,
   // handlePlayheadSeek,
 } from "../../../lib/waveform-utils";
 import {
   HandlePlayheadSeekProps,
-  DeleteSingleSegmentProps,
+  CreateOrDeleteSingleSegmentProps,
 } from "../../../types";
 
 export default function ClipGrid({
@@ -29,12 +29,14 @@ export default function ClipGrid({
   // myPeaks,
   handlePlayheadSeek,
   deleteSingleSegment,
+  createSingleSegment,
 }: {
   segments: TestSegmentProps[];
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>;
   myPeaks: PeaksInstance;
   handlePlayheadSeek: HandlePlayheadSeekProps;
-  deleteSingleSegment: DeleteSingleSegmentProps;
+  deleteSingleSegment: CreateOrDeleteSingleSegmentProps;
+  createSingleSegment: CreateOrDeleteSingleSegmentProps;
 }) {
   return (
     //create an overflow scrollable box to contain clip information
@@ -119,9 +121,7 @@ export default function ClipGrid({
                 <Button
                   isDisabled={seg.formErrors.isCreated || seg.fileName === ""}
                   variant={"waveformOutlined"}
-                  onClick={() =>
-                    createSingleSegment(seg.id!, segments, setSegments)
-                  }
+                  onClick={() => createSingleSegment(seg.id!)}
                 >
                   Create
                 </Button>

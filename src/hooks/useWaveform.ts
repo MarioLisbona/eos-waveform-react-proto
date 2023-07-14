@@ -372,6 +372,38 @@ export const useWaveform = (
   };
   //////////////////////////////////////////////////////////////////////
 
+  //////////////////////////////////////////////////////////////////////
+  //
+  //             Create a single segment
+  //
+  //
+  const createSingleSegment = (id: string) => {
+    const newSegState = segments.map((seg, idx: number) => {
+      if (seg.id === id) {
+        return {
+          ...seg,
+          formErrors: {
+            fileNameError: seg.formErrors.fileNameError,
+            isCreated: seg.formErrors.isCreated ? false : true,
+          },
+          editable: seg.editable ? false : true,
+          color: seg.color === "#1E1541" ? "#384115" : "#1E1541",
+        };
+      }
+      //otherwise return the segment unchanged
+      return seg;
+    });
+
+    //use the updated segment to update the segments state
+    setSegments(newSegState);
+
+    //find update clip that was just created in segments array and log
+    const createdClip = newSegState.find((segment) => segment.id === id);
+    //logging the clip
+    console.log("Clip Created - ", createdClip);
+  };
+  //////////////////////////////////////////////////////////////////////
+
   return {
     createTopTail,
     editClipStartPoint,
@@ -381,5 +413,6 @@ export const useWaveform = (
     createAllSegments,
     handlePlayheadSeek,
     deleteSingleSegment,
+    createSingleSegment,
   };
 };
