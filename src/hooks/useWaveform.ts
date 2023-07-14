@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { TestSegmentProps } from "../types";
 import { PeaksInstance, SegmentDragEvent } from "peaks.js";
 import { createNewSegment } from "../lib/general-utils";
@@ -404,6 +404,43 @@ export const useWaveform = (
   };
   //////////////////////////////////////////////////////////////////////
 
+  //////////////////////////////////////////////////////////////////////
+  //
+  //             handles file name error checking
+  //
+  //             returns true if the clips filename is empty
+  //             this boolean is used by chakra-UI <FormControl>
+  //             to display an error message and red highlight the input field
+  //
+  //
+  const handleFileNameChange = (
+    id: string,
+    evt: ChangeEvent<HTMLInputElement>
+  ) => {
+    //used for two way bind of filename input element to correct segment in segments
+    //also used to track the the error boolean for the file name input
+    const newSegState = segments.map((seg) => {
+      //if the current segment id matches the id passed from the segment then bind the new value entered to the segment object
+      //assign the fileNameError to true if the file name input is empty
+      if (seg.id === id) {
+        return {
+          ...seg,
+          fileName: evt.target.value,
+          labelText: evt.target.value,
+          formErrors: {
+            fileNameError: evt.target.value === "" ? true : false,
+            isCreated: false,
+          },
+        };
+      }
+      //otherwise return the segment unchanged
+      return seg;
+    });
+    //use the updated segment to update the segments state
+    setSegments(newSegState);
+  };
+  //////////////////////////////////////////////////////////////////////
+
   return {
     createTopTail,
     editClipStartPoint,
@@ -414,5 +451,6 @@ export const useWaveform = (
     handlePlayheadSeek,
     deleteSingleSegment,
     createSingleSegment,
+    handleFileNameChange,
   };
 };

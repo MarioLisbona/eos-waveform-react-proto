@@ -52,6 +52,7 @@ export default function WaveForm() {
     handlePlayheadSeek,
     deleteSingleSegment,
     createSingleSegment,
+    handleFileNameChange,
   } = useWaveform(myPeaks!, segments, setSegments);
 
   //////////////////////////////////////////////////////////////////////
@@ -172,6 +173,7 @@ export default function WaveForm() {
           handlePlayheadSeek={handlePlayheadSeek}
           deleteSingleSegment={deleteSingleSegment}
           createSingleSegment={createSingleSegment}
+          handleFileNameChange={handleFileNameChange}
         />
       )}
     </>

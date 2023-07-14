@@ -1,4 +1,4 @@
-import { TestSegmentProps } from "../../../types";
+import { HandleFileNameChangeProps, TestSegmentProps } from "../../../types";
 import { PeaksInstance } from "peaks.js";
 import Timecode from "react-timecode";
 import {
@@ -12,12 +12,11 @@ import {
   FormErrorMessage,
   Tooltip,
 } from "@chakra-ui/react";
-import {
-  // deleteSingleSegment,
-  // createSingleSegment,
-  handleFileNameChange,
-  // handlePlayheadSeek,
-} from "../../../lib/waveform-utils";
+import // deleteSingleSegment,
+// createSingleSegment,
+// handleFileNameChange,
+// handlePlayheadSeek,
+"../../../lib/waveform-utils";
 import {
   HandlePlayheadSeekProps,
   CreateOrDeleteSingleSegmentProps,
@@ -25,11 +24,12 @@ import {
 
 export default function ClipGrid({
   segments,
-  setSegments,
+  // setSegments,
   // myPeaks,
   handlePlayheadSeek,
   deleteSingleSegment,
   createSingleSegment,
+  handleFileNameChange,
 }: {
   segments: TestSegmentProps[];
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>;
@@ -37,6 +37,7 @@ export default function ClipGrid({
   handlePlayheadSeek: HandlePlayheadSeekProps;
   deleteSingleSegment: CreateOrDeleteSingleSegmentProps;
   createSingleSegment: CreateOrDeleteSingleSegmentProps;
+  handleFileNameChange: HandleFileNameChangeProps;
 }) {
   return (
     //create an overflow scrollable box to contain clip information
@@ -63,9 +64,7 @@ export default function ClipGrid({
                   isDisabled={seg.formErrors.isCreated}
                   onClick={() => handlePlayheadSeek(seg.id, true)}
                   value={seg.fileName}
-                  onChange={(evt) =>
-                    handleFileNameChange(seg.id!, evt, segments, setSegments)
-                  }
+                  onChange={(evt) => handleFileNameChange(seg.id!, evt)}
                 />
                 {seg.formErrors.fileNameError && (
                   <FormErrorMessage>File Name is required.</FormErrorMessage>
