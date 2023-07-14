@@ -24,7 +24,7 @@ import { AudioDataProps, TestSegmentProps } from "../../types";
 import {
   deleteAllSegments,
   createAllSegments,
-  handleAddSegment,
+  // handleAddSegment,
   // editClipStartPoint,
   // editClipEndPoint,
   // createTopTail,
@@ -62,11 +62,12 @@ export default function WaveForm() {
   const { myPeaks, segments, setSegments, invalidFilenamePresent } =
     usePeaksInstance(zoomviewWaveformRef, overviewWaveformRef, audioElementRef);
 
-  const { createTopTail, editClipStartPoint, editClipEndPoint } = useWaveform(
-    myPeaks!,
-    segments,
-    setSegments
-  );
+  const {
+    createTopTail,
+    editClipStartPoint,
+    editClipEndPoint,
+    handleAddSegment,
+  } = useWaveform(myPeaks!, segments, setSegments);
 
   //////////////////////////////////////////////////////////////////////
   //
@@ -85,13 +86,7 @@ export default function WaveForm() {
   // eslint-disable-next-line
   const handleZoomviewDblClick = () => {
     segments.length >= 1 &&
-      handleAddSegment(
-        segments,
-        setSegments,
-        myPeaks!,
-        onInvalidTCPModalOpen,
-        setClipOverlap
-      );
+      handleAddSegment(onInvalidTCPModalOpen, setClipOverlap);
   };
 
   // eslint-disable-next-line
@@ -159,13 +154,7 @@ export default function WaveForm() {
           <Button
             variant={"waveformBlue"}
             onClick={() =>
-              handleAddSegment(
-                segments,
-                setSegments,
-                myPeaks!,
-                onInvalidTCPModalOpen,
-                setClipOverlap
-              )
+              handleAddSegment(onInvalidTCPModalOpen, setClipOverlap)
             }
           >
             Add Segment
