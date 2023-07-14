@@ -11,14 +11,20 @@ import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
 import { usePeaksInstance } from "../../hooks/usePeaksInstance";
 import { useWaveform } from "../../hooks/useWaveform";
+import { useInvalidTCPModal } from "../../hooks/useInvalidTCPModal";
 
 export default function WaveForm() {
   //booleans to open modal for invalid playhead positions when adding segments
+  // const {
+  //   isOpen: isInvalidTCPModalOpen,
+  //   onClose: onInvalidTCPModalClose,
+  //   onOpen: onInvalidTCPModalOpen,
+  // } = useDisclosure();
   const {
-    isOpen: isInvalidTCPModalOpen,
-    onClose: onInvalidTCPModalClose,
-    onOpen: onInvalidTCPModalOpen,
-  } = useDisclosure();
+    isInvalidTCPModalOpen,
+    onInvalidTCPModalClose,
+    onInvalidTCPModalOpen,
+  } = useInvalidTCPModal();
 
   //booleans to open modal for invalid playhead position for adding endtime to Top and Tail clip
   const {
