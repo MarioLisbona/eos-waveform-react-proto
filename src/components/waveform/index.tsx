@@ -27,13 +27,14 @@ import {
   handleAddSegment,
   editClipStartPoint,
   editClipEndPoint,
-  createTopTail,
+  // createTopTail,
 } from "../../lib/waveform-utils";
 import ClipGridHeader from "./components/ClipGridHeader";
 import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
 import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
 import { usePeaksInstance } from "../../hooks/usePeaksInstance";
+import { useWaveform } from "../../hooks/useWaveform";
 
 export default function WaveForm() {
   //booleans to open modal for invalid playhead positions when adding segments
@@ -60,6 +61,8 @@ export default function WaveForm() {
   //custom hook to initialise a peaks instance with reference to component elements
   const { myPeaks, segments, setSegments, invalidFilenamePresent } =
     usePeaksInstance(zoomviewWaveformRef, overviewWaveformRef, audioElementRef);
+
+  const { createTopTail } = useWaveform(myPeaks!, segments, setSegments);
 
   //////////////////////////////////////////////////////////////////////
   //
@@ -99,13 +102,7 @@ export default function WaveForm() {
       segments.length < 1 ||
       myPeaks?.player.getDuration()! === segments[0].endTime
     ) {
-      createTopTail(
-        evt.time,
-        myPeaks?.player.getDuration()!,
-        segments,
-        setSegments,
-        onInvalidTopTailModalOpen
-      );
+      createTopTail(evt.time, onInvalidTopTailModalOpen);
     }
   };
   //////////////////////////////////////////////////////////////////////
