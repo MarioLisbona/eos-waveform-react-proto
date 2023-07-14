@@ -50,6 +50,7 @@ export default function WaveForm() {
     deleteAllSegments,
     createAllSegments,
     handlePlayheadSeek,
+    deleteSingleSegment,
   } = useWaveform(myPeaks!, segments, setSegments);
 
   //////////////////////////////////////////////////////////////////////
@@ -168,6 +169,7 @@ export default function WaveForm() {
           setSegments={setSegments}
           myPeaks={myPeaks!}
           handlePlayheadSeek={handlePlayheadSeek}
+          deleteSingleSegment={deleteSingleSegment}
         />
       )}
     </>

@@ -11,6 +11,8 @@ export type HandlePlayheadSeekProps = (
   seekStart?: boolean | undefined
 ) => void;
 
+export type DeleteSingleSegmentProps = (id: string) => void;
+
 export type TestSegmentProps = {
   id?: string;
   fileName: string;

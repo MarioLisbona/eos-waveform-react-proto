@@ -13,23 +13,28 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import {
-  deleteSingleSegment,
+  // deleteSingleSegment,
   createSingleSegment,
   handleFileNameChange,
   // handlePlayheadSeek,
 } from "../../../lib/waveform-utils";
-import { HandlePlayheadSeekProps } from "../../../types";
+import {
+  HandlePlayheadSeekProps,
+  DeleteSingleSegmentProps,
+} from "../../../types";
 
 export default function ClipGrid({
   segments,
   setSegments,
   // myPeaks,
   handlePlayheadSeek,
+  deleteSingleSegment,
 }: {
   segments: TestSegmentProps[];
   setSegments: React.Dispatch<React.SetStateAction<TestSegmentProps[]>>;
   myPeaks: PeaksInstance;
   handlePlayheadSeek: HandlePlayheadSeekProps;
+  deleteSingleSegment: DeleteSingleSegmentProps;
 }) {
   return (
     //create an overflow scrollable box to contain clip information
@@ -122,9 +127,7 @@ export default function ClipGrid({
                 </Button>
                 <Button
                   variant={"waveformOutlined"}
-                  onClick={() =>
-                    deleteSingleSegment(seg.id!, segments, setSegments)
-                  }
+                  onClick={() => deleteSingleSegment(seg.id!)}
                 >
                   Delete
                 </Button>

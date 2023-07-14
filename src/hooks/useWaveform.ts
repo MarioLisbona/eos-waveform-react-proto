@@ -351,6 +351,27 @@ export const useWaveform = (
   };
   //////////////////////////////////////////////////////////////////////
 
+  //////////////////////////////////////////////////////////////////////
+  //
+  //             Delete a single segment
+  //
+  //
+  const deleteSingleSegment = (id: string) => {
+    //search for the segment to delete based on id passed into function
+    const segmentToDelete = segments.find((seg) => {
+      return seg.id === id;
+    });
+
+    //filter segments to create a new array with all segments that dont match id
+    const updatedSegments = segments.filter((seg) => {
+      return seg.id !== segmentToDelete!.id;
+    });
+
+    //update the date of segments with the new array
+    setSegments(updatedSegments);
+  };
+  //////////////////////////////////////////////////////////////////////
+
   return {
     createTopTail,
     editClipStartPoint,
@@ -359,5 +380,6 @@ export const useWaveform = (
     deleteAllSegments,
     createAllSegments,
     handlePlayheadSeek,
+    deleteSingleSegment,
   };
 };
