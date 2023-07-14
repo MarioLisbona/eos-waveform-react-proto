@@ -16,30 +16,7 @@ import { useInvalidTTClipModal } from "../../hooks/useInvalidTTClipModal";
 import { useErrorModal } from "../../hooks/useErrorModal";
 
 export default function WaveForm() {
-  //booleans to open modal for invalid playhead positions when adding segments
-  // const {
-  //   isOpen: isInvalidTCPModalOpen,
-  //   onClose: onInvalidTCPModalClose,
-  //   onOpen: onInvalidTCPModalOpen,
-  // } = useDisclosure();
-
-  // const {
-  //   isInvalidTCPModalOpen,
-  //   onInvalidTCPModalClose,
-  //   onInvalidTCPModalOpen,
-  // } = useInvalidTCPModal();
-
-  //booleans to open modal for invalid playhead position for adding endtime to Top and Tail clip
-  // const {
-  //   isOpen: isInvalidTopTailModalOpen,
-  //   onClose: onInvalidTopTailModalClose,
-  //   onOpen: onInvalidTopTailModalOpen,
-  // } = useDisclosure();
-  // const {
-  //   isInvalidTopTailModalOpen,
-  //   onInvalidTopTailModalClose,
-  //   onInvalidTopTailModalOpen,
-  // } = useInvalidTTClipModal();
+  //booleans for displaying Error modals
   const {
     isInvalidTCPModalOpen,
     onInvalidTCPModalClose,
