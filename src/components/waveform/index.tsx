@@ -35,8 +35,11 @@ export default function WaveForm() {
   const [clipOverlap, setClipOverlap] = useState<boolean>(false);
 
   //custom hook to initialise a peaks instance with reference to component elements
-  const { myPeaks, segments, setSegments, invalidFilenamePresent } =
-    usePeaksInstance(zoomviewWaveformRef, overviewWaveformRef, audioElementRef);
+  const { myPeaks, segments, setSegments, invalidFilename } = usePeaksInstance(
+    zoomviewWaveformRef,
+    overviewWaveformRef,
+    audioElementRef
+  );
 
   // custom hook to return waveform utilitiy functions
   const {
@@ -141,7 +144,7 @@ export default function WaveForm() {
         </Flex>
         <Flex>
           <Button
-            isDisabled={invalidFilenamePresent || segments.length < 1}
+            isDisabled={invalidFilename || segments.length < 1}
             variant={"waveformBlue"}
             me={"1rem"}
             onClick={createAllSegments}

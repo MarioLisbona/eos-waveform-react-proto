@@ -19,8 +19,7 @@ export const usePeaksInstance = (
   const [segments, setSegments] =
     useState<TestSegmentProps[]>(testSegmentsSmall);
   //boolean state used to disable Create All button if an empty file name is present
-  const [invalidFilenamePresent, setInvalidFilenamePresent] =
-    useState<boolean>(true);
+  const [invalidFilename, setInvalidFilename] = useState<boolean>(true);
 
   // create function to create instance of peaks
   // useCallback means this will only render a single instance of peaks
@@ -81,10 +80,10 @@ export const usePeaksInstance = (
     segments.sort((a, b) => a.startTime - b.startTime);
 
     //searches segments array and returns true if any filename field is empty
-    //update state for invalidFilenamePresent
-    const invalidFilenamePresent =
+    //update state for invalidFilename
+    const invalidFilename =
       segments.find((segments) => segments.fileName === "") !== undefined;
-    setInvalidFilenamePresent(invalidFilenamePresent);
+    setInvalidFilename(invalidFilename);
 
     //remove all peaks segments then add with new segments state to avoids duplicates
     myPeaks?.segments.removeAll();
@@ -95,6 +94,6 @@ export const usePeaksInstance = (
     myPeaks,
     segments,
     setSegments,
-    invalidFilenamePresent,
+    invalidFilename,
   };
 };
