@@ -1,33 +1,10 @@
 import { Flex, Button, useDisclosure } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
-import Peaks, {
-  PeaksInstance,
-  PeaksOptions,
-  SegmentDragEvent,
-  WaveformViewMouseEvent,
-} from "peaks.js";
-import {
-  setPeaksConfig,
-  overviewOptionsConfig,
-  zoomviewOptionsConfig,
-} from "../../lib/waveform-config";
+import { SegmentDragEvent, WaveformViewMouseEvent } from "peaks.js";
 import ClipGrid from "./components/ClipGrid";
-//testSegments, testSegmentsSmall alternate on use depending on dataset being used
-// eslint-disable-next-line
-import {
-  testSegments,
-  testSegmentsSmall,
-  audioData,
-} from "../../data/segmentData";
-import { AudioDataProps, TestSegmentProps } from "../../types";
-import // deleteAllSegments,
-// createAllSegments,
-// handleAddSegment,
-// editClipStartPoint,
-// editClipEndPoint,
-// createTopTail,
-"../../lib/waveform-utils";
+import { audioData } from "../../data/segmentData";
+
 import ClipGridHeader from "./components/ClipGridHeader";
 import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
 import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
@@ -61,6 +38,7 @@ export default function WaveForm() {
   const { myPeaks, segments, setSegments, invalidFilenamePresent } =
     usePeaksInstance(zoomviewWaveformRef, overviewWaveformRef, audioElementRef);
 
+  // custom hook to return waveform utilitiy functions
   const {
     createTopTail,
     editClipStartPoint,
