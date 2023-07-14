@@ -327,8 +327,10 @@ export const useWaveform = (
       "Exporting clip data and destroying Peaks instance",
       updatedSegments
     );
-    // setSegments([]);
-    // peaks?.destroy();
+    setTimeout(() => {
+      setSegments([]);
+      myPeaks.destroy();
+    }, 5000);
   };
   //////////////////////////////////////////////////////////////////////
 
