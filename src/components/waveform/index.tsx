@@ -22,7 +22,7 @@ import {
 } from "../../data/segmentData";
 import { AudioDataProps, TestSegmentProps } from "../../types";
 import {
-  deleteAllSegments,
+  // deleteAllSegments,
   createAllSegments,
   // handleAddSegment,
   // editClipStartPoint,
@@ -67,6 +67,7 @@ export default function WaveForm() {
     editClipStartPoint,
     editClipEndPoint,
     handleAddSegment,
+    deleteAllSegments,
   } = useWaveform(myPeaks!, segments, setSegments);
 
   //////////////////////////////////////////////////////////////////////
@@ -172,7 +173,7 @@ export default function WaveForm() {
           <Button
             isDisabled={segments.length < 1}
             variant={"waveformBlue"}
-            onClick={() => deleteAllSegments(myPeaks!, setSegments)}
+            onClick={deleteAllSegments}
           >
             Delete All
           </Button>

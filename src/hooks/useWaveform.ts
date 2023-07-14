@@ -291,10 +291,22 @@ export const useWaveform = (
   };
   //////////////////////////////////////////////////////////////////////
 
+  //////////////////////////////////////////////////////////////////////
+  //
+  //             Delete all segments
+  //
+  //
+  const deleteAllSegments = () => {
+    myPeaks.segments.removeAll();
+    setSegments([]);
+  };
+  //////////////////////////////////////////////////////////////////////
+
   return {
     createTopTail,
     editClipStartPoint,
     editClipEndPoint,
     handleAddSegment,
+    deleteAllSegments,
   };
 };
