@@ -21,14 +21,13 @@ import {
   audioData,
 } from "../../data/segmentData";
 import { AudioDataProps, TestSegmentProps } from "../../types";
-import {
-  // deleteAllSegments,
-  createAllSegments,
-  // handleAddSegment,
-  // editClipStartPoint,
-  // editClipEndPoint,
-  // createTopTail,
-} from "../../lib/waveform-utils";
+import // deleteAllSegments,
+// createAllSegments,
+// handleAddSegment,
+// editClipStartPoint,
+// editClipEndPoint,
+// createTopTail,
+"../../lib/waveform-utils";
 import ClipGridHeader from "./components/ClipGridHeader";
 import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
 import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
@@ -68,6 +67,7 @@ export default function WaveForm() {
     editClipEndPoint,
     handleAddSegment,
     deleteAllSegments,
+    createAllSegments,
   } = useWaveform(myPeaks!, segments, setSegments);
 
   //////////////////////////////////////////////////////////////////////
@@ -166,7 +166,7 @@ export default function WaveForm() {
             isDisabled={invalidFilenamePresent || segments.length < 1}
             variant={"waveformBlue"}
             me={"1rem"}
-            onClick={() => createAllSegments(setSegments, segments)}
+            onClick={createAllSegments}
           >
             Create All
           </Button>

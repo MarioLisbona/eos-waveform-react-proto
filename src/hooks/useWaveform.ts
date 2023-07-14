@@ -302,11 +302,42 @@ export const useWaveform = (
   };
   //////////////////////////////////////////////////////////////////////
 
+  //////////////////////////////////////////////////////////////////////
+  //
+  //             Create all segments
+  //
+  //
+  // console logs the segments after all edits
+  //set segments to empty array and destroy peaks instance to free resources
+  const createAllSegments = () => {
+    const updatedSegments = segments.map((seg) => {
+      return {
+        ...seg,
+        formErrors: {
+          fileNameError: seg.formErrors.fileNameError,
+          isCreated: true,
+        },
+        editable: false,
+        color: "#384115",
+      };
+    });
+
+    setSegments(updatedSegments);
+    console.log(
+      "Exporting clip data and destroying Peaks instance",
+      updatedSegments
+    );
+    // setSegments([]);
+    // peaks?.destroy();
+  };
+  //////////////////////////////////////////////////////////////////////
+
   return {
     createTopTail,
     editClipStartPoint,
     editClipEndPoint,
     handleAddSegment,
     deleteAllSegments,
+    createAllSegments,
   };
 };
