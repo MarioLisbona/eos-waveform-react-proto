@@ -1,19 +1,16 @@
 import { Flex, Button } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
-import { SegmentDragEvent, WaveformViewMouseEvent } from "peaks.js";
+import { SegmentDragEvent } from "peaks.js";
 import ClipGrid from "./components/ClipGrid";
 import { audioData } from "../../data/segmentData";
 
 import ClipGridHeader from "./components/ClipGridHeader";
 import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
-import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
 import { usePeaksInstance } from "../../hooks/usePeaksInstance";
 import { useWaveform } from "../../hooks/useWaveform";
 import { useErrorModal } from "../../hooks/useErrorModal";
-
-import { createGenericTopTail } from "../../lib/waveform-utils";
 
 export default function WaveForm() {
   //booleans for displaying Error modals
@@ -21,9 +18,6 @@ export default function WaveForm() {
     isInvalidTCPModalOpen,
     onInvalidTCPModalClose,
     onInvalidTCPModalOpen,
-    isInvalidTopTailModalOpen,
-    onInvalidTopTailModalClose,
-    onInvalidTopTailModalOpen,
   } = useErrorModal();
 
   //create references to peaks.js containers
@@ -40,7 +34,7 @@ export default function WaveForm() {
 
   // custom hook to return waveform utilitiy functions
   const {
-    createTopTail,
+    createGenericTopTail,
     editClipStartPoint,
     editClipEndPoint,
     handleAddSegment,
@@ -72,20 +66,6 @@ export default function WaveForm() {
     segments.length >= 1 && handleAddSegment(onInvalidTCPModalOpen);
   };
 
-  // eslint-disable-next-line
-  const handleOverviewClick = (evt: WaveformViewMouseEvent) => {
-    //This conditional disables the single click the top and tail clip is created but
-    //will still allow it to be called one more time to create an updated ent time
-    //This means the double click to create clip can be placed anywhere on the overview timeline
-    //after first clip is created
-
-    if (
-      segments.length < 1 ||
-      myPeaks?.player.getDuration()! === segments[0].endTime
-    ) {
-      createTopTail(evt.time, onInvalidTopTailModalOpen);
-    }
-  };
   //////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -93,16 +73,14 @@ export default function WaveForm() {
     myPeaks?.on("segments.dragend", handleClipDragEnd);
     myPeaks?.on("zoomview.dblclick", handleZoomviewDblClick);
     myPeaks?.on("overview.dblclick", handleZoomviewDblClick);
-    // myPeaks?.on("overview.click", handleOverviewClick);
 
     return () => {
       //cleanup
       myPeaks?.off("segments.dragend", handleClipDragEnd);
       myPeaks?.off("zoomview.dblclick", handleZoomviewDblClick);
       myPeaks?.off("overview.dblclick", handleZoomviewDblClick);
-      // myPeaks?.off("overview.click", handleOverviewClick);
     };
-  }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick, handleOverviewClick]);
+  }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick]);
 
   return (
     <>
@@ -111,12 +89,6 @@ export default function WaveForm() {
         isOpen={isInvalidTCPModalOpen}
         onClose={onInvalidTCPModalClose}
         clipOverlap={clipOverlap}
-        myPeaks={myPeaks!}
-      />
-      {/* Moodal to display when Top and Tail end time is set before start time */}
-      <InvalidTopTailEndTimeModal
-        isOpen={isInvalidTopTailModalOpen}
-        onClose={onInvalidTopTailModalClose}
         myPeaks={myPeaks!}
       />
       <Flex
@@ -137,9 +109,7 @@ export default function WaveForm() {
         <Flex>
           <Button
             isDisabled={segments.length > 0}
-            onClick={() =>
-              createGenericTopTail(myPeaks!, segments, setSegments)
-            }
+            onClick={createGenericTopTail}
             variant={"waveformBlue"}
             me={"1rem"}
           >
