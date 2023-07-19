@@ -13,7 +13,7 @@ import { usePeaksInstance } from "../../hooks/usePeaksInstance";
 import { useWaveform } from "../../hooks/useWaveform";
 import { useErrorModal } from "../../hooks/useErrorModal";
 
-import { createGenericTopTail } from "../../lib/waveform-utils";
+// import { createGenericTopTail } from "../../lib/waveform-utils";
 
 export default function WaveForm() {
   //booleans for displaying Error modals
@@ -37,6 +37,7 @@ export default function WaveForm() {
 
   // custom hook to return waveform utilitiy functions
   const {
+    createGenericTopTail,
     editClipStartPoint,
     editClipEndPoint,
     handleAddSegment,
@@ -111,9 +112,7 @@ export default function WaveForm() {
         <Flex>
           <Button
             isDisabled={segments.length > 0}
-            onClick={() =>
-              createGenericTopTail(myPeaks!, segments, setSegments)
-            }
+            onClick={createGenericTopTail}
             variant={"waveformBlue"}
             me={"1rem"}
           >
