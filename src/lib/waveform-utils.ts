@@ -1,7 +1,5 @@
-import { PeaksInstance, SegmentDragEvent } from "peaks.js";
+import { PeaksInstance } from "peaks.js";
 import { TestSegmentProps } from "../types";
-import { ChangeEvent } from "react";
-import { createNewSegment } from "./general-utils";
 
 //////////////////////////////////////////////////////////////////////
 //
