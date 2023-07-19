@@ -40,7 +40,6 @@ export default function WaveForm() {
 
   // custom hook to return waveform utilitiy functions
   const {
-    createTopTail,
     editClipStartPoint,
     editClipEndPoint,
     handleAddSegment,
