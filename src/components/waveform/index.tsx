@@ -1,19 +1,16 @@
 import { Flex, Button } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
-import { SegmentDragEvent, WaveformViewMouseEvent } from "peaks.js";
+import { SegmentDragEvent } from "peaks.js";
 import ClipGrid from "./components/ClipGrid";
 import { audioData } from "../../data/segmentData";
 
 import ClipGridHeader from "./components/ClipGridHeader";
 import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
-import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
 import { usePeaksInstance } from "../../hooks/usePeaksInstance";
 import { useWaveform } from "../../hooks/useWaveform";
 import { useErrorModal } from "../../hooks/useErrorModal";
-
-// import { createGenericTopTail } from "../../lib/waveform-utils";
 
 export default function WaveForm() {
   //booleans for displaying Error modals
