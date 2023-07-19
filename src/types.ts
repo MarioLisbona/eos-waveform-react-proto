@@ -1,10 +1,23 @@
 import { WaveformColor } from "peaks.js";
+import { ChangeEvent } from "react";
 
 export type AudioDataProps = {
   audioUrl: string;
   audioContentType: string;
   waveformDataUrl: string;
 };
+
+export type HandlePlayheadSeekProps = (
+  id: string | undefined,
+  seekStart?: boolean | undefined
+) => void;
+
+export type CreateOrDeleteSingleSegmentProps = (id: string) => void;
+
+export type HandleFileNameChangeProps = (
+  id: string,
+  evt: ChangeEvent<HTMLInputElement>
+) => void;
 
 export type TestSegmentProps = {
   id?: string;

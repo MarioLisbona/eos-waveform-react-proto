@@ -1,17 +1,7 @@
-import { Flex, Button, useDisclosure } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import { Flex, Button } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { OverviewContainer, ZoomviewContainer } from "./styled";
-import Peaks, {
-  PeaksInstance,
-  PeaksOptions,
-  SegmentDragEvent,
-  WaveformViewMouseEvent,
-} from "peaks.js";
-import {
-  setPeaksConfig,
-  overviewOptionsConfig,
-  zoomviewOptionsConfig,
-} from "../../lib/waveform-config";
+import { SegmentDragEvent, WaveformViewMouseEvent } from "peaks.js";
 import ClipGrid from "./components/ClipGrid";
 //testSegments, testSegmentsSmall alternate on use depending on dataset being used
 // eslint-disable-next-line
@@ -30,56 +20,32 @@ import ClipGridHeader from "./components/ClipGridHeader";
 import InvalidTCPositionModal from "./modals/InvalidTCPositionModal";
 import InvalidTopTailEndTimeModal from "./modals/InvalidTopTailEndTimeModal";
 
+import { usePeaksInstance } from "../../hooks/usePeaksInstance";
+import { useWaveform } from "../../hooks/useWaveform";
+import { useErrorModal } from "../../hooks/useErrorModal";
+
 export default function WaveForm() {
-  //booleans to open modal for invalid playhead positions when adding segments
+  //booleans for displaying Error modals
   const {
-    isOpen: isInvalidTCPModalOpen,
-    onClose: onInvalidTCPModalClose,
-    onOpen: onInvalidTCPModalOpen,
-  } = useDisclosure();
+    isInvalidTCPModalOpen,
+    onInvalidTCPModalClose,
+    onInvalidTCPModalOpen,
+    isInvalidTopTailModalOpen,
+    onInvalidTopTailModalClose,
+    onInvalidTopTailModalOpen,
+  } = useErrorModal();
 
-  //booleans to open modal for invalid playhead position for adding endtime to Top and Tail clip
-  const {
-    isOpen: isInvalidTopTailModalOpen,
-    onClose: onInvalidTopTailModalClose,
-    onOpen: onInvalidTopTailModalOpen,
-  } = useDisclosure();
-
-  //////////////////////////////////////////////////////////////////////
-  //
-  //
-  //              Two audio files for testing
-  //
-  //
-  // const data: AudioDataProps = {
-  //   //------> use testSegments data to set segment state
-  //   audioUrl: "EOS-test.mp3",
-  //   audioContentType: "audio/mpeg",
-  //   waveformDataUrl: "EOS-test.dat",
-  // };
-  const data: AudioDataProps = {
-    //------> use testSegmentsSmall data set to set segment state
-    audioUrl: "instrumental.mp3",
-    audioContentType: "audio/mpeg",
-    waveformDataUrl: "instrumental.dat",
-  };
-  //////////////////////////////////////////////////////////////////////
-
-  //////////////////////////////////////////////////////////////////////
-  //
-  //
-  //               Initialising peaks
-  //
-  //
   //create references to peaks.js containers
   const zoomviewWaveformRef = React.createRef<HTMLDivElement>();
   const overviewWaveformRef = React.createRef<HTMLDivElement>();
   const audioElementRef = React.createRef<HTMLAudioElement>();
 
-  // state for peaks instance
-  const [myPeaks, setMyPeaks] = useState<PeaksInstance | undefined>();
-  const [segments, setSegments] =
-    useState<TestSegmentProps[]>(testSegmentsSmall);
+  //custom hook to initialise a peaks instance with reference to component elements
+  const { myPeaks, segments, setSegments, invalidFilename } = usePeaksInstance(
+    zoomviewWaveformRef,
+    overviewWaveformRef,
+    audioElementRef
+  );
 
   //boolean state used for conditional modal message for invalid position to create clip
   const [clipOverlap, setClipOverlap] = useState<boolean>(false);
@@ -153,22 +119,13 @@ export default function WaveForm() {
   //sets the new end time for a segment if the end point is dragged
   // eslint-disable-next-line
   const handleClipDragEnd = (evt: SegmentDragEvent) => {
-    evt.startMarker
-      ? editClipStartPoint(evt, segments, setSegments)
-      : editClipEndPoint(evt, segments, setSegments);
+    evt.startMarker ? editClipStartPoint(evt) : editClipEndPoint(evt);
   };
 
   //Adds a new segment to the zoomview on double clicked
   // eslint-disable-next-line
   const handleZoomviewDblClick = () => {
-    segments.length >= 1 &&
-      handleAddSegment(
-        segments,
-        setSegments,
-        myPeaks!,
-        onInvalidTCPModalOpen,
-        setClipOverlap
-      );
+    segments.length >= 1 && handleAddSegment(onInvalidTCPModalOpen);
   };
 
   // eslint-disable-next-line
@@ -177,41 +134,15 @@ export default function WaveForm() {
     //will still allow it to be called one more time to create an updated ent time
     //This means the double click to create clip can be placed anywhere on the overview timeline
     //after first clip is created
+
     if (
       segments.length < 1 ||
       myPeaks?.player.getDuration()! === segments[0].endTime
     ) {
-      createTopTail(
-        evt.time,
-        myPeaks?.player.getDuration()!,
-        segments,
-        setSegments,
-        onInvalidTopTailModalOpen
-      );
+      createTopTail(evt.time, onInvalidTopTailModalOpen);
     }
   };
   //////////////////////////////////////////////////////////////////////
-
-  //////////////////////////////////////////////////////////////////////
-  //
-  //
-  //         useEffect to handle updates to peaks and segments states
-  //
-  //
-  useEffect(() => {
-    // //sort the data in chronological order by startTime
-    segments.sort((a, b) => a.startTime - b.startTime);
-
-    //searches segments array and returns true if any filename field is empty
-    //update state for invalidFilenamePresent
-    const invalidFilenamePresent =
-      segments.find((segments) => segments.fileName === "") !== undefined;
-    setInvalidFilenamePresent(invalidFilenamePresent);
-
-    //remove all peaks segments then add with new segments state to avoids duplicates
-    myPeaks?.segments.removeAll();
-    myPeaks?.segments.add(segments);
-  }, [myPeaks, segments]);
 
   useEffect(() => {
     //event handlers
@@ -254,7 +185,7 @@ export default function WaveForm() {
         <ZoomviewContainer ref={zoomviewWaveformRef}></ZoomviewContainer>
         <OverviewContainer ref={overviewWaveformRef}></OverviewContainer>
         <audio ref={audioElementRef} hidden>
-          <source src={data.audioUrl} type={data.audioContentType} />
+          <source src={audioData.audioUrl} type={audioData.audioContentType} />
           Your browser does not support the audio element.
         </audio>
       </Flex>
@@ -272,32 +203,24 @@ export default function WaveForm() {
           </Button>
           <Button
             variant={"waveformBlue"}
-            onClick={() =>
-              handleAddSegment(
-                segments,
-                setSegments,
-                myPeaks!,
-                onInvalidTCPModalOpen,
-                setClipOverlap
-              )
-            }
+            onClick={() => handleAddSegment(onInvalidTCPModalOpen)}
           >
             Add Segment
           </Button>
         </Flex>
         <Flex>
           <Button
-            isDisabled={invalidFilenamePresent || segments.length < 1}
+            isDisabled={invalidFilename || segments.length < 1}
             variant={"waveformBlue"}
             me={"1rem"}
-            onClick={() => createAllSegments(setSegments, segments)}
+            onClick={createAllSegments}
           >
             Create All
           </Button>
           <Button
             isDisabled={segments.length < 1}
             variant={"waveformBlue"}
-            onClick={() => deleteAllSegments(myPeaks!, setSegments)}
+            onClick={deleteAllSegments}
           >
             Delete All
           </Button>
@@ -309,6 +232,10 @@ export default function WaveForm() {
           segments={segments}
           setSegments={setSegments}
           myPeaks={myPeaks!}
+          handlePlayheadSeek={handlePlayheadSeek}
+          deleteSingleSegment={deleteSingleSegment}
+          createSingleSegment={createSingleSegment}
+          handleFileNameChange={handleFileNameChange}
         />
       )}
     </>
