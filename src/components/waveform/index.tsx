@@ -72,20 +72,6 @@ export default function WaveForm() {
     segments.length >= 1 && handleAddSegment(onInvalidTCPModalOpen);
   };
 
-  // eslint-disable-next-line
-  const handleOverviewClick = (evt: WaveformViewMouseEvent) => {
-    //This conditional disables the single click the top and tail clip is created but
-    //will still allow it to be called one more time to create an updated ent time
-    //This means the double click to create clip can be placed anywhere on the overview timeline
-    //after first clip is created
-
-    if (
-      segments.length < 1 ||
-      myPeaks?.player.getDuration()! === segments[0].endTime
-    ) {
-      createTopTail(evt.time, onInvalidTopTailModalOpen);
-    }
-  };
   //////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -93,16 +79,14 @@ export default function WaveForm() {
     myPeaks?.on("segments.dragend", handleClipDragEnd);
     myPeaks?.on("zoomview.dblclick", handleZoomviewDblClick);
     myPeaks?.on("overview.dblclick", handleZoomviewDblClick);
-    // myPeaks?.on("overview.click", handleOverviewClick);
 
     return () => {
       //cleanup
       myPeaks?.off("segments.dragend", handleClipDragEnd);
       myPeaks?.off("zoomview.dblclick", handleZoomviewDblClick);
       myPeaks?.off("overview.dblclick", handleZoomviewDblClick);
-      // myPeaks?.off("overview.click", handleOverviewClick);
     };
-  }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick, handleOverviewClick]);
+  }, [myPeaks, handleClipDragEnd, handleZoomviewDblClick]);
 
   return (
     <>
