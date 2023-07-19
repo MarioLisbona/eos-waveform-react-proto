@@ -309,7 +309,7 @@ export const useWaveform = (
           isCreated: true,
         },
         editable: false,
-        color: "#384115",
+        color: "#48221F",
       };
     });
 
@@ -361,7 +361,7 @@ export const useWaveform = (
             isCreated: seg.formErrors.isCreated ? false : true,
           },
           editable: seg.editable ? false : true,
-          color: seg.color === "#1E1541" ? "#384115" : "#1E1541",
+          color: seg.color === "#1E1541" ? "#48221F" : "#1E1541",
         };
       }
       //otherwise return the segment unchanged
