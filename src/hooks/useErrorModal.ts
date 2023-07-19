@@ -7,18 +7,9 @@ export const useErrorModal = () => {
     onOpen: onInvalidTCPModalOpen,
   } = useDisclosure();
 
-  const {
-    isOpen: isInvalidTopTailModalOpen,
-    onClose: onInvalidTopTailModalClose,
-    onOpen: onInvalidTopTailModalOpen,
-  } = useDisclosure();
-
   return {
     isInvalidTCPModalOpen,
     onInvalidTCPModalClose,
     onInvalidTCPModalOpen,
-    isInvalidTopTailModalOpen,
-    onInvalidTopTailModalClose,
-    onInvalidTopTailModalOpen,
   };
 };

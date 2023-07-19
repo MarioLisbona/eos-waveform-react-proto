@@ -21,9 +21,6 @@ export default function WaveForm() {
     isInvalidTCPModalOpen,
     onInvalidTCPModalClose,
     onInvalidTCPModalOpen,
-    isInvalidTopTailModalOpen,
-    onInvalidTopTailModalClose,
-    onInvalidTopTailModalOpen,
   } = useErrorModal();
 
   //create references to peaks.js containers
@@ -94,12 +91,6 @@ export default function WaveForm() {
         isOpen={isInvalidTCPModalOpen}
         onClose={onInvalidTCPModalClose}
         clipOverlap={clipOverlap}
-        myPeaks={myPeaks!}
-      />
-      {/* Moodal to display when Top and Tail end time is set before start time */}
-      <InvalidTopTailEndTimeModal
-        isOpen={isInvalidTopTailModalOpen}
-        onClose={onInvalidTopTailModalClose}
         myPeaks={myPeaks!}
       />
       <Flex
