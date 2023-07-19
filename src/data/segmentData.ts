@@ -1,4 +1,17 @@
-import { TestSegmentProps } from "../types";
+import { TestSegmentProps, AudioDataProps } from "../types";
+
+// const data: AudioDataProps = {
+//   //------> use testSegments data to set segment state
+//   audioUrl: "EOS-test.mp3",
+//   audioContentType: "audio/mpeg",
+//   waveformDataUrl: "EOS-test.dat",
+// };
+export const audioData: AudioDataProps = {
+  //------> use testSegmentsSmall data set to set segment state
+  audioUrl: "instrumental.mp3",
+  audioContentType: "audio/mpeg",
+  waveformDataUrl: "instrumental.dat",
+};
 
 export const testSegmentsSmall: TestSegmentProps[] = [
   {
