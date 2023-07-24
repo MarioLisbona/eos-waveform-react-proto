@@ -20,7 +20,6 @@ export const useWaveform = (
   const createGenericTopTail = () => {
     const mediaLength = myPeaks.player.getDuration();
     const playheadPosition = myPeaks.player.getCurrentTime();
-    console.log({ mediaLength, playheadPosition });
     const topTailSegment = {
       id: "Top-n-Tail-Segment",
       fileName: "Top-n-Tail-Segment",
