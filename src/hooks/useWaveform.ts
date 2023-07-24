@@ -191,7 +191,6 @@ export const useWaveform = (
           arr[idx].endTime < playheadPosition
         );
       }
-      // console.log("returning seg at end of findIndex", idx);
       // return seg; //---> returning seg here to resolving linting error breaks error checking
     });
 
