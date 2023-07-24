@@ -20,7 +20,6 @@ export const useWaveform = (
   const createGenericTopTail = () => {
     const mediaLength = myPeaks.player.getDuration();
     const playheadPosition = myPeaks.player.getCurrentTime();
-    console.log({ mediaLength, playheadPosition });
     const topTailSegment = {
       id: "Top-n-Tail-Segment",
       fileName: "Top-n-Tail-Segment",
@@ -191,8 +190,6 @@ export const useWaveform = (
           arr[idx].endTime < playheadPosition
         );
       }
-      // console.log("returning seg at end of findIndex", idx);
-      // return seg; //---> returning seg here to resolving linting error breaks error checking
     });
 
     //function to return true if a clip is being created with enough space, prior to the current first clip
