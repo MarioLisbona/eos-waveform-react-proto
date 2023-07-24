@@ -191,7 +191,6 @@ export const useWaveform = (
           arr[idx].endTime < playheadPosition
         );
       }
-      // return seg; //---> returning seg here to resolving linting error breaks error checking
     });
 
     //function to return true if a clip is being created with enough space, prior to the current first clip
