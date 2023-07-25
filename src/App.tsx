@@ -6,7 +6,7 @@ import WaveForm from "./components/waveform";
 export const App = () => (
   <SectionContainer>
     <Flex direction={"column"} align={"center"}>
-      <Text textStyle={"context"}>EOS Waveform Prototype</Text>
+      <Text textStyle={"context"}>React Waveform Prototype</Text>
       <WaveForm />
     </Flex>
   </SectionContainer>
