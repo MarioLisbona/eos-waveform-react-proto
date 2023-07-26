@@ -2,6 +2,34 @@ This desktop UI prototype is built with [create-react-app](https://github.com/fa
 
 The user is presented with two waveforms, one that represents an overview of the entire media source and another wavform that represents a zoomed in view of a portion of the waveform. The overview window has a highlighted section that is displayed in the zoomview window. Users can visually add, edit, delete and create segments on the waveform. A list of the added clips is displayed below the waveform.
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Links](#links)
+- [Installation Instructions](#installation-instructions)
+- [Waveform components and functionality](#waveform-components-and-functionality)
+- [User stories - Media timeline with no pre-populated clips](#user-stories---media-timeline-with-no-pre-populated-clips)
+  - [User wants to add a top-n-tail clip](#user-wants-to-add-a-top-n-tail-clip)
+  - [User wants to edit start point for top-n-tail clip](#user-wants-to-edit-start-point-for-top-n-tail-clip)
+  - [User wants to edit end point for top-n-tail clip](#user-wants-to-edit-end-point-for-top-n-tail-clip)
+  - [User wants to rename top-n-tail clip](#user-wants-to-rename-top-n-tail-clip)
+  - [User wants to reposition playhead to start of top-n-tail clip](#user-wants-to-reposition-playhead-to-start-of-top-n-tail-clip)
+  - [User wants to reposition playhead to end of top-n-tail clip](#user-wants-to-reposition-playhead-to-end-of-top-n-tail-clip)
+  - [User wants to create top-n-tail clip](#user-wants-to-create-top-n-tail-clip)
+  - [User wants to delete top-n-tail clip](#user-wants-to-delete-top-n-tail-clip)
+  - [User wants to add a segment](#user-wants-to-add-a-segment)
+  - [User wants to edit start point for a segment](#user-wants-to-edit-start-point-for-a-segment)
+  - [User wants to edit end point for a segment](#user-wants-to-edit-end-point-for-a-segment)
+  - [User wants to rename a segment](#user-wants-to-rename-a-segment)
+  - [User wants to position playhead to start of a segment](#user-wants-to-position-playhead-to-start-of-a-segment)
+  - [User wants to position playhead to end of a segment](#user-wants-to-position-playhead-to-end-of-a-segment)
+  - [User wants to create a segment](#user-wants-to-create-a-segment)
+  - [User wants to delete a segment](#user-wants-to-delete-a-segment)
+  - [User wants to create all segments](#user-wants-to-create-all-segments)
+  - [User wants to delete all segments](#user-wants-to-delete-all-segments)
+- [User stories - Media timeline with pre-populated clips](#user-stories---media-timeline-with-pre-populated-clips)
+  - [User wants to add a top-n-tail clip](#user-wants-to-add-a-top-n-tail-clip-1)
+
 ## Links
 
 🌏 Deployed Application: [https://clinquant-valkyrie-3208c8.netlify.app/](https://clinquant-valkyrie-3208c8.netlify.app/)
@@ -286,3 +314,5 @@ The user is presented with two waveforms, one that represents an overview of the
 |                    3                    |                    4                    |
 | :-------------------------------------: | :-------------------------------------: |
 | ![3](docs/user-prepop-add-tt-3.png "3") | ![4](docs/user-prepop-add-tt-4.png "4") |
+
+[Return to Top](#table-of-contents)
