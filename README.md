@@ -65,7 +65,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :-------------------------------: | :-------------------------------: | :-------------------------------: |
 | ![1](docs/user-edit-sp-1.png "1") | ![2](docs/user-edit-sp-2.png "2") | ![3](docs/user-edit-sp-3.png "3") |
 
-## User wants to edit end point for top-n-tail clip
+### User wants to edit end point for top-n-tail clip
 
 1. Click on segment end time to move playhead to start time
 2. Click and hold on start time edit handle
@@ -75,7 +75,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :-------------------------------: | :-------------------------------: | :-------------------------------: |
 | ![1](docs/user-edit-ep-1.png "1") | ![2](docs/user-edit-ep-2.png "2") | ![3](docs/user-edit-ep-3.png "3") |
 
-## User wants to rename top-n-tail clip
+### User wants to rename top-n-tail clip
 
 1. Click segment name input field
 2. Rename the segment
@@ -85,7 +85,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :---------------------------------: | :---------------------------------: | :---------------------------------: |
 | ![1](docs/user-rename-tt-1.png "1") | ![2](docs/user-rename-tt-2.png "2") | ![3](docs/user-rename-tt-3.png "3") |
 
-## User wants to reposition playhead to start of top-n-tail clip
+### User wants to reposition playhead to start of top-n-tail clip
 
 1. Click anywhere inside the start time field in the segment data section
 2. The playhead will move to the start time of the top-n-tail clip
@@ -94,7 +94,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :-------------------------------------: | :-------------------------------------: |
 | ![1](docs/user-repo-to-start-1.png "1") | ![2](docs/user-repo-to-start-2.png "2") |
 
-## User wants to reposition playhead to end of top-n-tail clip
+### User wants to reposition playhead to end of top-n-tail clip
 
 1. Click anywhere inside the end time field in the segment data section
 2. The playhead will move to the end time of the top-n-tail clip
@@ -103,7 +103,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :-----------------------------------: | :-----------------------------------: |
 | ![1](docs/user-repo-to-end-1.png "1") | ![2](docs/user-repo-to-end-2.png "2") |
 
-## User wants to create top-n-tail clip
+### User wants to create top-n-tail clip
 
 1. Click on the Create button in the clip data section or Create All button at top of the clip data section
 2. The clip will change colour on the waveform and zoomview windows. The segment name and Create button will be disabled
@@ -113,7 +113,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :---------------------------------: | :---------------------------------: | :---------------------------------: |
 | ![1](docs/user-create-tt-1.png "1") | ![2](docs/user-create-tt-2.png "2") | ![3](docs/user-create-tt-3.png "3") |
 
-## User wants to delete top-n-tail clip
+### User wants to delete top-n-tail clip
 
 1. Click on the Delete button in the clip data section or Delete All button at top of the clip data section
 2. The clip will be deleted from the overview and zoomview windows and clip data will be removed
@@ -122,7 +122,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :------------------------------: | :------------------------------: |
 | ![1](docs/user-del-tt-1.png "1") | ![2](docs/user-del-tt-2.png "2") |
 
-## User wants to add a segment
+### User wants to add a segment
 
 1. Click on overview to position the playhead for the start time of the segment
 2. If needed, click on the zoomview to fine adjust the start time with more accuracy
@@ -150,7 +150,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :-------------------------------: |
 | ![6](docs/user-add-seg-6.png "6") |
 
-## User wants to edit start point for a segment
+### User wants to edit start point for a segment
 
 1. Click on segment start time to move playhead to start time
 2. Click and hold on start time edit handle
@@ -170,7 +170,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :-----------------------------------------: |
 | ![4-1](docs/user-edit-sp-seg-4-1.png "4-1") |
 
-## User wants to edit end point for a segment
+### User wants to edit end point for a segment
 
 1. Click on segment end time to move playhead to end time
 2. Click and hold on end time edit handle
@@ -190,7 +190,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :-----------------------------------------: |
 | ![4-1](docs/user-edit-ep-seg-4-1.png "4-1") |
 
-## User wants to rename a segment
+### User wants to rename a segment
 
 1. Click segment name input field that needs to be edited
 2. Rename Segment
@@ -200,7 +200,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :----------------------------------: | :----------------------------------: | :----------------------------------: |
 | ![1](docs/user-rename-seg-1.png "1") | ![2](docs/user-rename-seg-2.png "2") | ![3](docs/user-rename-seg-3.png "3") |
 
-## User wants to position playhead to start of a segment
+### User wants to position playhead to start of a segment
 
 1. Click anywhere inside the start time field in the segment data section
 2. The playhead will move to the start time for that segment
@@ -209,7 +209,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :-----------------------------------------: | :-----------------------------------------: |
 | ![1](docs/user-repo-to-start-seg-1.png "1") | ![2](docs/user-repo-to-start-seg-2.png "2") |
 
-## User wants to position playhead to end of a segment
+### User wants to position playhead to end of a segment
 
 1. Click anywhere inside the end time field in the segment data section
 2. The playhead will move to the end time for that segment
@@ -218,7 +218,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :---------------------------------------: | :---------------------------------------: |
 | ![1](docs/user-repo-to-end-seg-1.png "1") | ![2](docs/user-repo-to-end-seg-2.png "2") |
 
-## User wants to create a segment
+### User wants to create a segment
 
 1. Locate the segment that needs to be created in the list of segments
 2. Click the Create button for that clip.
@@ -233,7 +233,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :----------------------------------: | :----------------------------------: |
 | ![3](docs/user-create-seg-3.png "3") | ![4](docs/user-create-seg-4.png "4") |
 
-## User wants to delete a segment
+### User wants to delete a segment
 
 1. Locate the segment that needs to be deleted in the list of segments
 2. Click the Delete button for that clip
@@ -243,7 +243,7 @@ The user is presented with two waveforms, one that represents an overview of the
 | :-------------------------------: | :-------------------------------: | :-------------------------------: |
 | ![1](docs/user-del-seg-1.png "1") | ![2](docs/user-del-seg-2.png "2") | ![3](docs/user-del-seg-3.png "3") |
 
-## User wants to delete a segment
+### User wants to create all segments
 
 1. Click the Create All button
 2. All segments will change colour and all segment name fields and individual Create buttons will be disabled
@@ -259,3 +259,30 @@ The user is presented with two waveforms, one that represents an overview of the
 |                     4                     |                     5                     |                     6                     |
 | :---------------------------------------: | :---------------------------------------: | :---------------------------------------: |
 | ![4](docs/user-create-all-segs-4.png "4") | ![5](docs/user-create-all-segs-5.png "5") | ![6](docs/user-create-all-segs-6.png "6") |
+
+### User wants to delete all segments
+
+1. Click the Delete All button
+2. All segments on the timeline will be deleted. The timeline will become empty
+3. Delete All button is disabled if there are no clips on the timeline
+
+|                   1                    |                   2                    |                   3                    |
+| :------------------------------------: | :------------------------------------: | :------------------------------------: |
+| ![1](docs/user-del-all-segs-1.png "1") | ![2](docs/user-del-all-segs-2.png "2") | ![3](docs/user-del-all-segs-3.png "3") |
+
+## User stories - Media timeline with pre-populated clips
+
+### User wants to add a top-n-tail clip
+
+1. Click delete all button. Top-n-Tail clip button is disabled unless the timeline is empty
+2. Click on overview to position the playhead for the start of the top-n-tail clip
+3. If needed, click on the zoomview to fine adjust the start time with more accuracy
+4. Click 'Add Top-n-Tail' button - clip is created at start time and end time is at 95% of media length
+
+|                    1                    |                    2                    |
+| :-------------------------------------: | :-------------------------------------: |
+| ![1](docs/user-prepop-add-tt-1.png "1") | ![2](docs/user-prepop-add-tt-2.png "2") |
+
+|                    3                    |                    4                    |
+| :-------------------------------------: | :-------------------------------------: |
+| ![3](docs/user-prepop-add-tt-3.png "3") | ![4](docs/user-prepop-add-tt-4.png "4") |
